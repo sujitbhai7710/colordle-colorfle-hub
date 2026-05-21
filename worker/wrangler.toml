@@ -1,0 +1,12 @@
+name = "color-answers-worker"
+main = "src/index.ts"
+compatibility_date = "2024-12-01"
+account_id = "ac1e8cfe748b673d1997aa434ad2494e"
+
+[triggers]
+crons = ["30 18 * * *", "30 2 * * *", "30 6 * * *"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "color-answers-db"
+database_id = "47a84a49-879d-4ffc-a768-09c5f34a188c"

@@ -1,0 +1,275 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Home">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <span class="badge animate-fade-in">Updated Daily</span>
+        <h1 class="hero-title animate-slide-up">
+          Today's Color<br/><span class="gradient-text">Game Answers</span>
+        </h1>
+        <p class="hero-subtitle animate-slide-up" style="animation-delay: 0.15s">
+          Get instant answers for Colordle and Colorfle. Updated every day at midnight IST with verified solutions.
+        </p>
+        <div class="hero-actions animate-slide-up" style="animation-delay: 0.3s">
+          <a href="/colordle-answer-today" class="btn-primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+            Colordle Answer
+          </a>
+          <a href="/colorfle-answer-today" class="btn-secondary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            Colorfle Answer
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Game Cards -->
+  <section class="section">
+    <div class="container">
+      <div class="game-cards">
+        <!-- Colordle Card -->
+        <a href="/colordle-answer-today" class="game-card glass-card">
+          <div class="card-header">
+            <div class="card-icon colordle-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <span class="badge">Daily</span>
+          </div>
+          <h3 class="card-title">Colordle</h3>
+          <p class="card-desc">Guess the mystery color name! Today's answer revealed with color swatch and hex code.</p>
+          <div class="card-footer">
+            <span class="card-link">View Today's Answer →</span>
+          </div>
+        </a>
+
+        <!-- Colorfle Card -->
+        <a href="/colorfle-answer-today" class="game-card glass-card">
+          <div class="card-header">
+            <div class="card-icon colorfle-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            </div>
+            <span class="badge">Daily</span>
+          </div>
+          <h3 class="card-title">Colorfle</h3>
+          <p class="card-desc">Guess the 3-color combination! Normal and hard mode answers available.</p>
+          <div class="card-footer">
+            <span class="card-link">View Today's Answer →</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Archive Section -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <h2 class="section-title">Browse the <span class="gradient-text">Archive</span></h2>
+      <p class="section-subtitle">Look up past answers using our interactive calendar</p>
+      <div class="archive-cards">
+        <a href="/colordle-archive" class="archive-card glass-card">
+          <div class="archive-icon">📅</div>
+          <h3>Colordle Archive</h3>
+          <p>Every answer since Day 1 (March 26, 2022)</p>
+        </a>
+        <a href="/colorfle-archive" class="archive-card glass-card">
+          <div class="archive-icon">📅</div>
+          <h3>Colorfle Archive</h3>
+          <p>Every answer since Day 1 (April 25, 2022)</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">How It <span class="gradient-text">Works</span></h2>
+      <p class="section-subtitle">We compute answers using the same algorithms as the original games</p>
+      <div class="steps">
+        <div class="step glass-card">
+          <div class="step-num">01</div>
+          <h4>Algorithm Verified</h4>
+          <p>Our algorithms match the official game logic exactly, verified against third-party sources.</p>
+        </div>
+        <div class="step glass-card">
+          <div class="step-num">02</div>
+          <h4>Auto Updated</h4>
+          <p>Cron jobs run at 12AM, 8AM, and 12PM IST daily to ensure answers are always current.</p>
+        </div>
+        <div class="step glass-card">
+          <div class="step-num">03</div>
+          <h4>Full Archive</h4>
+          <p>Every answer is stored in our database, so you can look up any date from the games' history.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero {
+    padding: 100px 0 60px;
+    text-align: center;
+  }
+
+  .hero-content {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .hero-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin: 16px 0;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-subtitle {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .game-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .game-card {
+    padding: 32px;
+    text-decoration: none;
+    color: var(--text-primary);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .card-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .colordle-icon {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  }
+
+  .colorfle-icon {
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+  }
+
+  .card-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .card-desc {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .card-footer {
+    border-top: 1px solid var(--border-color);
+    padding-top: 16px;
+  }
+
+  .card-link {
+    color: var(--accent-light);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .archive-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .archive-card {
+    padding: 28px;
+    text-decoration: none;
+    color: var(--text-primary);
+    text-align: center;
+  }
+
+  .archive-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+
+  .archive-card h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .archive-card p {
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .step {
+    padding: 28px;
+    text-align: center;
+  }
+
+  .step-num {
+    font-size: 2rem;
+    font-weight: 900;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+
+  .step h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .step p {
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 768px) {
+    .hero-title { font-size: 2.2rem; }
+    .game-cards { grid-template-columns: 1fr; }
+    .archive-cards { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+  }
+</style>

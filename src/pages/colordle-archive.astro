@@ -1,0 +1,39 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Colordle Answer Archive">
+  <section class="archive-page">
+    <div class="container">
+      <div class="page-header">
+        <a href="/" class="back-link">← Back Home</a>
+        <span class="badge">Archive</span>
+      </div>
+      
+      <h1 class="page-title">
+        Colordle<br/><span class="gradient-text">Archive</span>
+      </h1>
+      <p class="page-subtitle">Look up any past Colordle answer — click a date on the calendar to reveal it</p>
+
+      <div id="calendarRoot"></div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .archive-page { padding: 40px 0 80px; }
+  .page-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+  .back-link { color: var(--text-secondary); font-size: 0.88rem; }
+  .back-link:hover { color: var(--accent-light); }
+  .page-title { font-size: 2.8rem; font-weight: 900; line-height: 1.1; margin-bottom: 8px; }
+  .page-subtitle { color: var(--text-secondary); font-size: 1rem; margin-bottom: 40px; }
+  @media (max-width: 768px) { .page-title { font-size: 2rem; } }
+</style>
+
+<script>
+  import Calendar from '../components/Calendar.svelte';
+  const root = document.getElementById('calendarRoot');
+  if (root) {
+    new Calendar({ target: root, props: { game: 'colordle' } });
+  }
+</script>
