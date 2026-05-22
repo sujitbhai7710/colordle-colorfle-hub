@@ -78,7 +78,7 @@ export const COLOR_NAME_TO_HEX: Record<string, string> = {
   "pear": "#D1E231", "cherry": "#DE3163", "vanilla": "#F3E5AB",
   "hot pink": "#FF69B4", "mustard": "#FFDB58", "mocha": "#7A5230",
   "sangria": "#92000A", "cloud": "#C7C9D5", "cloudy": "#C7C9D5",
-  "grass": "#7CFC00", "cobalt": "#0047AB", "tangerine": "#FF9966",
+  "grass": "#7CFC00", "cobalt": "#0047AB", "tangerine": "#FFC1CC",
   "avocado": "#568203", "oxford blue": "#002147", "spa": "#A6D7D5",
   "sage green": "#8A9A5B", "coco": "#8B4513", "pumpkin": "#FF7518",
   "orangered": "#FF4500", "bloodred": "#660000", "darkorange": "#FF8C00",
