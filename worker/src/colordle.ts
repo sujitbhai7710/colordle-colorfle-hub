@@ -1,13 +1,17 @@
-// Colordle answer algorithm - verified against colordleanswer.today
+// Colordle answer algorithm - exact port of the game's JavaScript logic
+// Start date: August 7, 2023 with day offset of 500
+// This means day 500 = first day of the current game era
+// Days 0-1015 (relative) use colors.json directly
+// Days 1016+ use the algorithmic selection from color-pool.json
 
-const COLORDLE_START_DATE = new Date('2022-03-26T00:00:00Z');
+const COLORDLE_EPOCH = new Date('2023-08-07T00:00:00Z');
+const COLORDLE_DAY_OFFSET = 500;
 
-interface ColorsData { colors: string[] }
 interface PoolData { colors: string[]; blocklist: string[] }
 
 export function getColordleDayNumber(date: Date): number {
-  const diff = date.getTime() - COLORDLE_START_DATE.getTime();
-  return Math.floor(diff / 86400000) + 1;
+  const diff = date.getTime() - COLORDLE_EPOCH.getTime();
+  return Math.floor(diff / 86400000) + COLORDLE_DAY_OFFSET;
 }
 
 function sx(name: string): string {
@@ -87,11 +91,15 @@ export async function fetchColordleData(): Promise<{ allColors: string[]; poolCo
     fetch('https://colordle.ryantanen.com/colors.json'),
     fetch('https://colordle.ryantanen.com/color-pool.json'),
   ]);
-  const colorsData: ColorsData = await colorsRes.json();
+  // colors.json is a plain array of color name strings (1016 entries)
+  const colorsData = await colorsRes.json();
+  const allColors: string[] = Array.isArray(colorsData) ? colorsData : (colorsData.colors || []);
+  
+  // color-pool.json has { colors: [...], blocklist: [...] }
   const poolData: PoolData = await poolRes.json();
   return {
-    allColors: colorsData.colors,
-    poolColors: poolData.colors,
-    blocklist: poolData.blocklist,
+    allColors,
+    poolColors: poolData.colors || [],
+    blocklist: poolData.blocklist || [],
   };
 }

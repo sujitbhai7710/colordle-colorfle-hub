@@ -2,32 +2,84 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Colordle Answer Archive">
+<Layout title="Colordle Answer Archive" description="Browse the complete Colordle archive. Look up any past Colordle answer using our interactive calendar.">
   <section class="archive-page">
     <div class="container">
-      <div class="page-header">
-        <a href="/" class="back-link">← Back Home</a>
-        <span class="badge">Archive</span>
-      </div>
-      
-      <h1 class="page-title">
-        Colordle<br/><span class="gradient-text">Archive</span>
-      </h1>
-      <p class="page-subtitle">Look up any past Colordle answer — click a date on the calendar to reveal it</p>
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb animate-fade-in-up" aria-label="Breadcrumb">
+        <a href="/" class="breadcrumb-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+          Home
+        </a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Colordle Archive</span>
+      </nav>
 
-      <div id="calendarRoot"></div>
+      <!-- Title -->
+      <div class="page-header animate-fade-in-up delay-1">
+        <h1 class="page-title">
+          Colordle<br/><span class="gradient-text">Archive</span>
+        </h1>
+        <p class="page-subtitle">Look up any past Colordle answer — select a date on the calendar to reveal it</p>
+      </div>
+
+      <!-- Calendar Component -->
+      <div class="animate-fade-in-up delay-2" id="calendarRoot"></div>
     </div>
   </section>
 </Layout>
 
 <style>
-  .archive-page { padding: 40px 0 80px; }
-  .page-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
-  .back-link { color: var(--text-secondary); font-size: 0.88rem; }
-  .back-link:hover { color: var(--accent-light); }
-  .page-title { font-size: 2.8rem; font-weight: 900; line-height: 1.1; margin-bottom: 8px; }
-  .page-subtitle { color: var(--text-secondary); font-size: 1rem; margin-bottom: 40px; }
-  @media (max-width: 768px) { .page-title { font-size: 2rem; } }
+  .archive-page {
+    padding: 40px 0 96px;
+  }
+
+  /* ── Breadcrumb ── */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    font-size: 0.85rem;
+  }
+
+  .breadcrumb-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-muted);
+    transition: color var(--duration-fast) ease;
+  }
+
+  .breadcrumb-link:hover { color: var(--accent-light); }
+  .breadcrumb-sep { color: var(--text-muted); opacity: 0.5; }
+  .breadcrumb-current { color: var(--text-secondary); font-weight: 500; }
+
+  /* ── Page Header ── */
+  .page-header { margin-bottom: 40px; }
+
+  .page-title {
+    font-size: 3rem;
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+  }
+
+  .page-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .page-title { font-size: 2.2rem; }
+  }
+
+  @media (max-width: 640px) {
+    .page-title { font-size: 1.8rem; }
+  }
 </style>
 
 <script>

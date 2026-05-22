@@ -1,110 +1,141 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 ---
 
-<Layout title="Home">
-  <!-- Hero Section -->
+<Layout title="Home" description="Get daily answers for Colordle and Colorfle color guessing games. Updated every day with verified solutions.">
+  <!-- ═══ Hero Section ═══ -->
   <section class="hero">
-    <div class="container">
-      <div class="hero-content">
-        <span class="badge animate-fade-in">Updated Daily</span>
-        <h1 class="hero-title animate-slide-up">
-          Today's Color<br/><span class="gradient-text">Game Answers</span>
-        </h1>
-        <p class="hero-subtitle animate-slide-up" style="animation-delay: 0.15s">
-          Get instant answers for Colordle and Colorfle. Updated every day at midnight IST with verified solutions.
-        </p>
-        <div class="hero-actions animate-slide-up" style="animation-delay: 0.3s">
-          <a href="/colordle-answer-today" class="btn-primary">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
-            Colordle Answer
-          </a>
-          <a href="/colorfle-answer-today" class="btn-secondary">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-            Colorfle Answer
-          </a>
-        </div>
+    <div class="hero-bg">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+    <div class="container hero-content">
+      <div class="badge badge-pulse animate-fade-in-up">Updated Daily</div>
+      <h1 class="hero-title animate-fade-in-up delay-1">
+        Today's Color<br/><span class="gradient-text">Game Answers</span>
+      </h1>
+      <p class="hero-subtitle animate-fade-in-up delay-2">
+        Get instant answers for Colordle and Colorfle. Updated every day at midnight IST with verified solutions.
+      </p>
+      <div class="hero-actions animate-fade-in-up delay-3">
+        <a href="/colordle-answer-today" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+          Colordle Answer
+        </a>
+        <a href="/colorfle-answer-today" class="btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Colorfle Answer
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- Game Cards -->
+  <!-- ═══ Game Cards with Live Preview ═══ -->
   <section class="section">
     <div class="container">
       <div class="game-cards">
         <!-- Colordle Card -->
-        <a href="/colordle-answer-today" class="game-card glass-card">
-          <div class="card-header">
-            <div class="card-icon colordle-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+        <a href="/colordle-answer-today" class="game-card glass-card animate-fade-in-up delay-1">
+          <div class="card-top">
+            <div class="card-icon-wrap colordle-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
             </div>
             <span class="badge">Daily</span>
           </div>
           <h3 class="card-title">Colordle</h3>
           <p class="card-desc">Guess the mystery color name! Today's answer revealed with color swatch and hex code.</p>
+          <div class="card-preview" id="colordlePreview">
+            <div class="preview-skeleton skeleton"></div>
+          </div>
           <div class="card-footer">
-            <span class="card-link">View Today's Answer →</span>
+            <span class="card-cta">View Today's Answer <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
           </div>
         </a>
 
         <!-- Colorfle Card -->
-        <a href="/colorfle-answer-today" class="game-card glass-card">
-          <div class="card-header">
-            <div class="card-icon colorfle-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <a href="/colorfle-answer-today" class="game-card glass-card animate-fade-in-up delay-2">
+          <div class="card-top">
+            <div class="card-icon-wrap colorfle-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
             </div>
             <span class="badge">Daily</span>
           </div>
           <h3 class="card-title">Colorfle</h3>
           <p class="card-desc">Guess the 3-color combination! Normal and hard mode answers available.</p>
+          <div class="card-preview" id="colorflePreview">
+            <div class="preview-skeleton skeleton"></div>
+          </div>
           <div class="card-footer">
-            <span class="card-link">View Today's Answer →</span>
+            <span class="card-cta">View Today's Answer <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
           </div>
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Archive Section -->
+  <!-- ═══ Archive Section ═══ -->
   <section class="section" style="padding-top: 0;">
     <div class="container">
       <h2 class="section-title">Browse the <span class="gradient-text">Archive</span></h2>
       <p class="section-subtitle">Look up past answers using our interactive calendar</p>
       <div class="archive-cards">
         <a href="/colordle-archive" class="archive-card glass-card">
-          <div class="archive-icon">📅</div>
-          <h3>Colordle Archive</h3>
-          <p>Every answer since Day 1 (March 26, 2022)</p>
+          <div class="archive-icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <div class="archive-info">
+            <h3>Colordle Archive</h3>
+            <p>Every answer since Day 1 (March 26, 2022)</p>
+          </div>
+          <svg class="archive-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
         <a href="/colorfle-archive" class="archive-card glass-card">
-          <div class="archive-icon">📅</div>
-          <h3>Colorfle Archive</h3>
-          <p>Every answer since Day 1 (April 25, 2022)</p>
+          <div class="archive-icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <div class="archive-info">
+            <h3>Colorfle Archive</h3>
+            <p>Every answer since Day 1 (April 25, 2022)</p>
+          </div>
+          <svg class="archive-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
     </div>
   </section>
 
-  <!-- How It Works -->
+  <!-- ═══ How It Works ═══ -->
   <section class="section">
     <div class="container">
       <h2 class="section-title">How It <span class="gradient-text">Works</span></h2>
       <p class="section-subtitle">We compute answers using the same algorithms as the original games</p>
       <div class="steps">
         <div class="step glass-card">
-          <div class="step-num">01</div>
-          <h4>Algorithm Verified</h4>
-          <p>Our algorithms match the official game logic exactly, verified against third-party sources.</p>
+          <div class="step-number">01</div>
+          <h4 class="step-title">Algorithm Verified</h4>
+          <p class="step-desc">Our algorithms match the official game logic exactly, verified against third-party sources.</p>
         </div>
         <div class="step glass-card">
-          <div class="step-num">02</div>
-          <h4>Auto Updated</h4>
-          <p>Cron jobs run at 12AM, 8AM, and 12PM IST daily to ensure answers are always current.</p>
+          <div class="step-number">02</div>
+          <h4 class="step-title">Auto Updated</h4>
+          <p class="step-desc">Cron jobs run at 12AM, 8AM, and 12PM IST daily to ensure answers are always current.</p>
         </div>
         <div class="step glass-card">
-          <div class="step-num">03</div>
-          <h4>Full Archive</h4>
-          <p>Every answer is stored in our database, so you can look up any date from the games' history.</p>
+          <div class="step-number">03</div>
+          <h4 class="step-title">Full Archive</h4>
+          <p class="step-desc">Every answer is stored in our database, so you can look up any date from the games' history.</p>
         </div>
       </div>
     </div>
@@ -112,29 +143,88 @@ import Layout from '../layouts/Layout.astro';
 </Layout>
 
 <style>
+  /* ═══ Hero ═══ */
   .hero {
-    padding: 100px 0 60px;
+    position: relative;
+    padding: 120px 0 72px;
     text-align: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.35;
+  }
+
+  .orb-1 {
+    width: 500px;
+    height: 500px;
+    background: #6366F1;
+    top: -15%;
+    left: -10%;
+    animation: float 14s ease-in-out infinite;
+  }
+
+  .orb-2 {
+    width: 400px;
+    height: 400px;
+    background: #8B5CF6;
+    top: -5%;
+    right: -8%;
+    animation: float 18s ease-in-out infinite reverse;
+    animation-delay: -4s;
+  }
+
+  .orb-3 {
+    width: 350px;
+    height: 350px;
+    background: #EC4899;
+    bottom: -20%;
+    left: 30%;
+    animation: float 16s ease-in-out infinite;
+    animation-delay: -8s;
+    opacity: 0.2;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(30px, -30px) scale(1.05); }
+    50% { transform: translate(-20px, 20px) scale(0.95); }
+    75% { transform: translate(15px, -10px) scale(1.02); }
   }
 
   .hero-content {
-    max-width: 680px;
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
     margin: 0 auto;
   }
 
   .hero-title {
-    font-size: 3.5rem;
+    font-size: 4rem;
     font-weight: 900;
-    line-height: 1.1;
-    margin: 16px 0;
-    letter-spacing: -0.02em;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    margin: 20px 0;
   }
 
   .hero-subtitle {
     font-size: 1.15rem;
     color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: 32px;
+    line-height: 1.7;
+    margin-bottom: 36px;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .hero-actions {
@@ -144,6 +234,7 @@ import Layout from '../layouts/Layout.astro';
     flex-wrap: wrap;
   }
 
+  /* ═══ Game Cards ═══ */
   .game-cards {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -154,18 +245,25 @@ import Layout from '../layouts/Layout.astro';
     padding: 32px;
     text-decoration: none;
     color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
   }
 
-  .card-header {
+  .game-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow, 0 0 40px rgba(139, 92, 246, 0.12));
+  }
+
+  .card-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
   }
 
-  .card-icon {
-    width: 52px;
-    height: 52px;
+  .card-icon-wrap {
+    width: 48px;
+    height: 48px;
     border-radius: 14px;
     display: flex;
     align-items: center;
@@ -173,103 +271,305 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .colordle-icon {
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    background: linear-gradient(135deg, #6366F1, #8B5CF6);
+    color: white;
   }
 
   .colorfle-icon {
-    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    background: linear-gradient(135deg, #F59E0B, #EF4444);
+    color: white;
   }
 
   .card-title {
-    font-size: 1.4rem;
-    font-weight: 700;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
     margin-bottom: 8px;
   }
 
   .card-desc {
     color: var(--text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.5;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  .card-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 0;
     margin-bottom: 20px;
+    min-height: 100px;
+  }
+
+  .preview-skeleton {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
   }
 
   .card-footer {
     border-top: 1px solid var(--border-color);
     padding-top: 16px;
+    margin-top: auto;
   }
 
-  .card-link {
+  .card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     color: var(--accent-light);
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
+    transition: gap var(--duration-normal) ease;
   }
 
+  .game-card:hover .card-cta {
+    gap: 10px;
+  }
+
+  /* ═══ Archive Cards ═══ */
   .archive-cards {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 24px;
+    gap: 20px;
   }
 
   .archive-card {
-    padding: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px;
     text-decoration: none;
     color: var(--text-primary);
-    text-align: center;
   }
 
-  .archive-icon {
-    font-size: 2rem;
-    margin-bottom: 12px;
+  .archive-card:hover {
+    transform: translateY(-2px);
   }
 
-  .archive-card h3 {
-    font-size: 1.15rem;
+  .archive-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-gradient-subtle);
+    color: var(--accent-light);
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    flex-shrink: 0;
+  }
+
+  .archive-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .archive-info h3 {
+    font-size: 1.05rem;
     font-weight: 700;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
 
-  .archive-card p {
+  .archive-info p {
     color: var(--text-secondary);
-    font-size: 0.88rem;
+    font-size: 0.85rem;
   }
 
+  .archive-arrow {
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: transform var(--duration-normal) ease, color var(--duration-normal) ease;
+  }
+
+  .archive-card:hover .archive-arrow {
+    transform: translateX(4px);
+    color: var(--accent-light);
+  }
+
+  /* ═══ Steps ═══ */
   .steps {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+    gap: 20px;
   }
 
   .step {
-    padding: 28px;
+    padding: 32px;
     text-align: center;
   }
 
-  .step-num {
-    font-size: 2rem;
+  .step-number {
+    font-size: 2.5rem;
     font-weight: 900;
     background: var(--accent-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
+    line-height: 1;
+    letter-spacing: -0.03em;
   }
 
-  .step h4 {
+  .step-title {
     font-size: 1.05rem;
     font-weight: 700;
     margin-bottom: 8px;
+    letter-spacing: -0.01em;
   }
 
-  .step p {
+  .step-desc {
     color: var(--text-secondary);
     font-size: 0.88rem;
-    line-height: 1.5;
+    line-height: 1.6;
+  }
+
+  /* ═══ Live Preview Styles (injected by JS) ═══ */
+  .preview-dot {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.08) inset,
+      0 12px 28px -6px rgba(0, 0, 0, 0.4),
+      0 0 40px var(--dot-glow, transparent);
+    animation: scaleIn 0.6s var(--ease-out-expo) both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .preview-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: linear-gradient(170deg, rgba(255,255,255,0.22) 0%, transparent 50%);
+  }
+
+  .preview-dots-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .preview-mini-dot {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.08) inset,
+      0 8px 16px -4px rgba(0, 0, 0, 0.4);
+    animation: scaleIn 0.5s var(--ease-out-expo) both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .preview-mini-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    background: linear-gradient(170deg, rgba(255,255,255,0.18) 0%, transparent 45%);
+  }
+
+  .preview-plus {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    font-weight: 300;
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* ═══ Responsive ═══ */
+  @media (max-width: 1024px) {
+    .hero-title {
+      font-size: 3rem;
+    }
   }
 
   @media (max-width: 768px) {
-    .hero-title { font-size: 2.2rem; }
-    .game-cards { grid-template-columns: 1fr; }
-    .archive-cards { grid-template-columns: 1fr; }
-    .steps { grid-template-columns: 1fr; }
+    .hero {
+      padding: 88px 0 56px;
+    }
+
+    .hero-title {
+      font-size: 2.4rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+    }
+
+    .game-cards {
+      grid-template-columns: 1fr;
+    }
+
+    .archive-cards {
+      grid-template-columns: 1fr;
+    }
+
+    .steps {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-title {
+      font-size: 2rem;
+    }
   }
 </style>
+
+<script define:vars={{ apiUrl }}>
+  const colordlePreview = document.getElementById('colordlePreview');
+  const colorflePreview = document.getElementById('colorflePreview');
+
+  async function loadPreviews() {
+    try {
+      // Load Colordle today
+      const colordleRes = await fetch(`${apiUrl}/api/colordle/today`);
+      if (colordleRes.ok) {
+        const data = await colordleRes.json();
+        if (colordlePreview) {
+          colordlePreview.innerHTML = `
+            <div class="preview-dot" style="background: ${data.color_hex || '#888'}; --dot-glow: ${data.color_hex || '#888'}40;"></div>
+          `;
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load Colordle preview:', e);
+    }
+
+    try {
+      // Load Colorfle today
+      const colorfleRes = await fetch(`${apiUrl}/api/colorfle/today`);
+      if (colorfleRes.ok) {
+        const data = await colorfleRes.json();
+        const colors = JSON.parse(data.normal_answer || '[]');
+        if (colorflePreview && colors.length > 0) {
+          const dotsHtml = colors.map((c, i) => `
+            <div class="preview-mini-dot" style="background: ${c}; animation-delay: ${i * 0.12}s;"></div>
+            ${i < colors.length - 1 ? '<span class="preview-plus">+</span>' : ''}
+          `).join('');
+          colorflePreview.innerHTML = `<div class="preview-dots-row">${dotsHtml}</div>`;
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load Colorfle preview:', e);
+    }
+  }
+
+  loadPreviews();
+</script>

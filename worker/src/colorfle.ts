@@ -1,4 +1,7 @@
-// Colorfle answer algorithm - uses inline seedrandom-compatible PRNG
+// Colorfle answer algorithm - exact port using npm seedrandom (alea algorithm)
+// This matches the game's client-side seeded PRNG exactly
+
+import seedrandom from 'seedrandom';
 
 const COLORFLE_START_DATE = new Date('2022-04-25T17:00:00Z');
 
@@ -34,31 +37,13 @@ export function getColorfleDayNumber(date: Date): number {
   return Math.floor(R / 86400000);
 }
 
-// Inline seedrandom (alea algorithm - compatible with seedrandom 3.0)
-function seedrandom(seed: string): () => number {
-  let h = 0;
-  for (let i = 0; i < seed.length; i++) {
-    h = ((h << 5) - h + seed.charCodeAt(i)) | 0;
-  }
-  let s0 = (h >>> 0) || 1;
-  let s1 = ((h * 1103515245 + 12345) >>> 0) || 1;
-  let s2 = ((h * 636413797 + 1) >>> 0) || 1;
-  let s3 = ((h * 2147483647 + 7) >>> 0) || 1;
-
-  return function(): number {
-    s0 = (s0 + 0x6D2B79F5) | 0;
-    s1 = (s1 + 0x6D2B79F5) | 0;
-    s2 = (s2 + 0x6D2B79F5) | 0;
-    s3 = (s3 + 0x6D2B79F5) | 0;
-    let t = Math.imul(s0 ^ (s0 >>> 15), 1 | s0);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
+// Compute the answer for a given mode and date string
+// The game uses seed format: "{mode} {day} {month} {year}"
+// where mode is 0 for normal, 1 for hard
 function computeAnswer(mode: number, dateStr: string, numBlocks: number): string[] {
   const seed = `${mode} ${dateStr}`;
   const rng = seedrandom(seed);
+  // Use sequential indices [0,1,2,...,19] exactly like the game
   const indices = Array.from({ length: COLORFLE_COLORS.length }, (_, i) => i);
   const answer: string[] = [];
 
@@ -71,6 +56,7 @@ function computeAnswer(mode: number, dateStr: string, numBlocks: number): string
   return answer;
 }
 
+// Get the next puzzle date (5PM local time boundary)
 function getNextPuzzleDate(now: Date): Date {
   const d = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 17, 0, 0, 0);
   if (d.getTime() <= now.getTime()) {
@@ -82,9 +68,12 @@ function getNextPuzzleDate(now: Date): Date {
 export function getColorfleAnswer(date: Date): ColorfleAnswer {
   const dayNumber = getColorfleDayNumber(date);
   const nextDate = getNextPuzzleDate(date);
+  // Seed format exactly matching the game: "day month year"
   const dateStr = `${nextDate.getDate()} ${nextDate.getMonth()} ${nextDate.getFullYear()}`;
 
+  // Normal mode: 3 blocks, seed mode = 0
   const normal = computeAnswer(0, dateStr, 3);
+  // Hard mode: 4 blocks, seed mode = 1
   const hard = computeAnswer(1, dateStr, 4);
 
   const normalNames = normal.map(c => COLORFLE_COLOR_NAMES[c] || c);
