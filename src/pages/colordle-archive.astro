@@ -83,9 +83,10 @@ import Layout from '../layouts/Layout.astro';
 </style>
 
 <script>
+  import { mount } from 'svelte';
   import Calendar from '../components/Calendar.svelte';
   const root = document.getElementById('calendarRoot');
   if (root) {
-    new Calendar({ target: root, props: { game: 'colordle' } });
+    mount(Calendar, { target: root, props: { game: 'colordle' } });
   }
 </script>
