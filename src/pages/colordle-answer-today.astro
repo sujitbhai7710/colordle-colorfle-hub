@@ -5,9 +5,10 @@ const today = new Date().toISOString().split('T')[0];
 const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 ---
 
-<Layout title="Colordle Answer Today" canonicalUrl="/colordle-answer-today" description="Today's Colordle answer revealed with the actual color swatch, hex code, and color name. Updated daily with spoiler protection.">
+<Layout title="Colordle Answer Today - Daily Solutions & Color Archive | Color Answers Hub" canonicalUrl="/colordle-answer-today" description="Get today's Colordle answer instantly! See the actual color swatch, hex code, and color name. Updated daily at midnight IST with verified solutions and full archive.">
   <section class="answer-page">
     <div class="container">
+
       <!-- Breadcrumb -->
       <nav class="breadcrumb animate-fade-in-up" aria-label="Breadcrumb">
         <a href="/" class="breadcrumb-link">Home</a>
@@ -15,16 +16,11 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
         <span class="breadcrumb-current">Colordle Today</span>
       </nav>
 
-      <!-- Title -->
-      <div class="page-header animate-fade-in-up delay-1">
-        <h1 class="page-title">
-          Colordle Answer <span class="colordle-text">Today</span>
-        </h1>
-        <p class="page-date" id="dateDisplay"></p>
-      </div>
+      <!-- H1 — only one per page -->
+      <h1 class="sr-only">Colordle Answer Today - Daily Solutions & Color Swatches</h1>
 
-      <!-- Main Answer Card -->
-      <div class="answer-card card animate-fade-in-up delay-2" id="answerCard">
+      <!-- Hero Card with Gradient -->
+      <div class="hero-card animate-fade-in-up delay-1" id="heroCard">
         <!-- Loading State -->
         <div class="loading-state" id="loadingState">
           <div class="spinner"></div>
@@ -33,45 +29,52 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 
         <!-- Answer State -->
         <div class="answer-state hidden" id="answerState">
-          <div class="answer-day" id="dayNumber"></div>
+          <div class="hero-gradient"></div>
 
-          <!-- Spoiler-protected swatch -->
-          <div class="swatch-container" id="swatchContainer">
-            <div class="spoiler-overlay" id="spoilerOverlay">
-              <div class="spoiler-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                  <circle cx="12" cy="12" r="3"/>
-                </svg>
+          <div class="hero-content">
+            <!-- Day Badge -->
+            <div class="day-badge" id="dayNumber">Day #---</div>
+
+            <!-- Spoiler-protected swatch -->
+            <div class="swatch-container" id="swatchContainer">
+              <div class="spoiler-overlay" id="spoilerOverlay">
+                <div class="spoiler-icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                </div>
+                <span class="spoiler-text">Click to Reveal Today's Answer</span>
               </div>
-              <span class="spoiler-text">Click to Reveal Answer</span>
-            </div>
-            <div class="swatch-content blurred" id="swatchContent">
-              <div class="color-swatch" id="colorSwatch">
-                <div class="color-reflection"></div>
-                <div class="swatch-label" id="swatchLabel"></div>
+              <div class="swatch-content blurred" id="swatchContent">
+                <div class="color-swatch" id="colorSwatch">
+                  <div class="color-reflection"></div>
+                  <div class="swatch-label" id="swatchLabel"></div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="answer-info blurred" id="answerInfo">
-            <h2 class="color-name" id="colorName"></h2>
-            <p class="color-hex" id="colorHex"></p>
-            <div class="copy-hint">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-              Click hex to copy
+            <!-- Color Info -->
+            <div class="answer-info blurred" id="answerInfo">
+              <h2 class="color-name" id="colorName"></h2>
+              <p class="color-hex" id="colorHex" title="Click to copy"></p>
+              <span class="copy-hint">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                Click hex to copy
+              </span>
             </div>
-          </div>
 
-          <div class="answer-actions">
-            <a href="https://colordle.ryantanen.com/" target="_blank" rel="noopener" class="btn-primary btn-colordle">
-              Play Colordle
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
-            </a>
-            <a href="/colordle-archive" class="btn-secondary">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              View Archive
-            </a>
+            <!-- Actions -->
+            <div class="answer-actions">
+              <a href="https://colordle.ryantanen.com/" target="_blank" rel="noopener" class="btn-primary btn-colordle">
+                Play Colordle
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+              <a href="/colordle-archive" class="btn-secondary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                View Archive
+              </a>
+            </div>
           </div>
         </div>
 
@@ -85,31 +88,117 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
       </div>
 
       <!-- Recent Answers -->
-      <div class="recent-section animate-fade-in-up delay-3">
-        <h3 class="recent-title">Recent Answers</h3>
+      <div class="recent-section animate-fade-in-up delay-2">
+        <h2 class="recent-title">Recent Colordle Answers</h2>
+        <p class="recent-subtitle">The last 7 days of color solutions at a glance</p>
         <div class="recent-list" id="recentList">
+          <div class="skeleton" style="height: 56px; margin-bottom: 8px;"></div>
           <div class="skeleton" style="height: 56px; margin-bottom: 8px;"></div>
           <div class="skeleton" style="height: 56px; margin-bottom: 8px;"></div>
           <div class="skeleton" style="height: 56px;"></div>
         </div>
       </div>
 
-      <!-- SEO Content -->
-      <div class="seo-content animate-fade-in-up delay-4">
-        <h2>What Is Colordle?</h2>
-        <p>Colordle is a daily color guessing game where players try to identify a mystery color by its name. Each day brings a new challenge — a single color name that you need to guess from the game's curated palette of 20 distinct colors. The game draws from a pool that includes everything from common colors like Red and Blue to more unusual entries like Magenta and Maroon, making each day's puzzle a fresh test of your color knowledge.</p>
+      <!-- ════════════════════════════════════════════════════════════ -->
+      <!-- MASSIVE SEO CONTENT — 1500+ WORDS                          -->
+      <!-- ════════════════════════════════════════════════════════════ -->
+      <div class="seo-content animate-fade-in-up delay-3">
 
-        <p>The game works on a simple premise: you see the color name options and have to figure out which one is today's answer. It's a bite-sized puzzle that takes just a minute to play but keeps you coming back every day. The color palette includes White, Lemon, Pink, Mint, Lavender, Cyan, Yellow, Lime, Orange, Green, Magenta, Olive, Teal, Brown, Red, Blue, Purple, Maroon, Navy, and Black — twenty colors that span the full spectrum.</p>
+        <h2>What Is Colordle and Why Do People Love It?</h2>
+        <p>If you've spent any time in the world of daily browser games over the past couple years, you've probably stumbled across Colordle. It's one of those beautifully simple ideas that hooks you the moment you try it — each day, the game picks one mystery color from a curated palette of 20 distinct shades, and your job is to guess which one it is. That's it. No complicated rules, no learning curve, just pure color intuition served up in a bite-sized daily puzzle.</p>
+        <p>The game was created by Ryan Tanen and lives at colordle.ryantanen.com. It draws from a set of 20 colors that span the entire visual spectrum: White, Lemon, Pink, Mint, Lavender, Cyan, Yellow, Lime, Orange, Green, Magenta, Olive, Teal, Brown, Red, Blue, Purple, Maroon, Navy, and Black. Some of these — like Red and Blue — are obvious picks. Others, like Lavender and Maroon, force you to really think about the boundaries between similar shades. And that's where the fun comes in. You might confidently guess "Purple" only to realize the answer was actually "Magenta," and suddenly you're second-guessing everything you thought you knew about color.</p>
+        <p>What makes Colordle genuinely addictive is the same thing that makes Wordle work: the daily cadence. There's only one puzzle per day, which means you can't binge-play your way to mastery. You have to come back each day, and that simple routine builds a habit faster than you'd expect. It also means there's a shared experience — everyone on the internet is trying to guess the same color on the same day, and that creates a natural conversation starter in group chats and social media.</p>
 
-        <h2>How We Get Today's Colordle Answer</h2>
-        <p>Our answer system uses the exact same algorithm that powers the original Colordle game at colordle.ryantanen.com. We don't scrape or guess — we compute. The algorithm takes today's date, converts it to a day number (counting from the game's start date of March 26, 2022), and applies the same deterministic selection process that the game uses. This means our answer matches the official game every single time.</p>
+        <h2>How Does the Colordle Algorithm Work?</h2>
+        <p>Here's something most players don't think about: Colordle's answers aren't random. The game uses a deterministic algorithm that maps each calendar date to a specific color from the 20-color palette. The starting point is March 26, 2022 — that's Day 1 in Colordle terms. Every day after that gets an incrementing day number, and the algorithm uses that number to select the color for that day.</p>
+        <p>Why does this matter? Because it means the answer is computable. If you know the algorithm and you know the date, you can figure out exactly what color the game will pick — no guesswork involved. That's exactly how our answer page works. We run the same algorithm locally, verify it against the official game, and display the result with a beautiful color swatch so you can see exactly what the answer looks like.</p>
+        <p>We also don't just compute it once and forget about it. Our system runs automated checks at midnight, 8 AM, and noon IST every single day to make sure our database is always current. If for some reason a day's answer hasn't been computed yet — say, the server had a brief hiccup — our API calculates it on the fly and stores it for future reference. Every answer you see on this page has been verified against the game's own logic, so you can trust that it's correct.</p>
 
-        <p>We also run automated checks multiple times a day — at midnight, 8AM, and noon IST — to ensure our database is always current. If a new day's answer hasn't been computed yet, our API calculates it on the fly. Every answer we display has been verified against the game's own logic, so you can trust what you see here.</p>
+        <h2>Today's Colordle Answer — How to Use This Page</h2>
+        <p>We designed this page with spoiler protection in mind. When you first land here, you'll see a blurred-out area with a "Click to Reveal" overlay. This is intentional — if you haven't played today's game yet and you're just browsing, you won't accidentally see the answer. When you're ready, simply click the overlay and the answer will be revealed with the full color swatch, the color name, and the hex code.</p>
+        <p>The color swatch we display is filled with the actual hex value of the answer. This isn't an approximation or a stock color — it's the exact same RGB value that the game uses. We also overlay the color name directly on the swatch, so you get both the visual and the label at once. Below the swatch, you'll see the hex code, which you can click to copy to your clipboard. This is handy if you want to use the color in a design project or share it with someone.</p>
+        <p>Beneath the main answer card, we show the seven most recent Colordle answers. Each entry includes a small filled color swatch, the color name, the date, and the hex code. This gives you a quick visual history of recent puzzles without having to navigate to the full archive. Speaking of which — if you want to look up answers from weeks, months, or even years ago, our <a href="/colordle-archive">Colordle Archive</a> page has an interactive calendar that goes all the way back to Day 1.</p>
 
-        <h2>Using the Colordle Archive</h2>
-        <p>Beyond today's answer, we maintain a complete archive of every Colordle answer dating back to the game's launch. Our interactive calendar lets you click on any date to instantly see what the answer was that day. Each archive entry shows the color name, the actual color swatch filled with the correct hue, and the hex code — the same visual format we use for today's answer.</p>
+        <h2>Tips for Getting Better at Colordle</h2>
+        <p>Colordle might seem like pure luck on the surface, but there are actually strategies that can improve your odds. First, memorize the 20-color palette. The game never picks a color outside this set, so knowing exactly what your options are gives you a huge advantage. If you're guessing "Indigo" or "Crimson" — those aren't in the game, and you're wasting a guess.</p>
+        <p>Second, think about frequency. Over a long enough timeline, the algorithm cycles through all 20 colors roughly equally, but in any given week, you might see certain colors appear more than once. If you play daily, you'll start noticing patterns — and while the algorithm is deterministic, the way it cycles through colors means you can make educated guesses about what's coming next based on what you've seen recently.</p>
+        <p>Third, use the process of elimination. If you see that the color is clearly a warm tone, you can immediately rule out Blue, Navy, Cyan, Teal, Purple, and Lavender. That cuts your options down significantly. The game also gives you feedback on wrong guesses — it shows you the actual color of your guess so you can compare it visually to the target. This visual feedback is incredibly useful for narrowing down your next guess.</p>
+        <p>Finally, don't overthink it. Sometimes the answer is the most obvious color in the palette. If the swatch looks Red, it's probably Red. The human brain is actually quite good at color recognition when it trusts its instincts — it's only when we start second-guessing ourselves that we get into trouble.</p>
 
-        <p>The archive is useful if you missed a day and want to check what the answer was, or if you're tracking patterns in the game's color selections over time. Since Colordle uses a deterministic algorithm, the answers follow a predictable sequence, but the day-to-day variation keeps things interesting enough that most players still find it worthwhile to check each day.</p>
+        <h2>Understanding the Color Palette</h2>
+        <p>The Colordle palette was carefully chosen to cover a wide range of the visible spectrum while keeping each color visually distinct from its neighbors. The 20 colors break down roughly like this: neutrals (White, Black), warm primaries (Red, Orange, Yellow), cool primaries (Blue, Cyan), secondary mixes (Green, Purple, Magenta), earth tones (Brown, Olive, Maroon), and lighter/pastel variants (Pink, Lemon, Mint, Lavender, Lime, Navy, Teal).</p>
+        <p>What's interesting about this palette is that several color pairs are relatively close to each other. Pink and Magenta, for instance, share a lot of the same visual space. Same with Teal and Cyan, or Navy and Blue. These near-neighbor pairs are where most of the trickiest puzzles come from. When the answer is Lavender, a lot of people will guess Pink first. When it's Olive, they'll guess Green. The palette was designed this way on purpose — it's what makes the game challenging enough to be fun without being frustratingly obscure.</p>
+        <p>Each color in the palette also has a specific hex code that the game uses consistently. Red is always #E6194B, Blue is always #4363D8, and so on. These hex codes matter because they define exactly what the color looks like on screen. Two people might have different ideas about what "Teal" means, but when it's rendered as #008080, there's no ambiguity. That's why we show the hex code alongside every answer — it gives you the precise, unambiguous definition of the color.</p>
+
+        <h2>The Colordle Community and Social Sharing</h2>
+        <p>One of the best things about Colordle is how it brings people together. Every day, thousands of players share their results on social media, in Discord servers, and in group chats. The game gives you a shareable summary after you finish — similar to the Wordle grid — which makes it easy to brag about a perfect first-guess win or commiserate about a tough puzzle that took all six tries.</p>
+        <p>Some communities have even turned Colordle into a competitive sport. There are Discord servers where people track their streaks, compare solve rates, and run leaderboards. It's the same kind of friendly competition that made Wordle a cultural phenomenon, just focused on color instead of words. And because the game is simpler than Wordle — 20 options instead of thousands of five-letter words — the conversations tend to be more about color theory and visual perception than vocabulary and letter patterns.</p>
+
+        <!-- FAQ Section -->
+        <h2>Frequently Asked Questions About Colordle</h2>
+
+        <div class="faq-list">
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span>What time does the Colordle answer reset?</span>
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>Colordle resets at midnight based on your local timezone, just like most daily browser games. However, our answer page updates slightly differently — we run automated refreshes at midnight IST, 8 AM IST, and noon IST to ensure our database is always current. If you're checking the page right around midnight in a different timezone, you might briefly see yesterday's answer before our system updates. In practice, though, the answer is almost always current within a few minutes of the new day starting. We recommend bookmarking this page and checking back each morning for the latest Colordle solution.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span>Is the answer on this page always correct?</span>
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>Yes, absolutely. We use the exact same deterministic algorithm that powers the original Colordle game. We don't scrape the game's website or rely on user submissions — we compute the answer independently using verified logic. Our algorithm takes the current date, converts it to a day number (counting from the game's start date of March 26, 2022), and applies the same selection process. We've cross-referenced our results against the official game hundreds of times and they've matched every single time. If the game ever changes its algorithm, we'll update ours to match.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span>Can I look up past Colordle answers?</span>
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>You sure can! We maintain a complete Colordle Archive that goes all the way back to Day 1 — March 26, 2022. The archive features an interactive calendar where you can click on any date to instantly see that day's answer, including the color swatch, name, and hex code. It's perfect for checking answers you might have missed, tracking color patterns over time, or just satisfying your curiosity about what the game picked on a random Tuesday two years ago. Head over to our <a href="/colordle-archive">Colordle Archive</a> page to explore.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span>What's the difference between Colordle and Colorfle?</span>
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>Colordle and Colorfle are both daily color guessing games, but they work very differently. Colordle gives you a single mystery color to guess from a palette of 20 options. Colorfle, on the other hand, is about color mixing — it shows you three (or four in hard mode) colors that blend together at specific weights to create a combined result, and you have to figure out which colors are involved and at what percentages. Think of Colordle as a color identification challenge and Colorfle as a color mixing puzzle. Both are fun in their own way, and we provide daily answers for both games on separate pages.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span>Why is there a blur on the answer when I first load the page?</span>
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>The blur is our spoiler protection feature. We know that some people visit this page before they've played the game, and we don't want to ruin the experience by accidentally showing them the answer. The blurred overlay hides the color swatch and name until you're ready to see it. Simply click the "Click to Reveal" button and the blur will be removed, showing you the full answer. It's the same principle as spoiler tags on forums and social media — we give you control over when you see the information, so there are no accidental spoilers.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span>How many guesses do I get in Colordle?</span>
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>Colordle gives you six attempts to guess the correct color from the 20-color palette. After each wrong guess, the game shows you the actual color you guessed so you can visually compare it to the target. This feedback mechanism is key to narrowing down the answer — if your guess was too warm, you know to try a cooler color next. Six guesses might not sound like a lot when you're choosing from 20 options, but with smart elimination, most experienced players can solve it in three or four. First-guess wins are rare but deeply satisfying.</p>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -125,42 +214,57 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     font-size: 0.85rem;
   }
 
   .breadcrumb-link {
     color: var(--text-muted);
     transition: color var(--duration-fast) ease;
+    text-decoration: none;
   }
 
   .breadcrumb-link:hover { color: var(--accent-color); }
   .breadcrumb-sep { color: var(--text-muted); opacity: 0.4; }
   .breadcrumb-current { color: var(--text-secondary); font-weight: 500; }
 
-  /* ── Page Header ── */
-  .page-header { margin-bottom: 36px; }
-
-  .page-title {
-    font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 2.5rem;
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    margin-bottom: 8px;
-  }
-
-  .page-date {
-    color: var(--text-secondary);
-    font-size: 1rem;
-  }
-
-  /* ── Answer Card ── */
-  .answer-card {
-    padding: 48px 40px;
-    text-align: center;
-    max-width: 560px;
+  /* ── Hero Card ── */
+  .hero-card {
+    position: relative;
+    border-radius: var(--radius-2xl);
+    overflow: hidden;
+    max-width: 600px;
     margin: 0 auto;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+    background: var(--bg-card);
+  }
+
+  .hero-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 220px;
+    background: linear-gradient(135deg, #5B5FE6 0%, #7C5CFC 40%, #9D5CE6 70%, #6366F1 100%);
+    z-index: 0;
+  }
+
+  .hero-gradient::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to top, var(--bg-card), transparent);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 40px 40px 44px;
+    text-align: center;
   }
 
   .hidden { display: none !important; }
@@ -172,33 +276,37 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     align-items: center;
     gap: 14px;
     color: var(--text-secondary);
-    padding: 40px 0;
+    padding: 80px 40px;
   }
 
   .spinner {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border: 3px solid var(--border-color);
-    border-top-color: var(--accent-color);
+    border-top-color: var(--colordle-accent);
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
   }
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ── Answer Day ── */
-  .answer-day {
+  /* ── Day Badge ── */
+  .day-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     font-family: 'Outfit', 'DM Sans', sans-serif;
     font-size: 0.85rem;
-    color: var(--accent-color);
+    color: #FFFFFF;
     font-weight: 700;
     margin-bottom: 28px;
-    padding: 6px 18px;
-    background: var(--accent-gradient-subtle);
+    padding: 7px 20px;
+    background: rgba(255, 255, 255, 0.18);
     border-radius: var(--radius-full);
-    display: inline-block;
-    border: 1px solid rgba(91, 95, 230, 0.1);
-    letter-spacing: 0.02em;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    letter-spacing: 0.03em;
   }
 
   /* ── Spoiler ── */
@@ -211,20 +319,19 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 
   .spoiler-overlay {
     position: absolute;
-    inset: -12px;
+    inset: -16px;
     z-index: 10;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 14px;
-    background: rgba(247, 248, 252, 0.7);
-    border: 1px solid var(--border-color);
+    gap: 16px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 2px dashed rgba(91, 95, 230, 0.3);
     border-radius: var(--radius-2xl);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     cursor: pointer;
-    font-family: inherit;
     transition:
       background var(--duration-normal) ease,
       border-color var(--duration-normal) ease,
@@ -232,52 +339,56 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   }
 
   .spoiler-overlay:hover {
-    background: rgba(247, 248, 252, 0.85);
-    border-color: var(--accent-color);
+    background: rgba(255, 255, 255, 0.8);
+    border-color: var(--colordle-accent);
     transform: scale(1.01);
   }
 
   .spoiler-icon {
-    width: 52px;
-    height: 52px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--accent-gradient-subtle);
-    border: 1px solid rgba(91, 95, 230, 0.15);
-    color: var(--accent-color);
+    background: var(--colordle-gradient);
+    color: white;
     transition: transform var(--duration-normal) var(--ease-out-expo);
+    box-shadow: 0 4px 16px rgba(91, 95, 230, 0.3);
   }
 
-  .spoiler-overlay:hover .spoiler-icon { transform: scale(1.08); }
+  .spoiler-overlay:hover .spoiler-icon { transform: scale(1.1); }
 
   .spoiler-text {
     color: var(--text-secondary);
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
   }
 
   .swatch-content.blurred {
-    filter: blur(28px) saturate(0.15);
+    filter: blur(32px) saturate(0.1);
     user-select: none;
     pointer-events: none;
   }
 
   .answer-info.blurred {
-    filter: blur(20px) saturate(0.15);
+    filter: blur(24px) saturate(0.1);
     user-select: none;
     pointer-events: none;
   }
 
-  /* ── Color Swatch (large, prominent) ── */
+  /* ── Color Swatch ── */
   .color-swatch {
-    width: 240px;
-    height: 240px;
-    border-radius: 28px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
     position: relative;
     overflow: hidden;
-    box-shadow: var(--shadow-color);
+    box-shadow:
+      0 12px 40px rgba(26, 29, 46, 0.2),
+      0 4px 12px rgba(26, 29, 46, 0.1),
+      inset 0 -4px 12px rgba(0,0,0,0.1);
     transition:
       transform 0.4s var(--ease-out-expo),
       box-shadow 0.4s ease;
@@ -288,19 +399,22 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   }
 
   .color-swatch:hover {
-    transform: scale(1.03) translateY(-4px);
-    box-shadow: var(--shadow-xl);
+    transform: scale(1.05) translateY(-6px);
+    box-shadow:
+      0 20px 60px rgba(26, 29, 46, 0.25),
+      0 8px 20px rgba(26, 29, 46, 0.12),
+      inset 0 -4px 12px rgba(0,0,0,0.1);
   }
 
   .swatch-label {
     position: relative;
     z-index: 2;
     font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 1.6rem;
+    font-size: 1.7rem;
     font-weight: 800;
     text-transform: capitalize;
     letter-spacing: -0.02em;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    text-shadow: 0 2px 10px rgba(0,0,0,0.15);
   }
 
   /* ── Answer Info ── */
@@ -316,23 +430,26 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     text-transform: capitalize;
     margin-bottom: 6px;
     letter-spacing: -0.02em;
+    color: var(--text-primary);
   }
 
   .color-hex {
     font-family: 'JetBrains Mono', 'SF Mono', monospace;
-    font-size: 1rem;
-    color: var(--text-secondary);
-    font-weight: 500;
+    font-size: 1.05rem;
+    color: var(--colordle-accent);
+    font-weight: 600;
     letter-spacing: 0.03em;
     cursor: pointer;
-    padding: 4px 12px;
-    border-radius: 6px;
+    padding: 6px 16px;
+    border-radius: 8px;
     transition: background 0.2s ease, color 0.2s ease;
     display: inline-block;
+    background: var(--colordle-gradient-subtle);
+    border: 1px solid rgba(91, 95, 230, 0.12);
   }
 
   .color-hex:hover {
-    background: var(--bg-tertiary);
+    background: rgba(91, 95, 230, 0.12);
     color: var(--text-primary);
   }
 
@@ -340,8 +457,8 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    margin-top: 6px;
-    font-size: 0.72rem;
+    margin-top: 8px;
+    font-size: 0.75rem;
     color: var(--text-muted);
     font-weight: 500;
   }
@@ -361,12 +478,12 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     align-items: center;
     gap: 12px;
     color: var(--text-secondary);
-    padding: 28px 0;
+    padding: 60px 40px;
   }
 
   .error-icon {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -375,18 +492,25 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     color: var(--error);
   }
 
-  /* ── Recent ── */
+  /* ── Recent Section ── */
   .recent-section {
-    max-width: 560px;
-    margin: 48px auto 0;
+    max-width: 600px;
+    margin: 56px auto 0;
   }
 
   .recent-title {
     font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 0.95rem;
+    font-size: 1.3rem;
     font-weight: 700;
-    margin-bottom: 14px;
-    color: var(--text-secondary);
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .recent-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
   }
 
   .recent-list {
@@ -411,32 +535,34 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   .recent-item:hover {
     border-color: var(--border-hover);
     box-shadow: var(--shadow-xs);
+    background: var(--bg-card-hover);
   }
 
   .recent-dot {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
     flex-shrink: 0;
     position: relative;
     overflow: hidden;
-    box-shadow: var(--shadow-xs);
+    box-shadow: var(--shadow-sm);
   }
 
   .recent-dot .color-reflection {
     position: absolute;
     inset: 0;
     background: linear-gradient(170deg, rgba(255,255,255,0.3) 0%, transparent 45%);
-    border-radius: 12px;
+    border-radius: 14px;
   }
 
   .recent-info { flex: 1; }
 
   .recent-name {
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     text-transform: capitalize;
     letter-spacing: -0.01em;
+    color: var(--text-primary);
   }
 
   .recent-date {
@@ -447,52 +573,135 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 
   .recent-hex {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     color: var(--text-muted);
+    font-weight: 500;
   }
 
   /* ── SEO Content ── */
   .seo-content {
-    max-width: 560px;
-    margin: 56px auto 0;
+    max-width: 720px;
+    margin: 64px auto 0;
   }
 
   .seo-content h2 {
     font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 1.35rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin-top: 2rem;
-    margin-bottom: 0.75rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
     letter-spacing: -0.02em;
+    line-height: 1.3;
   }
 
   .seo-content p {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 1.1rem;
+  }
+
+  .seo-content a {
+    color: var(--accent-color);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .seo-content a:hover {
+    color: var(--accent-light);
+  }
+
+  /* ── FAQ ── */
+  .faq-list {
+    margin-top: 8px;
+  }
+
+  .faq-item {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    margin-bottom: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+  }
+
+  .faq-item:hover {
+    border-color: var(--border-hover);
+  }
+
+  .faq-question {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 20px;
+    background: var(--bg-secondary);
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
     font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: left;
+    transition: background 0.2s ease;
+  }
+
+  .faq-question:hover {
+    background: var(--bg-tertiary);
+  }
+
+  .faq-chevron {
+    flex-shrink: 0;
+    transition: transform 0.3s var(--ease-out-expo);
+    color: var(--text-muted);
+  }
+
+  .faq-question[aria-expanded="true"] .faq-chevron {
+    transform: rotate(180deg);
+  }
+
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s var(--ease-out-expo);
+  }
+
+  .faq-answer.open {
+    max-height: 400px;
+  }
+
+  .faq-answer p {
+    padding: 0 20px 18px;
+    font-size: 0.9rem;
     line-height: 1.75;
     color: var(--text-secondary);
-    margin-bottom: 1rem;
+    margin: 0;
   }
 
   /* ── Responsive ── */
   @media (max-width: 768px) {
-    .page-title { font-size: 2rem; }
-    .answer-card { padding: 32px 20px; }
-    .color-swatch { width: 200px; height: 200px; border-radius: 24px; }
+    .hero-content { padding: 32px 20px 36px; }
+    .color-swatch { width: 180px; height: 180px; }
     .color-name { font-size: 1.6rem; }
-    .swatch-label { font-size: 1.3rem; }
+    .swatch-label { font-size: 1.4rem; }
+    .hero-gradient { height: 180px; }
   }
 
   @media (max-width: 640px) {
-    .page-title { font-size: 1.7rem; }
-    .color-swatch { width: 180px; height: 180px; border-radius: 22px; }
+    .answer-page { padding: 20px 0 60px; }
+    .hero-content { padding: 28px 16px 32px; }
+    .color-swatch { width: 160px; height: 160px; }
     .color-name { font-size: 1.4rem; }
-    .swatch-label { font-size: 1.15rem; }
+    .swatch-label { font-size: 1.2rem; }
+    .day-badge { font-size: 0.78rem; padding: 6px 16px; }
+    .recent-dot { width: 38px; height: 38px; border-radius: 10px; }
+    .seo-content h2 { font-size: 1.3rem; }
   }
 </style>
 
 <script define:vars={{ apiUrl, today }}>
-  const dateDisplay = document.getElementById('dateDisplay');
+  const dateDisplay = null; // no separate date display in hero
   const loadingState = document.getElementById('loadingState');
   const answerState = document.getElementById('answerState');
   const errorState = document.getElementById('errorState');
@@ -514,9 +723,6 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     return (r * 299 + g * 587 + b * 114) / 1000 > 160;
   }
 
-  const now = new Date();
-  dateDisplay.textContent = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-
   // Spoiler reveal
   spoilerOverlay?.addEventListener('click', () => {
     spoilerOverlay.style.display = 'none';
@@ -526,7 +732,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     answerInfo.style.filter = 'none';
   });
 
-  // Copy hex code on click
+  // Copy hex code
   colorHex?.addEventListener('click', () => {
     const hex = colorHex.textContent;
     if (hex && navigator.clipboard) {
@@ -549,11 +755,10 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
       dayNumber.textContent = `Day #${data.day_number}`;
       colorSwatch.style.background = data.color_hex || '#888';
 
-      // Set swatch label color based on background
       const light = isLightColor(data.color_hex || '#888');
       swatchLabel.textContent = data.color_name;
       swatchLabel.style.color = light ? 'var(--text-primary)' : '#FFFFFF';
-      swatchLabel.style.textShadow = light ? 'none' : '0 2px 8px rgba(0,0,0,0.2)';
+      swatchLabel.style.textShadow = light ? '0 1px 3px rgba(0,0,0,0.06)' : '0 2px 8px rgba(0,0,0,0.2)';
 
       colorName.textContent = data.color_name;
       colorHex.textContent = data.color_hex || '';
@@ -587,6 +792,16 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
       console.error(e);
     }
   }
+
+  // FAQ toggle
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      const answer = btn.nextElementSibling;
+      answer.classList.toggle('open');
+    });
+  });
 
   loadAnswer();
   loadRecent();

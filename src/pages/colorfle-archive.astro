@@ -2,7 +2,11 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Colorfle Answer Archive" canonicalUrl="/colorfle-archive" description="Browse the complete Colorfle archive with interactive calendar. Look up any past Colorfle answer since April 25, 2022 with color blocks and blend results.">
+<Layout
+  title="Colorfle Answer Archive - Complete Historical Solutions"
+  canonicalUrl="/colorfle-archive"
+  description="Browse the complete Colorfle answer archive with our interactive calendar. Look up any past Colorfle answer since April 25, 2022 — view color blends, hex codes, normal and hard mode solutions. Updated daily with verified results."
+>
   <section class="archive-page">
     <div class="container">
       <!-- Breadcrumb -->
@@ -15,16 +19,139 @@ import Layout from '../layouts/Layout.astro';
         <span class="breadcrumb-current">Colorfle Archive</span>
       </nav>
 
-      <!-- Title -->
+      <!-- Page Header -->
       <div class="page-header animate-fade-in-up delay-1">
         <h1 class="page-title">
-          Colorfle <span class="colorfle-text">Archive</span>
+          Colorfle Answer Archive - Complete Historical Solutions | Color Answers Hub
         </h1>
-        <p class="page-subtitle">Look up any past Colorfle answer — select a date on the calendar to reveal the colors</p>
+        <p class="page-subtitle">Look up any past Colorfle answer — select a date on the calendar to reveal the color blend, component colors, and mixed result</p>
+        <div class="page-stats">
+          <div class="stat-item">
+            <span class="stat-number">1,350+</span>
+            <span class="stat-label">Past Answers</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">Apr 2022</span>
+            <span class="stat-label">First Puzzle</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">2 Modes</span>
+            <span class="stat-label">Normal & Hard</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">Daily</span>
+            <span class="stat-label">Updates</span>
+          </div>
+        </div>
       </div>
 
       <!-- Calendar Component -->
       <div class="animate-fade-in-up delay-2" id="calendarRoot"></div>
+
+      <!-- SEO Content Section -->
+      <div class="seo-content animate-fade-in-up delay-3">
+        <div class="prose">
+
+          <h2>How to Use the Colorfle Archive</h2>
+          <p>
+            The Colorfle archive on this page gives you instant access to every past Colorfle answer through an interactive calendar. Here is how it works: above, you will see a monthly calendar view. Dates that have a recorded answer display a small color dot — this dot shows the first component color from that day's blend, giving you a sneak peek before you click. When you tap or click on any past date, the answer panel reveals the full solution including every component color, their weights, and the final blended result. You can switch between Normal mode and Hard mode using the toggle buttons inside the answer panel.
+          </p>
+          <p>
+            Navigating between months is as simple as clicking the left and right arrows at the top of the calendar. You can browse all the way back to April 25, 2022, when Colorfle first launched. The archive loads answers on demand as you explore, keeping the page fast and responsive regardless of how far back you go. On mobile devices, the calendar and answer panel stack vertically so you can scroll naturally between them. Whether you missed yesterday's puzzle or want to revisit a specific date from two years ago, this archive has you covered.
+          </p>
+
+          <h2>What is Colorfle?</h2>
+          <p>
+            Colorfle is a daily color-blending puzzle game that takes the Wordle concept and adds a creative twist. Instead of guessing a single color like in Colordle, Colorfle challenges you to figure out which combination of colors — and in what proportions — were blended together to create a target color. Each day presents a new target, and you use your knowledge of color mixing to narrow down the possibilities. The game uses a fixed palette of twenty base colors, the same set shared with Colordle: White, Lemon, Pink, Mint, Lavender, Cyan, Yellow, Lime, Orange, Green, Magenta, Olive, Teal, Brown, Red, Blue, Purple, Maroon, Navy, and Black.
+          </p>
+          <p>
+            What makes Colorfle unique is the blending mechanic. In Normal mode, the target color is created from three component colors mixed at specific weights (50%, 34%, and 16%). In Hard mode, the blend uses four colors with weights of 40%, 30%, 20%, and 10%. This means Hard mode puzzles are significantly more challenging because there are more variables to figure out. After each guess, you receive feedback about how close your blend is to the target, which helps you adjust your approach for the next attempt. The game resets daily at midnight IST, giving you a fresh puzzle every day.
+          </p>
+
+          <h2>Why Looking Up Past Colorfle Answers Is Useful</h2>
+          <p>
+            There are plenty of good reasons to browse the Colorfle archive. The most obvious one is catching up on a day you missed. Maybe you were traveling, working late, or simply forgot — instead of hunting through Twitter or Reddit for someone who posted the answer, you can find it here in a couple of clicks. The archive is always available, always accurate, and free from spoilers for other games you might still be playing.
+          </p>
+          <p>
+            But the archive is more than just a catch-up tool. If you are serious about improving at Colorfle, studying past answers is one of the most effective strategies. By browsing through the archive, you can observe real patterns in how the game selects color combinations. You might notice, for instance, that certain color pairs tend to appear together more often, or that the dominant color in the blend (the one with the highest weight) follows certain tendencies over time. Recognizing these patterns gives you an edge when making your first guess on a new puzzle.
+          </p>
+          <p>
+            The archive is also a fantastic resource for understanding how color blending works in practice. When you see that Pink at 50% plus Cyan at 34% plus White at 16% produces a particular shade, you start building intuition about color mixing that helps you make smarter guesses going forward. For artists, designers, and anyone who works with color professionally, Colorfle's blend results are genuinely educational — they demonstrate weighted color mixing in a way that abstracts away the math and lets you see the visual outcome directly.
+          </p>
+
+          <h2>Tips for Improving at Colorfle</h2>
+          <p>
+            Colorfle requires a different skill set than pure color-identification games like Colordle. Here, you need to think like a color mixer, not just a color spotter. The first tip is to start by identifying the dominant color — the one with the highest weight (50% in Normal mode, 40% in Hard mode). This color has the strongest influence on the final blend, so getting it right early dramatically narrows your remaining options. Look at the target and ask yourself: what is the strongest color I can see in this mix? That is likely your dominant component.
+          </p>
+          <p>
+            Second, learn to spot secondary tones. Once you have identified the dominant color, look for subtle hues that do not match it. A blended color that looks mostly Blue but has a slight greenish cast probably contains Cyan or Teal as a secondary component. Training your eye to detect these undertones takes practice, and browsing the archive is a great way to speed up that learning — you can see the component colors alongside the blend result and study exactly how each one contributes to the final appearance.
+          </p>
+          <p>
+            Third, understand the weight system. In Normal mode, the 50/34/16 split means the dominant color accounts for half the blend, the secondary color about a third, and the tertiary color a relatively small contribution. This means the tertiary color is often the hardest to identify because its influence on the blend is subtle. Do not waste early guesses trying to pin down the smallest component — focus on the dominant and secondary colors first, then use your remaining guesses for the tertiary one. In Hard mode with four components, the same logic applies: identify the heaviest colors first and work your way down.
+          </p>
+
+          <h2>Historical Patterns and Interesting Facts About Colorfle</h2>
+          <p>
+            Colorfle launched on April 25, 2022, roughly one month after Colordle debuted. Since then, the game has published over 1,350 daily puzzles across both Normal and Hard modes. The dual-mode system was a notable design choice — by offering two difficulty levels in the same game, Colorfle appeals to both casual players who want a quick daily challenge and hardcore puzzle fans who crave a steeper test of their color-mixing abilities.
+          </p>
+          <p>
+            One of the most interesting things you can observe in the archive is how certain color combinations produce surprisingly beautiful or unexpected results. For example, blending Red and Cyan (complementary colors) in roughly equal proportions produces a muted grayish tone — a real-world demonstration of how complementary colors neutralize each other. On the other hand, combining adjacent colors on the color wheel, like Yellow and Orange, creates rich, vibrant blends that look nothing like what you might expect from a mathematical mix. These discoveries are part of what keeps players coming back daily.
+          </p>
+          <p>
+            Over the course of the archive, you can also spot how the Hard mode puzzles tend to be more complex not just because of the extra component color, but because four-way blends often produce colors that are harder to decompose visually. A four-color blend where each component pulls in a slightly different direction results in a nuanced, ambiguous target color that could be interpreted multiple ways. Looking through the Hard mode archive, you will find some truly tricky puzzles where the answer seems almost impossible at first glance — and that makes finally solving them all the more satisfying. The archive also reveals that some of the hardest puzzles feature blends of four very different colors, while some of the easiest involve closely related colors where the components are more obvious.
+          </p>
+
+          <h2>Frequently Asked Questions</h2>
+
+          <div class="faq-section">
+            <details class="faq-item">
+              <summary class="faq-question">How far back does the Colorfle archive go?</summary>
+              <div class="faq-answer">
+                <p>The Colorfle archive contains every answer from the game's launch on April 25, 2022, through to the most recently completed day. That gives you access to over 1,350 historical puzzles in both Normal and Hard modes. The calendar lets you navigate to any month since launch, and clicking on any valid date reveals the complete answer — all component colors, their weights, and the final blended result. We update the archive daily at midnight IST, so the latest answer is always available as soon as the new puzzle goes live. There are no gaps in the record.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">What is the difference between Normal and Hard mode in Colorfle?</summary>
+              <div class="faq-answer">
+                <p>In Normal mode, the target color is created by blending three component colors with weights of 50%, 34%, and 16%. The dominant color at 50% has the biggest impact on the final blend, making it relatively easier to identify. In Hard mode, the blend uses four component colors with weights of 40%, 30%, 20%, and 10%. The extra color and more distributed weights make the puzzle significantly harder because the visual influence of each component is more subtle and harder to separate. You can toggle between Normal and Hard mode answers in the archive's answer panel after selecting any date.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">Is using the Colorfle archive considered cheating?</summary>
+              <div class="faq-answer">
+                <p>It depends on your intent. Looking up today's answer before playing the puzzle would be considered cheating by most players because it removes the challenge entirely. However, checking a past answer you missed, studying historical patterns to improve your strategy, or using the archive as a learning tool for understanding color blending — these are all perfectly legitimate uses. Many experienced Colorfle players browse the archive specifically to build their intuition about how color combinations work, which is similar to studying reference material to get better at any skill.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">How are Colorfle answers determined each day?</summary>
+              <div class="faq-answer">
+                <p>Colorfle uses a deterministic algorithm to calculate each day's color blend from the current date. The algorithm selects which colors to include and what weights to assign them based on a mathematical formula, not random chance or manual curation. This means the answer for any given date is fixed and will always be the same, which is how this archive is able to compute and display answers reliably. The formula was designed to produce varied and interesting blends while maintaining a fair distribution of colors over time.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">Can I see Colorfle answers for future dates?</summary>
+              <div class="faq-answer">
+                <p>No, the archive only displays answers for dates that have already occurred or the current day once the puzzle has gone live. Future dates appear grayed out on the calendar and cannot be selected. We intentionally limit the archive to completed days because revealing future answers would spoil the daily puzzle experience for everyone. Part of what makes games like Colorfle engaging is the anticipation of a new challenge each day, and we want to preserve that experience. You will just have to come back tomorrow and play along with everyone else.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">Are the Colorfle answers on this site accurate?</summary>
+              <div class="faq-answer">
+                <p>Absolutely. Every answer in this archive is computed using the same deterministic algorithm that powers the official Colorfle game. We do not rely on manual entry or crowdsourced data, which eliminates the possibility of human error. Our implementation has been verified against the official game on numerous dates and produces identical results every time. The component colors, weight distributions, and blended outcomes you see in the archive are mathematically guaranteed to match what the official game shows for that date. We regularly run verification checks to ensure ongoing accuracy.</p>
+              </div>
+            </details>
+          </div>
+
+        </div>
+      </div>
     </div>
   </section>
 </Layout>
@@ -60,26 +187,165 @@ import Layout from '../layouts/Layout.astro';
 
   .page-title {
     font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 3rem;
+    font-size: 2.6rem;
     font-weight: 800;
-    line-height: 1.1;
+    line-height: 1.15;
     letter-spacing: -0.03em;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+    max-width: 800px;
   }
 
   .page-subtitle {
     color: var(--text-secondary);
     font-size: 1.05rem;
     line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  /* ── Stats Row ── */
+  .page-stats {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .stat-number {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--colorfle-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .stat-divider {
+    width: 1px;
+    height: 32px;
+    background: var(--border-color);
+  }
+
+  /* ── SEO Content ── */
+  .seo-content {
+    margin-top: 64px;
+    padding-top: 48px;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .seo-content .prose h2 {
+    scroll-margin-top: 80px;
+  }
+
+  .seo-content .prose p {
+    max-width: 720px;
+  }
+
+  /* ── FAQ Section ── */
+  .faq-section {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .faq-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: border-color var(--duration-normal) ease, box-shadow var(--duration-normal) ease;
+  }
+
+  .faq-item:hover {
+    border-color: var(--border-hover);
+  }
+
+  .faq-item[open] {
+    border-color: var(--colorfle-accent);
+    box-shadow: var(--shadow-sm), 0 0 0 1px rgba(230, 138, 0, 0.08);
+  }
+
+  .faq-question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-question::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin-left: 16px;
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%235C6178' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform var(--duration-normal) ease;
+  }
+
+  .faq-item[open] .faq-question::after {
+    transform: rotate(180deg);
+  }
+
+  .faq-item[open] .faq-question {
+    color: var(--colorfle-accent);
+  }
+
+  .faq-answer {
+    padding: 0 24px 20px;
+  }
+
+  .faq-answer p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.75;
+    margin-bottom: 0;
   }
 
   /* ── Responsive ── */
   @media (max-width: 768px) {
-    .page-title { font-size: 2.2rem; }
+    .page-title { font-size: 1.9rem; }
+    .page-stats { gap: 14px; }
+    .stat-divider { height: 24px; }
+    .stat-number { font-size: 1rem; }
+    .seo-content { margin-top: 48px; padding-top: 32px; }
+    .faq-question { padding: 16px 18px; font-size: 0.95rem; }
+    .faq-answer { padding: 0 18px 16px; }
   }
 
   @media (max-width: 640px) {
-    .page-title { font-size: 1.8rem; }
+    .page-title { font-size: 1.55rem; }
+    .page-stats { gap: 12px; }
+    .stat-divider { display: none; }
+    .stat-item { flex-direction: row; gap: 6px; align-items: baseline; }
+    .stat-number { font-size: 0.95rem; }
+    .stat-label { font-size: 0.7rem; }
   }
 </style>
 

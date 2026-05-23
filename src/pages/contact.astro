@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout
-  title="Contact Us"
+  title="Contact Us - Get in Touch & Report Issues | Color Answers Hub"
   canonicalUrl="/contact"
   description="Get in touch with the Color Answers Hub team. Report wrong answers, ask questions about Colordle and Colorfle, request features, or just say hello. We typically respond within 24-48 hours."
 >
@@ -131,6 +131,96 @@ import Layout from '../layouts/Layout.astro';
         </div>
       </div>
 
+      <!-- Reporting Wrong Answers Section -->
+      <div class="report-section animate-fade-in-up delay-3">
+        <h2 class="section-title">Reporting Wrong Answers</h2>
+        <p class="section-subtitle">If you think an answer on our site is incorrect, here's exactly how to report it and what happens next.</p>
+
+        <div class="report-grid">
+          <div class="report-card card">
+            <div class="report-step">
+              <span class="step-number">1</span>
+              <div class="step-content">
+                <h3>Verify the Date</h3>
+                <p>Before reporting, double-check that you're looking at the correct date. Our answers update at midnight IST for Colordle and 5:00 PM IST for Colorfle. If you're in a different timezone, the new answer may not have appeared yet. We always display the date the answer applies to — if it shows yesterday's date, today's answer hasn't dropped yet.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="report-card card">
+            <div class="report-step">
+              <span class="step-number">2</span>
+              <div class="step-content">
+                <h3>Cross-Reference the Game</h3>
+                <p>Open the original Colordle or Colorfle game and compare. Make sure you're checking the same day and the same mode (normal vs. hard for Colorfle). Sometimes the game itself can display differently depending on your local timezone settings, which can cause apparent but not actual discrepancies.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="report-card card">
+            <div class="report-step">
+              <span class="step-number">3</span>
+              <div class="step-content">
+                <h3>Gather the Details</h3>
+                <p>When you contact us, please include: (1) the date of the answer in question, (2) which game — Colordle or Colorfle, (3) which mode if applicable (normal or hard), (4) what answer our site currently shows, and (5) what you believe the correct answer should be. The more specific you are, the faster we can investigate.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="report-card card">
+            <div class="report-step">
+              <span class="step-number">4</span>
+              <div class="step-content">
+                <h3>Send It Our Way</h3>
+                <p>Use the contact form above and select "Wrong answer on the site" as the subject, or open a GitHub issue at our repository. Both methods work, but GitHub issues tend to get slightly faster responses since they integrate directly with our development workflow. We investigate every report within 24 hours and will update the site immediately if we confirm the error.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-note card">
+          <p><strong>Important distinction:</strong> A "wrong" answer means our site shows a different result than the official game. It does <em>not</em> mean "I would have called that color something else." Color naming is subjective, and the games use specific names from a predefined list. If our answer matches the game's accepted answer but you'd have used a different name, that's the game's naming convention — not an error on our part. We compute the exact answer the game will accept, not the answer that would win a color-naming debate.</p>
+        </div>
+      </div>
+
+      <!-- Common Questions About Our Site Section -->
+      <div class="common-questions-section animate-fade-in-up delay-3">
+        <h2 class="section-title">Common Questions About Our Site</h2>
+        <p class="section-subtitle">These are the things people ask us most often that aren't specifically about wrong answers or how to play the games. If your question isn't covered here or in the FAQ below, definitely reach out.</p>
+
+        <div class="common-grid">
+          <div class="common-card card">
+            <h3>Is this site free to use?</h3>
+            <p>Yes, completely free. No subscriptions, no premium tiers, no "unlock all answers for $4.99/month." Every answer — today's and the full historical archive — is available to everyone at no cost. We cover our minimal hosting costs through non-intrusive means, and the site is designed to be as lightweight and fast as possible, which also keeps our costs low.</p>
+          </div>
+
+          <div class="common-card card">
+            <h3>Do you have an app?</h3>
+            <p>Not currently. The website is fully responsive and works great on mobile browsers. You can add it to your phone's home screen for an app-like experience — on iOS, use the Share button and select "Add to Home Screen," and on Android, use the browser menu's "Add to Home Screen" option. It loads just as fast as a native app would, and you don't have to install anything.</p>
+          </div>
+
+          <div class="common-card card">
+            <h3>How do you decide what features to build?</h3>
+            <p>We prioritize features based on two things: how many people would benefit from them, and how well they align with our core mission of providing accurate, fast answers for color guessing games. User suggestions carry a lot of weight — some of our most popular features started as a single email from a visitor. If you have an idea, send it our way. We read every suggestion and we genuinely consider all of them.</p>
+          </div>
+
+          <div class="common-card card">
+            <h3>Why don't you cover other color games?</h3>
+            <p>We focus exclusively on Colordle and Colorfle because those are the games we know inside and out. Our accuracy depends on deeply understanding the algorithms behind each game, and spreading ourselves thin across more games would risk that accuracy. That said, if another color guessing game gains significant traction and has a deterministic algorithm we can verify, we'd consider adding it. Let us know if there's one you'd like to see covered.</p>
+          </div>
+
+          <div class="common-card card">
+            <h3>Is the site accessible with screen readers?</h3>
+            <p>We've made efforts to ensure the site is accessible, including proper heading hierarchy, alt text for color swatches, and semantic HTML structure. Color is inherently visual, which presents accessibility challenges we can't fully solve — describing a color swatch in words is inherently lossy. However, we provide color names and hex codes for every answer, which screen readers can read aloud. If you encounter accessibility issues, please let us know and we'll work to address them.</p>
+          </div>
+
+          <div class="common-card card">
+            <h3>Can I use your data or answers in my own project?</h3>
+            <p>The answers themselves are derived from the original games' algorithms and aren't our original creative work. However, the way we present them — the formatting, the visual design, the additional context we provide — is ours. If you want to reference our answers, we'd appreciate a link back to the site. If you're thinking about building something that uses our data at scale (like an API integration), please reach out first so we can discuss it. We're generally supportive of community projects but want to make sure our infrastructure can handle the load.</p>
+          </div>
+        </div>
+      </div>
+
       <!-- FAQ Section -->
       <div class="faq-section animate-fade-in-up delay-3">
         <h2 class="section-title">Frequently Asked Questions</h2>
@@ -226,6 +316,43 @@ import Layout from '../layouts/Layout.astro';
               <p>Not right now, and honestly, we're not sure if we will. The website works well on mobile browsers — we designed it to be responsive from day one, so you can pull it up on your phone and get the answer in a couple of seconds without installing anything.</p>
               <p>Building and maintaining a native app is a significant amount of extra work, and for a site like ours, the web experience covers most of what people need. You can even add the site to your home screen on iOS or Android, and it basically behaves like an app — same fast load, same clean interface, no App Store required.</p>
               <p>That said, if enough people ask for an app (and we mean really ask, not just "would be nice"), we'd consider it. Let us know through the form if that's something you'd use. If there's genuine demand, we're open to it. We just don't want to build something nobody downloads.</p>
+            </div>
+          </details>
+
+          <!-- FAQ 8 -->
+          <details class="faq-item card">
+            <summary class="faq-question">
+              <span>How far back does your answer archive go?</span>
+              <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="faq-answer prose">
+              <p>All the way to the beginning. For Colordle, our archive starts at Day 1 — March 26, 2022, the day the game launched. For Colorfle, it starts at April 25, 2022. We computed every historical answer retroactively using the game algorithms, so the archive is complete and consistent from day one. You can look up any date in either game's history and find the exact answer.</p>
+              <p>The archive is useful for more than just curiosity. Some players like to review past answers to identify patterns or improve their guessing strategy. Others use it to settle debates with friends about what a particular day's answer was. Whatever your reason, the full archive is always available and always free.</p>
+            </div>
+          </details>
+
+          <!-- FAQ 9 -->
+          <details class="faq-item card">
+            <summary class="faq-question">
+              <span>Why do you show spoiler warnings before the answers?</span>
+              <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="faq-answer prose">
+              <p>Because not everyone wants to see the answer immediately. Some people come to our site intending to just check their work after they've played, and if the answer is right there on the screen when the page loads, it ruins the experience. The spoiler reveal button gives you a choice — you only see the answer when you're ready for it.</p>
+              <p>We know it adds one extra click, but we think it's worth it. The whole point of a daily puzzle game is the challenge of solving it, and we don't want to accidentally spoil that for anyone. If you're someone who just wants the answer as fast as possible, the extra click takes less than a second. For everyone else, it's a small courtesy that we think makes the site more respectful of how people actually use it.</p>
+            </div>
+          </details>
+
+          <!-- FAQ 10 -->
+          <details class="faq-item card">
+            <summary class="faq-question">
+              <span>What happens if the original game changes its algorithm?</span>
+              <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="faq-answer prose">
+              <p>This is something we actively monitor for. If the creators of Colordle or Colorfle update their algorithms, change their color pools, or modify how the daily selection works, our answers would diverge from the official game until we catch and fix the discrepancy. That's one of the reasons we run automated verification checks throughout the day.</p>
+              <p>When we detect a divergence — usually because someone reports it or our automated checks flag it — we investigate immediately. We compare the game's current behavior with our implementation, identify what changed, and update our code to match. Then we recompute any affected answers and update the archive. The turnaround time is typically within 24 hours, and we're transparent about any corrections we make.</p>
+              <p>Historically, algorithm changes have been very rare. Both games have been running for years with relatively stable codebases. But we stay vigilant because accuracy is our core promise to you.</p>
             </div>
           </details>
         </div>
@@ -375,7 +502,7 @@ import Layout from '../layouts/Layout.astro';
 
   .form-input:focus {
     border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(91, 95, 230, 0.1);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     background: var(--bg-secondary);
   }
 
@@ -390,7 +517,7 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .form-select:focus {
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%235B5FE6' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%232563eb' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   }
 
   .form-textarea {
@@ -424,7 +551,7 @@ import Layout from '../layouts/Layout.astro';
     height: 40px;
     border-radius: var(--radius-md);
     background: var(--accent-gradient-subtle);
-    border: 1px solid rgba(91, 95, 230, 0.1);
+    border: 1px solid rgba(37, 99, 235, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -477,7 +604,7 @@ import Layout from '../layouts/Layout.astro';
 
   .contact-link:hover {
     border-color: var(--accent-color);
-    background: rgba(91, 95, 230, 0.03);
+    background: rgba(37, 99, 235, 0.03);
   }
 
   .contact-link-label {
@@ -494,6 +621,139 @@ import Layout from '../layouts/Layout.astro';
     color: var(--accent-color);
   }
 
+  /* ── Reporting Section ── */
+  .report-section {
+    margin-top: 72px;
+  }
+
+  .report-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 28px;
+  }
+
+  .report-card {
+    padding: 0;
+  }
+
+  .report-card:hover {
+    transform: none;
+  }
+
+  .report-step {
+    display: flex;
+    gap: 18px;
+    padding: 24px;
+    align-items: flex-start;
+  }
+
+  .step-number {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent-gradient-subtle);
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .step-content h3 {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .step-content p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+  }
+
+  .report-note {
+    margin-top: 16px;
+    padding: 24px 28px;
+    background: var(--bg-secondary);
+    border-color: var(--border-hover);
+  }
+
+  .report-note:hover {
+    transform: none;
+  }
+
+  .report-note p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+  }
+
+  .report-note strong {
+    color: var(--text-primary);
+  }
+
+  /* ── Common Questions Section ── */
+  .common-questions-section {
+    margin-top: 72px;
+  }
+
+  .common-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 28px;
+  }
+
+  .common-card {
+    padding: 24px;
+  }
+
+  .common-card:hover {
+    transform: none;
+  }
+
+  .common-card h3 {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .common-card p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+  }
+
+  /* ── Section Titles ── */
+  .section-title {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .section-subtitle {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    max-width: 640px;
+    margin-bottom: 0;
+  }
+
   /* ── FAQ Section ── */
   .faq-section {
     margin-top: 72px;
@@ -503,7 +763,7 @@ import Layout from '../layouts/Layout.astro';
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-top: 0;
+    margin-top: 28px;
   }
 
   .faq-item {
@@ -576,7 +836,7 @@ import Layout from '../layouts/Layout.astro';
     padding: 40px 44px;
     text-align: center;
     background: var(--accent-gradient-subtle);
-    border-color: rgba(91, 95, 230, 0.1);
+    border-color: rgba(37, 99, 235, 0.1);
   }
 
   .closing-card:hover {
@@ -607,6 +867,14 @@ import Layout from '../layouts/Layout.astro';
       grid-template-columns: 1fr 1fr;
       gap: 24px;
     }
+
+    .report-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .common-grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   @media (max-width: 768px) {
@@ -629,6 +897,18 @@ import Layout from '../layouts/Layout.astro';
 
     .sidebar-card {
       padding: 22px 20px;
+    }
+
+    .report-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .common-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
     }
 
     .faq-question {
@@ -664,6 +944,20 @@ import Layout from '../layouts/Layout.astro';
 
     .sidebar-card {
       padding: 20px 16px;
+    }
+
+    .report-step {
+      padding: 20px;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .common-card {
+      padding: 20px;
+    }
+
+    .report-note {
+      padding: 20px;
     }
 
     .faq-question {

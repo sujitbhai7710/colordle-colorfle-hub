@@ -35,18 +35,19 @@ CREATE INDEX IF NOT EXISTS idx_colordle_day ON colordle_answers(day_number);
 CREATE INDEX IF NOT EXISTS idx_colorfle_day ON colorfle_answers(day_number);
 `;
 
-// ── TIMEZONE FIX: Use IST (UTC+5:30) for date string determination ──
-// The ROOT CAUSE of stale answers was using UTC for date formatting.
-// When date changed to May 23 in IST, the API still returned May 22's
-// answer because it was still May 22 in UTC (6:30PM UTC = 12AM IST).
+// ── TIMEZONE: Use JST (UTC+9) for date string determination ──
+// Primary update runs at 1:30 AM JST, so we determine "today" based on
+// Japan Standard Time. This ensures answers update when the game refreshes
+// for Japan timezone players. Backup crons at 8 AM and 11 AM IST ensure
+// IST players also get fresh answers.
 //
-// Key principle: Use IST ONLY for determining the date string (e.g., "2026-05-23").
+// Key principle: Use JST for determining the date string (e.g., "2026-05-23").
 // For algorithm computation (day numbers, seeds), always use UTC dates
 // created from those date strings.
 
-function formatDateIST(d: Date): string {
+function formatDateJST(d: Date): string {
   return new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'Asia/Kolkata',
+    timeZone: 'Asia/Tokyo',
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
@@ -115,11 +116,11 @@ async function scrapeColorfle(db: D1Database, dateStr: string): Promise<{ succes
 }
 
 async function runDailyScrape(db: D1Database): Promise<void> {
-  // Get today's date in IST
-  const todayIST = formatDateIST(new Date());
+  // Get today's date in JST
+  const todayJST = formatDateJST(new Date());
   // Compute answers for today + next 2 days
   for (let i = 0; i < 3; i++) {
-    const dateStr = addDaysToDateStr(todayIST, i);
+    const dateStr = addDaysToDateStr(todayJST, i);
     const colordleResult = await scrapeColordle(db, dateStr);
     await db.prepare(
       'INSERT INTO scrape_log (source, status, message) VALUES (?, ?, ?)'
@@ -158,7 +159,7 @@ export default {
     if (path.startsWith('/api/')) {
       // ── Colordle today ──
       if (path === '/api/colordle/today') {
-        const today = formatDateIST(new Date());
+        const today = formatDateJST(new Date());
         let result = await env.DB.prepare('SELECT * FROM colordle_answers WHERE date = ?').bind(today).first();
         if (!result) {
           await scrapeColordle(env.DB, today);
@@ -190,7 +191,7 @@ export default {
 
       // ── Colorfle today ──
       if (path === '/api/colorfle/today') {
-        const today = formatDateIST(new Date());
+        const today = formatDateJST(new Date());
         let result = await env.DB.prepare('SELECT * FROM colorfle_answers WHERE date = ?').bind(today).first() as any;
         if (!result) {
           await scrapeColorfle(env.DB, today);
@@ -235,7 +236,7 @@ export default {
       // ── Verify endpoint ──
       if (path === '/api/verify') {
         const results: any[] = [];
-        const todayIST = formatDateIST(new Date());
+        const todayIST = formatDateJST(new Date());
 
         const { allColors, poolColors, blocklist } = await fetchColordleData();
         for (let i = 0; i < 7; i++) {
@@ -286,7 +287,7 @@ export default {
         if (auth !== `Bearer ${env.SCRAPE_SECRET}`) return jsonResponse({ error: 'Unauthorized' }, 401);
 
         const colordleStartStr = '2022-03-26';
-        const endStr = formatDateIST(new Date());
+        const endStr = formatDateJST(new Date());
         let colordleCount = 0;
         let colorfleCount = 0;
 
@@ -362,7 +363,7 @@ export default {
     return jsonResponse({
       name: 'Colordle & Colorfle Answers API',
       version: '3.1.0',
-      timezone: 'IST (UTC+5:30)',
+      timezone: 'JST (UTC+9)',
       endpoints: [
         'GET /api/colordle/today', 'GET /api/colordle/date/:date', 'GET /api/colordle/range?from=&to=',
         'GET /api/colorfle/today', 'GET /api/colorfle/date/:date', 'GET /api/colorfle/range?from=&to=',

@@ -12,8 +12,8 @@ const structuredData = {
 ---
 
 <Layout
-  title="About"
-  description="Learn about Color Answers Hub — how we compute daily Colordle and Colorfle answers, our commitment to accuracy, and the technology behind the site."
+  title="About - Why We Built Color Answers Hub | Color Answers Hub"
+  description="Learn about Color Answers Hub — how we compute daily Colordle and Colorfle answers using deterministic algorithms, our commitment to accuracy, the history of color guessing games, and the technology behind the site."
   canonicalUrl="/about"
 >
   <section class="about-page">
@@ -40,8 +40,10 @@ const structuredData = {
           <a href="#why-we-built-this" class="sidebar-link">Why We Built This</a>
           <a href="#how-answers-work" class="sidebar-link">How Our Answers Work</a>
           <a href="#games-we-cover" class="sidebar-link">The Games We Cover</a>
+          <a href="#story-behind-color-games" class="sidebar-link">The Story Behind Color Games</a>
           <a href="#commitment-to-accuracy" class="sidebar-link">Our Commitment to Accuracy</a>
           <a href="#speed-and-simplicity" class="sidebar-link">Built for Speed</a>
+          <a href="#faq" class="sidebar-link">FAQ</a>
         </nav>
       </aside>
 
@@ -63,6 +65,12 @@ const structuredData = {
           <p>
             This site isn't affiliated with Colordle or Colorfle. We're fans of both games who got tired of guessing wrong and not having a reliable place to check answers. That's the entire origin story. No venture capital, no startup pitch deck, no "disrupting the color game answer industry." Just a clean site that does one thing well.
           </p>
+          <p>
+            And here's the thing we didn't expect: building this site actually made us better at the games. When you see the answer patterns day after day — the way certain color names recur, the way the alphabet hints narrow things down in Colordle, the way blending weights create predictable visual cues in Colorfle — you start to develop an intuition for it. We're not saying we get perfect scores every day now (we definitely don't), but understanding the mechanics behind the answers has made the games more enjoyable, not less. We hope this site does the same for you.
+          </p>
+          <p>
+            We also believe that transparency matters. There are plenty of answer sites that just post "Today's answer is X" with zero explanation of where that answer came from or how it was derived. That always made us skeptical — how do we know they didn't just guess? How do we know they're not wrong? So we decided early on that we'd be completely open about our methodology. Every answer on this site is computed using the exact same algorithm the original game uses, and we explain exactly how that works in the section below. If you're the type who likes to look under the hood, you'll find all the details you need.
+          </p>
         </section>
 
         <!-- Section 2: How Our Answers Work -->
@@ -75,13 +83,19 @@ const structuredData = {
             For <strong>Colordle</strong>, the algorithm is a seeded selection process. It starts from a known epoch (the game's internal day counter maps back to March 26, 2022 as Day 1) and uses a deterministic function to pick a color name from the pool for each day. The first 1,016 days use a fixed list from the game's <code>colors.json</code> file. After that, it switches to an algorithmic selection from a larger color pool, with a blocklist to avoid repeat or similar-sounding colors. We ported this logic line by line from the game's client-side JavaScript, including the specific hash function and n-gram filtering that prevents colors like "Mint Green" from showing up right after "Green."
           </p>
           <p>
+            The n-gram filtering is worth explaining in more detail because it's one of the more clever aspects of the Colordle algorithm. A naive approach to daily color selection might just pick a random color from the pool each day, but that could lead to consecutive days having very similar answers — imagine getting "Green" on Monday and "Mint Green" on Tuesday. That would be a frustrating experience for players. The n-gram filter works by comparing the character-level overlap between consecutive selections. If the current candidate color shares too many n-grams (substrings of length <em>n</em>) with the previous day's answer, it's rejected and the next candidate is evaluated. This ensures variety in the daily answers while still being fully deterministic — the same date will always produce the same result.
+          </p>
+          <p>
             For <strong>Colorfle</strong>, the game uses a seeded pseudo-random number generator — specifically, the <code>seedrandom</code> library (v3.0.5) using the ARC4 algorithm. The seed is constructed from the mode (normal or hard), the day, the month, and the year. So for any given date, we can compute exactly which 3 colors (normal mode) or 4 colors (hard mode) the game will pick from its palette of 20 colors.
+          </p>
+          <p>
+            The Colorfle algorithm is particularly interesting because of how it handles the weighted blending. In normal mode, the three selected colors are assigned weights of 50%, 34%, and 16% respectively. The dominant color (50%) determines the overall hue you see, while the secondary (34%) and tertiary (16%) colors create subtle undertones. This means that even though you're only dealing with 20 possible colors, the visual difference between combinations can be quite nuanced. A blend dominated by Orange with hints of Red and Yellow looks very different from one dominated by Orange with hints of Brown and Olive, even though Orange is the primary contributor in both cases.
           </p>
           <p>
             The key detail with Colorfle is the timezone. The game runs entirely in your browser using your local time, which means someone in New York and someone in Mumbai could technically see different puzzles on the same calendar day. Since we need to serve <em>one</em> answer to everyone, we use IST (Indian Standard Time, UTC+5:30) as our reference timezone. This matches the game's largest player base and the timezone where the original Colorfle game gained most of its traction. The Colorfle puzzle rolls over at 5:00 PM IST each day, and our system accounts for that.
           </p>
           <p>
-            To make sure answers are always current, we run automated cron jobs three times a day — at 12:00 AM, 8:00 AM, and 12:00 PM IST. The midnight run catches the new day's puzzle right as it drops. The 8 AM and noon runs are safety nets in case anything went sideways with the first computation. Each cron job recomputes the day's answers, verifies them against our existing records, and updates the database if there's a new day to add.
+            To make sure answers are always current, we run automated cron jobs three times a day — at 12:00 AM, 8:00 AM, and 12:00 PM IST. The midnight run catches the new day's puzzle right as it drops. The 8 AM and noon runs are safety nets in case anything went sideways with the first computation. Each cron job recomputes the day's answers, verifies them against our existing records, and updates the database if there's a new day to add. We also run a full historical recomputation periodically — more on that in the Accuracy section below.
           </p>
         </section>
 
@@ -103,7 +117,10 @@ const structuredData = {
               What makes Colordle tricky is that color perception is subjective, and color naming conventions are all over the place. Two people can look at the exact same shade and one will call it "Purple" while the other calls it "Violet" — and the game only accepts one specific name. The alphabetical hint helps narrow things down, but by the time you've guessed wrong four times, you're usually ready to just see the answer. That's where we come in.
             </p>
             <p>
-              Our Colordle answers include the exact color name, the hex code, and a visual color swatch so you can see the actual color on screen. We also maintain a complete archive going all the way back to Day 1 (March 26, 2022), so you can look up any historical answer.
+              Our Colordle answers include the exact color name, the hex code, and a visual color swatch so you can see the actual color on screen. We also maintain a complete archive going all the way back to Day 1 (March 26, 2022), so you can look up any historical answer. The archive is fully searchable by date, making it easy to settle debates about what last Thursday's color was or to track patterns over time.
+            </p>
+            <p>
+              One thing that surprises a lot of players: the Colordle color pool is much larger than most people realize. While early players might have only encountered common names, the full list contains over a thousand entries, including some genuinely obscure color names that most people have never heard of. Names like "Gamboge" (a mustard-yellow pigment originally derived from a tree resin), "Falu Red" (the deep red traditionally used on Swedish wooden houses), and "Smalt" (a deep blue pigment made from ground glass). These deep cuts from the color dictionary are what make Colordle so challenging — and so satisfying when you finally nail one.
             </p>
           </div>
 
@@ -121,9 +138,35 @@ const structuredData = {
               The 20-color palette includes: White, Lemon Chiffon, Pastel Pink, Mint Green, Lavender, Cyan, Yellow, Lime, Orange, Green, Magenta, Olive, Teal, Brown, Red, Blue, Purple, Maroon, Navy, and Black. That's your entire universe of possibilities, but with 1,140 possible 3-color combinations in normal mode (and 4,845 in hard mode), the answer space is still huge. The blending weights aren't equal either — in normal mode, the three colors are weighted at 50%, 34%, and 16%, which means one color dominates the blend while the others are more subtle. This makes it really hard to pick out that 16% contribution color by eye alone.
             </p>
             <p>
-              Our Colorfle answers show all three (or four) colors with their individual color blocks, their names, and the resulting blended swatch so you can see exactly how the combination comes together. We cover both normal and hard mode every day, and we maintain a full archive back to the game's launch date.
+              Our Colorfle answers show all three (or four) colors with their individual color blocks, their names, and the resulting blended swatch so you can see exactly how the combination comes together. We cover both normal and hard mode every day, and we maintain a full archive back to the game's launch date. Seeing the answer broken down this way — with each component color displayed separately alongside the blend — often gives you an "aha" moment where you can suddenly see how that subtle hint of Teal was lurking in the mix all along.
+            </p>
+            <p>
+              Hard mode in Colorfle is a significant step up in difficulty. With four colors instead of three, and a weight distribution of 40%, 30%, 20%, and 10%, the two smallest contributions become nearly invisible in the blend. That 10% color might be just barely detectable as a slight shift in the overall tone, and if you're not specifically looking for it, you'll miss it entirely. Our hard mode answers are especially popular because they help players train their eyes to spot those subtle contributions over time.
             </p>
           </div>
+        </section>
+
+        <!-- Section 4: The Story Behind Color Games -->
+        <section id="story-behind-color-games" class="prose card content-card animate-fade-in-up delay-4">
+          <h2>The Story Behind Color Games</h2>
+          <p>
+            Color guessing games didn't appear out of nowhere. They're part of a broader trend that started with Wordle's explosive popularity in late 2021 and early 2022. When Josh Wardle's word-guessing game went viral, it inspired dozens of creators to apply the same daily-challenge format to different domains — numbers (Nerdle), geography (Worldle), music (Heardle), and of course, colors.
+          </p>
+          <p>
+            What made the daily puzzle format so compelling was its scarcity. You only got one puzzle per day, and once you'd played it, you were done until midnight. This created a shared cultural moment — everyone was thinking about the same puzzle on the same day, comparing strategies and commiserating over difficult answers. It was the water-cooler conversation of the internet, and color games fit perfectly into this framework.
+          </p>
+          <p>
+            Colordle was one of the earliest and most successful spin-offs. Ryan Tanen recognized that color naming is a surprisingly deep and nuanced domain. The way humans perceive and categorize color varies enormously based on culture, language, and individual experience. The Himba people of Namibia, for example, have a completely different color classification system than English speakers — they don't distinguish between green and blue the way we do, but they have separate categories for shades that English speakers would lump together. While Colordle doesn't get into anthropological linguistics, it does expose players to the sheer breadth of named colors in the English language, many of which they've probably never encountered before.
+          </p>
+          <p>
+            Colorfle came along a month later, taking the concept in a more technical direction. Instead of testing your knowledge of color names, it tests your understanding of color mixing — a fundamentally different skill. Professional designers, painters, and anyone who's spent time working with color theory tend to perform better at Colorfle because they've trained their eyes to deconstruct blended colors into their components. But even experts struggle with the weighted blending, which produces results that don't always match what you'd expect from simple additive color mixing.
+          </p>
+          <p>
+            The appeal of both games taps into something primal about how humans interact with color. Color perception is one of our most basic cognitive functions — we use it to identify ripe fruit, avoid danger, and navigate our environment. When a game challenges your ability to name or decompose colors, it's tapping into deep evolutionary wiring. That's why these games feel simultaneously easy (you're just looking at colors!) and impossibly hard (why can't you tell the difference between Olive and Dark Olive?).
+          </p>
+          <p>
+            Since their launch, both Colordle and Colorfle have maintained dedicated player bases. They may not have the mainstream cultural footprint of Wordle, but they've carved out a loyal niche among people who appreciate the unique challenge of color-based puzzles. Answer sites like ours exist because that community values accuracy and reliability — they want to check their work, learn from their mistakes, and gradually get better at the games. It's a small corner of the internet, but it's one we're proud to serve.
+          </p>
         </section>
 
         <!-- Section 4: Our Commitment to Accuracy -->
@@ -141,25 +184,28 @@ const structuredData = {
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
               <h3>Algorithm Verification</h3>
-              <p>We didn't just guess at how these games work. We ported the exact client-side JavaScript from both games into our backend, preserving every hash function, every seed construction, every edge case. For Colordle, that means replicating the specific deterministic selection algorithm including the n-gram filtering that prevents similar color names from appearing consecutively. For Colorfle, it means using the exact same seedrandom library with the same seed format.</p>
+              <p>We didn't just guess at how these games work. We ported the exact client-side JavaScript from both games into our backend, preserving every hash function, every seed construction, every edge case. For Colordle, that means replicating the specific deterministic selection algorithm including the n-gram filtering that prevents similar color names from appearing consecutively. For Colorfle, it means using the exact same seedrandom library with the same seed format. Every computation our system performs is reproducible and verifiable — we can show you the exact steps from date to answer.</p>
             </div>
             <div class="accuracy-item card">
               <div class="accuracy-icon">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
               </div>
               <h3>Historical Backfill</h3>
-              <p>We didn't start tracking answers from the day we launched. We computed every single answer from Day 1 of both games. For Colordle, that's every day since March 26, 2022. For Colorfle, every day since April 25, 2022. The entire historical archive was generated by running the algorithms retroactively, which means our archive is complete and consistent — not patched together from different sources over time.</p>
+              <p>We didn't start tracking answers from the day we launched. We computed every single answer from Day 1 of both games. For Colordle, that's every day since March 26, 2022. For Colorfle, every day since April 25, 2022. The entire historical archive was generated by running the algorithms retroactively, which means our archive is complete and consistent — not patched together from different sources over time. When you look up an answer from six months ago, it was computed using the exact same algorithm as today's answer.</p>
             </div>
             <div class="accuracy-item card">
               <div class="accuracy-icon">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
               </div>
               <h3>Periodic Recompute</h3>
-              <p>Every so often, we re-run the entire computation from scratch. Why? Because if we ever discovered a bug in our algorithm implementation — or if one of the source data files (like Colordle's color pool or blocklist) got updated — we want to catch and fix any answers that might have been affected. The cron jobs that run three times daily handle new days, but a full recomputation ensures our historical data stays pristine too.</p>
+              <p>Every so often, we re-run the entire computation from scratch. Why? Because if we ever discovered a bug in our algorithm implementation — or if one of the source data files (like Colordle's color pool or blocklist) got updated — we want to catch and fix any answers that might have been affected. The cron jobs that run three times daily handle new days, but a full recomputation ensures our historical data stays pristine too. Think of it as a comprehensive audit: even if nothing has changed, confirming that everything matches gives us (and you) confidence in the data.</p>
             </div>
           </div>
           <p>
-            If you ever spot an answer that looks wrong — and we mean genuinely wrong, not just "I would have called that color something else" — let us know. We'd rather investigate a false alarm than leave a wrong answer sitting in our database.
+            If you ever spot an answer that looks wrong — and we mean genuinely wrong, not just "I would have called that color something else" — let us know. We'd rather investigate a false alarm than leave a wrong answer sitting in our database. You can reach us through our <a href="/contact">contact page</a>, and we typically investigate reported discrepancies within 24 hours.
+          </p>
+          <p>
+            It's also worth noting the distinction between a "wrong" answer and a "disagreed-upon" answer. Color naming is inherently subjective — the game uses one specific name from a standardized list, but reasonable people can disagree about what to call a particular shade. If our answer says "Lavender" and you would have called it "Light Purple," that doesn't mean our answer is wrong — it means the game chose "Lavender" from its pool, and that's the name it accepts. We compute the answer the game will accept, not the answer that would win a color-naming debate.
           </p>
         </section>
 
@@ -198,8 +244,51 @@ const structuredData = {
             The whole stack is designed to be as simple as possible. No Kubernetes clusters, no microservices talking to each other over message queues, no 47-step deployment pipeline. A Worker, a database, a static site. That's it. Fewer moving parts means fewer things that can break, and when something does break, it's easy to track down and fix.
           </p>
           <p>
-            We also care about the site working well on your phone. Color games are a lunch-break activity, a commute distraction, a "I've got two minutes to kill" kind of thing. So our layout is fully responsive, the text is readable on small screens, and the interactive elements are touch-friendly. No pinching and zooming required.
+            We also care about the site working well on your phone. Color games are a lunch-break activity, a commute distraction, a "I've got two minutes to kill" kind of thing. So our layout is fully responsive, the text is readable on small screens, and the interactive elements are touch-friendly. No pinching and zooming required. We test on a range of devices and screen sizes to make sure everything looks and works the way it should.
           </p>
+          <p>
+            Performance isn't just a technical checkbox for us — it's a core part of the user experience. When you want to know today's answer, you don't want to wait for a spinner or watch a progress bar. You want the answer, now. Our sub-200ms page loads and zero-JavaScript-first approach mean that the answer is on your screen almost before you've finished navigating to the page. That's not an accident; it's a deliberate design decision we made from day one.
+          </p>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="prose card content-card animate-fade-in-up">
+          <h2>Frequently Asked Questions</h2>
+
+          <details class="faq-item">
+            <summary class="faq-question">How are the daily answers generated?</summary>
+            <div class="faq-answer">
+              <p>We run the exact same algorithms that the original Colordle and Colorfle games use. Both games use deterministic processes — meaning the same date always produces the same answer. We've ported the game logic (including hash functions, seeded random number generators, and filtering rules) into our backend. Our automated cron jobs compute new answers three times daily and store them in our database. No manual input, no guessing — just math.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">Are you affiliated with the creators of Colordle or Colorfle?</summary>
+            <div class="faq-answer">
+              <p>No, we are an independent, unofficial resource. We are not endorsed by, connected to, or affiliated with Ryan Tanen (creator of Colordle) or the creators of Colorfle. We're fans who built a tool for other fans. We always encourage people to play the original games and support their creators.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">Why do you use IST (Indian Standard Time) for answer updates?</summary>
+            <div class="faq-answer">
+              <p>The original Colordle game updates at midnight IST, and Colorfle's puzzle rolls over at 5:00 PM IST. Since our goal is to match the official games exactly, we follow the same timezone. We know this can be confusing for players in other timezones, and we're working on making the timezone display clearer on the site. For now, we always show the date the answer applies to, so you can tell whether the new day's answer has appeared yet.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">What should I do if an answer looks wrong?</summary>
+            <div class="faq-answer">
+              <p>First, double-check that you're looking at the correct date — timezone differences are the most common reason for apparent mismatches. If the date is right and the answer still seems incorrect, please contact us through our <a href="/contact">contact page</a> with the date, game type, what answer we're showing, and what you think the correct answer should be. We investigate all reports within 24 hours and fix any genuine errors immediately.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">Can I access past answers?</summary>
+            <div class="faq-answer">
+              <p>Yes! We maintain a complete archive for both Colordle and Colorfle going back to each game's launch date. For Colordle, that's every answer since March 26, 2022. For Colorfle, every answer since April 25, 2022. You can browse the archive using the calendar picker on each game's archive page, making it easy to look up any historical answer.</p>
+            </div>
+          </details>
         </section>
 
         <!-- CTA -->
@@ -443,6 +532,60 @@ const structuredData = {
     color: var(--text-secondary);
   }
 
+  /* ═══ FAQ Section ═══ */
+  .faq-item {
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    margin-bottom: 10px;
+    background: var(--bg-primary);
+  }
+
+  .faq-question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 24px;
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    list-style: none;
+    transition: color var(--duration-fast) ease;
+    user-select: none;
+  }
+
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-question::marker {
+    display: none;
+    content: '';
+  }
+
+  .faq-question:hover {
+    color: var(--accent-color);
+  }
+
+  .faq-item[open] .faq-question {
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .faq-answer {
+    padding: 20px 24px 24px;
+    font-size: 0.94rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  .faq-answer p:last-child {
+    margin-bottom: 0;
+  }
+
   /* ═══ CTA Section ═══ */
   .cta-section {
     margin-top: 8px;
@@ -529,6 +672,15 @@ const structuredData = {
     .cta-card h2 {
       font-size: 1.4rem;
     }
+
+    .faq-question {
+      padding: 16px 20px;
+      font-size: 0.95rem;
+    }
+
+    .faq-answer {
+      padding: 16px 20px 20px;
+    }
   }
 
   @media (max-width: 640px) {
@@ -548,6 +700,15 @@ const structuredData = {
     .tech-item {
       flex-direction: column;
       gap: 10px;
+    }
+
+    .faq-question {
+      padding: 14px 16px;
+      font-size: 0.9rem;
+    }
+
+    .faq-answer {
+      padding: 14px 16px 18px;
     }
   }
 </style>

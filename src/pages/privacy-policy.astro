@@ -3,10 +3,10 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout
-  title="Privacy Policy"
+  title="Privacy Policy - Data Protection & Cookie Info | Color Answers Hub"
   canonicalUrl="/privacy-policy"
   description="Privacy Policy for Color Answers Hub. Learn how we handle data, cookies, and analytics on our Colordle and Colorfle daily answer site. We collect minimal data — no accounts, no personal information."
-/>
+>
 
 <div class="privacy-page">
   <div class="container">
@@ -47,10 +47,12 @@ import Layout from '../layouts/Layout.astro';
           <li>Social security numbers or government-issued identification numbers</li>
           <li>Precise geolocation data</li>
           <li>Information about your race, ethnicity, political opinions, religious beliefs, or health data</li>
-          <li>Any data you input into forms (we have no forms on our site)</li>
+          <li>Any data you input into forms (we have no forms on our main site)</li>
+          <li>Browsing history across other websites or cross-site tracking data</li>
+          <li>Device fingerprints or unique device identifiers</li>
         </ul>
         <p>
-          Our website is a simple, static content site designed to display daily game answers. The architecture of the site reflects this simplicity in its data practices.
+          Our website is a simple, static content site designed to display daily game answers. The architecture of the site reflects this simplicity in its data practices. We believe that a site which exists to display daily puzzle answers has no legitimate need to collect personal information from its visitors, and our entire technical architecture is designed around that principle.
         </p>
 
         <h2 id="how-we-use-information">3. How We Use Information</h2>
@@ -58,13 +60,13 @@ import Layout from '../layouts/Layout.astro';
           Given that we collect virtually no personal information, our use of information is extremely limited. The anonymized, aggregated analytics data we receive through Cloudflare is used exclusively for the following purposes:
         </p>
         <ul>
-          <li><strong>Site performance monitoring:</strong> We review aggregate traffic patterns to ensure our website loads quickly and reliably for all visitors. This includes monitoring page load times, server response times, and error rates.</li>
-          <li><strong>Content improvement:</strong> Understanding which pages and answers are most frequently visited helps us prioritize content updates and ensure that our daily answers are published on time and accurately.</li>
-          <li><strong>Technical troubleshooting:</strong> If we receive reports of site issues, aggregated analytics can help us identify whether the problem is widespread or isolated to specific browsers, devices, or regions.</li>
-          <li><strong>Security protection:</strong> Cloudflare provides security features that help protect our site from malicious traffic, distributed denial-of-service attacks, and other threats. Analytics related to these protections help us maintain a safe and stable website.</li>
+          <li><strong>Site performance monitoring:</strong> We review aggregate traffic patterns to ensure our website loads quickly and reliably for all visitors. This includes monitoring page load times, server response times, and error rates. Understanding when traffic peaks occur (for example, right after midnight IST when the new daily answers are published) helps us ensure our infrastructure can handle the load.</li>
+          <li><strong>Content improvement:</strong> Understanding which pages and answers are most frequently visited helps us prioritize content updates and ensure that our daily answers are published on time and accurately. If we notice that a particular game's answer page receives significantly more traffic, we can allocate more attention to ensuring that game's answers are always current and correct.</li>
+          <li><strong>Technical troubleshooting:</strong> If we receive reports of site issues, aggregated analytics can help us identify whether the problem is widespread or isolated to specific browsers, devices, or regions. This diagnostic information helps us resolve problems more efficiently than we could through guesswork alone.</li>
+          <li><strong>Security protection:</strong> Cloudflare provides security features that help protect our site from malicious traffic, distributed denial-of-service attacks, and other threats. Analytics related to these protections help us maintain a safe and stable website for all visitors.</li>
         </ul>
         <p>
-          We do not use any information to build individual profiles, serve targeted advertisements, or make automated decisions about any person. We do not sell, rent, trade, or otherwise share any data with third parties for marketing or commercial purposes.
+          We do not use any information to build individual profiles, serve targeted advertisements, or make automated decisions about any person. We do not sell, rent, trade, or otherwise share any data with third parties for marketing or commercial purposes. The analytics data we review is always in aggregate form — we never examine individual visitor sessions or attempt to identify specific users.
         </p>
 
         <h2 id="cookies-and-tracking">4. Cookies and Tracking</h2>
@@ -75,11 +77,11 @@ import Layout from '../layouts/Layout.astro';
           The only cookies that may be set on your device are those required for the essential functioning of our website and its infrastructure:
         </p>
         <ul>
-          <li><strong>Cloudflare infrastructure cookies:</strong> Cloudflare, our hosting and security provider, may set essential cookies such as <code>__cfduid</code> and <code>__cfbm</code> to manage security features, bot protection, and rate limiting. These cookies are necessary for the safe operation of our website and cannot be disabled without affecting your ability to access the site.</li>
-          <li><strong>Cloudflare Web Analytics:</strong> We use Cloudflare Web Analytics, which is a privacy-first analytics service. It does not use client-side cookies or localStorage to track individual users across sessions or websites. Cloudflare Web Analytics uses a privacy-respecting approach that does not require cookie consent banners under GDPR or similar regulations because it does not store or process personal data.</li>
+          <li><strong>Cloudflare infrastructure cookies:</strong> Cloudflare, our hosting and security provider, may set essential cookies such as <code>__cfduid</code> and <code>__cfbm</code> to manage security features, bot protection, and rate limiting. These cookies are necessary for the safe operation of our website and cannot be disabled without affecting your ability to access the site. These cookies do not contain personal information — they are randomized tokens used for security purposes.</li>
+          <li><strong>Cloudflare Web Analytics:</strong> We use Cloudflare Web Analytics, which is a privacy-first analytics service. It does not use client-side cookies or localStorage to track individual users across sessions or websites. Cloudflare Web Analytics uses a privacy-respecting approach that does not require cookie consent banners under GDPR or similar regulations because it does not store or process personal data. The analytics are collected server-side at the edge, meaning no tracking scripts run in your browser for analytics purposes.</li>
         </ul>
         <p>
-          Because we do not use non-essential cookies, you do not need to manage cookie preferences or consent on our website. If you wish to block all cookies, you can do so through your browser settings. However, blocking Cloudflare's essential cookies may prevent you from accessing our website properly, as they are integral to our site's security infrastructure.
+          Because we do not use non-essential cookies, you do not need to manage cookie preferences or consent on our website. There are no cookie consent banners because there are no cookies to consent to beyond the essential infrastructure ones. If you wish to block all cookies, you can do so through your browser settings. However, blocking Cloudflare's essential cookies may prevent you from accessing our website properly, as they are integral to our site's security infrastructure.
         </p>
 
         <h2 id="third-party-services">5. Third-Party Services</h2>
@@ -106,7 +108,7 @@ import Layout from '../layouts/Layout.astro';
           If you prefer not to have your browser make requests to Google's servers, you can use browser extensions or settings to block external font loading. This may affect the visual appearance of our website but will not impact its functionality or content.
         </p>
         <p>
-          We do not integrate any other third-party services, scripts, or tracking mechanisms into our website. We do not use Google Analytics, Facebook Pixel, advertising networks, or social media tracking tools.
+          We do not integrate any other third-party services, scripts, or tracking mechanisms into our website. We do not use Google Analytics, Facebook Pixel, advertising networks, or social media tracking tools. Our third-party service footprint is intentionally kept as small as possible.
         </p>
 
         <h2 id="data-security">6. Data Security</h2>
@@ -116,9 +118,9 @@ import Layout from '../layouts/Layout.astro';
         <ul>
           <li><strong>HTTPS encryption:</strong> Our entire website is served over HTTPS, which means all data transmitted between your browser and our servers is encrypted using TLS (Transport Layer Security). This prevents third parties from intercepting or tampering with data in transit.</li>
           <li><strong>Cloudflare D1 encryption:</strong> For any server-side data storage (such as answer databases used to generate content), we use Cloudflare D1, which provides encryption at rest. All data stored in D1 is encrypted using AES-256 encryption, ensuring that even if physical storage were compromised, the data would remain unreadable without proper decryption keys.</li>
-          <li><strong>No personal data storage:</strong> Because we do not collect personal data, there is fundamentally less risk associated with a potential security incident. Our databases contain only game answer data and do not store any personally identifiable information.</li>
-          <li><strong>Cloudflare security features:</strong> Our site benefits from Cloudflare's built-in security protections, including DDoS mitigation, bot management, and web application firewall rules that help prevent common attack vectors.</li>
-          <li><strong>Static site architecture:</strong> Our website is primarily static, meaning that most pages are pre-built HTML files served directly from Cloudflare's edge network. This architecture significantly reduces the attack surface compared to dynamic web applications with server-side processing.</li>
+          <li><strong>No personal data storage:</strong> Because we do not collect personal data, there is fundamentally less risk associated with a potential security incident. Our databases contain only game answer data and do not store any personally identifiable information. This architectural decision means that even a worst-case security breach would expose no personal visitor data.</li>
+          <li><strong>Cloudflare security features:</strong> Our site benefits from Cloudflare's built-in security protections, including DDoS mitigation, bot management, and web application firewall rules that help prevent common attack vectors such as SQL injection, cross-site scripting, and other web-based threats.</li>
+          <li><strong>Static site architecture:</strong> Our website is primarily static, meaning that most pages are pre-built HTML files served directly from Cloudflare's edge network. This architecture significantly reduces the attack surface compared to dynamic web applications with server-side processing, database queries, and user input handling.</li>
         </ul>
         <p>
           While no system can be completely immune to security vulnerabilities, the combination of our minimal data practices and robust infrastructure security measures means that the risk to visitors is extremely low. In the unlikely event of a security incident, we would take immediate action to address the issue and notify affected users if any personal data were compromised (though, as stated, we do not collect personal data).
@@ -129,56 +131,75 @@ import Layout from '../layouts/Layout.astro';
           Color Answers Hub is a general-audience website that provides daily answers for color guessing games. Our content is not specifically directed at children under the age of 13, and we do not knowingly collect personal information from children under 13 years of age. Because we do not operate user accounts, registration forms, or any interactive features that collect personal data, there is no mechanism through which a child could provide us with personal information.
         </p>
         <p>
-          We comply with the Children's Online Privacy Protection Act (COPPA) by not collecting personal information from children. If you are a parent or guardian and believe that your child has somehow provided personal information to us (which would be unusual given our site's design), please contact us immediately using the information provided in Section 10, and we will take steps to address the situation.
+          We comply with the Children's Online Privacy Protection Act (COPPA) by not collecting personal information from children. If you are a parent or guardian and believe that your child has somehow provided personal information to us (which would be unusual given our site's design), please contact us immediately using the information provided in Section 10, and we will take steps to address the situation promptly.
         </p>
         <p>
-          We encourage parents and guardians to monitor their children's internet usage and to discuss online safety practices. While our site is safe for visitors of all ages, we recommend that children always browse the internet with appropriate parental guidance.
+          We encourage parents and guardians to monitor their children's internet usage and to discuss online safety practices. While our site is safe for visitors of all ages — we display no adult content, no advertisements for restricted products, and no links to harmful websites — we recommend that children always browse the internet with appropriate parental guidance.
         </p>
 
         <h2 id="your-rights">8. Your Rights</h2>
         <p>
-          Even though we do not collect personal data, we respect your privacy rights under applicable data protection laws. Depending on your jurisdiction, you may have certain rights regarding your personal data. Below is a summary of the most relevant rights:
+          Even though we do not collect personal data, we respect your privacy rights under applicable data protection laws. Depending on your jurisdiction, you may have certain rights regarding your personal data. We take these rights seriously and are committed to facilitating their exercise, even though the practical impact is minimal given our data practices. Below is a summary of the most relevant rights:
         </p>
         <h3>8.1 GDPR (European Union)</h3>
         <p>
           If you are a resident of the European Union or the European Economic Area, you have the following rights under the General Data Protection Regulation (GDPR):
         </p>
         <ul>
-          <li><strong>Right of access:</strong> You have the right to request confirmation of whether we process your personal data and, if so, to obtain a copy of that data.</li>
-          <li><strong>Right to rectification:</strong> You have the right to request correction of any inaccurate personal data we hold about you.</li>
-          <li><strong>Right to erasure:</strong> You have the right to request deletion of your personal data under certain circumstances.</li>
-          <li><strong>Right to restriction:</strong> You have the right to request that we restrict the processing of your personal data under certain circumstances.</li>
-          <li><strong>Right to data portability:</strong> You have the right to receive your personal data in a structured, commonly used, and machine-readable format.</li>
-          <li><strong>Right to object:</strong> You have the right to object to the processing of your personal data under certain circumstances.</li>
+          <li><strong>Right of access (Article 15):</strong> You have the right to request confirmation of whether we process your personal data and, if so, to obtain a copy of that data, along with information about the purposes of processing, the categories of data concerned, and the recipients or categories of recipients to whom the data has been or will be disclosed.</li>
+          <li><strong>Right to rectification (Article 16):</strong> You have the right to request correction of any inaccurate personal data we hold about you, and the right to have incomplete personal data completed.</li>
+          <li><strong>Right to erasure (Article 17):</strong> You have the right to request deletion of your personal data under certain circumstances, including when the data is no longer necessary for the purposes for which it was collected, when you withdraw consent, or when the data has been unlawfully processed.</li>
+          <li><strong>Right to restriction (Article 18):</strong> You have the right to request that we restrict the processing of your personal data under certain circumstances, such as when you contest the accuracy of the data or when you have objected to processing pending the verification of legitimate grounds.</li>
+          <li><strong>Right to data portability (Article 20):</strong> You have the right to receive your personal data in a structured, commonly used, and machine-readable format, and the right to transmit that data to another controller without hindrance.</li>
+          <li><strong>Right to object (Article 21):</strong> You have the right to object to the processing of your personal data under certain circumstances, including processing based on legitimate interests or processing for direct marketing purposes.</li>
           <li><strong>Right to withdraw consent:</strong> Where processing is based on consent, you have the right to withdraw that consent at any time without affecting the lawfulness of processing carried out prior to withdrawal.</li>
+          <li><strong>Right to lodge a complaint (Article 77):</strong> You have the right to lodge a complaint with a supervisory authority in the EU member state where you reside, work, or where an alleged infringement of the GDPR took place.</li>
         </ul>
         <p>
-          Because we do not collect or store personal data, exercising these rights is straightforward — we have no personal data to access, correct, delete, or port. However, if you believe that Cloudflare's infrastructure processing involves your personal data in a way that concerns you, you may contact Cloudflare directly or contact us and we will assist you.
+          Because we do not collect or store personal data, exercising these rights is straightforward — we have no personal data to access, correct, delete, or port. However, if you believe that Cloudflare's infrastructure processing involves your personal data in a way that concerns you, you may contact Cloudflare directly or contact us and we will assist you in navigating the process.
         </p>
         <h3>8.2 CCPA (California, United States)</h3>
         <p>
           If you are a resident of California, you have certain rights under the California Consumer Privacy Act (CCPA), as amended by the California Privacy Rights Act (CPRA):
         </p>
         <ul>
-          <li><strong>Right to know:</strong> You have the right to know what personal information we collect, how we use it, and to whom we disclose it.</li>
-          <li><strong>Right to delete:</strong> You have the right to request deletion of your personal information.</li>
-          <li><strong>Right to opt out of sale:</strong> You have the right to opt out of the sale of your personal information. We do not sell personal information.</li>
-          <li><strong>Right to non-discrimination:</strong> We will not discriminate against you for exercising any of your CCPA rights.</li>
+          <li><strong>Right to know:</strong> You have the right to know what personal information we collect, how we use it, and to whom we disclose it. This right includes the right to request disclosure of the specific pieces of personal information we have collected about you.</li>
+          <li><strong>Right to delete:</strong> You have the right to request deletion of your personal information, with certain exceptions as permitted by law (such as information needed to complete a transaction or comply with legal obligations).</li>
+          <li><strong>Right to opt out of sale:</strong> You have the right to opt out of the sale of your personal information. We do not sell personal information, have never sold personal information, and will not sell personal information in the future. There is nothing to opt out of in this regard.</li>
+          <li><strong>Right to non-discrimination:</strong> We will not discriminate against you for exercising any of your CCPA rights. You will not receive a different quality of service or be charged different prices because you exercised a privacy right.</li>
+          <li><strong>Right to limit use of sensitive personal information:</strong> Under the CPRA, you have the right to limit the use and disclosure of sensitive personal information. We do not collect sensitive personal information, so this right does not apply to our practices but is acknowledged here for completeness.</li>
         </ul>
         <p>
-          Given that we do not collect, sell, or share personal information, there is no personal data for you to request, delete, or opt out of sharing. We have never sold personal information and will never do so in the future.
+          Given that we do not collect, sell, or share personal information, there is no personal data for you to request, delete, or opt out of sharing. We have never sold personal information and will never do so in the future. Our business model does not depend on user data in any way.
         </p>
         <h3>8.3 Other Jurisdictions</h3>
         <p>
-          If you are located in a jurisdiction with its own data protection laws (such as Brazil's LGPD, Canada's PIPEDA, or the UK's Data Protection Act), you may have similar rights. Please contact us using the information in Section 10 if you wish to exercise any data protection rights, and we will respond in accordance with applicable law.
+          If you are located in a jurisdiction with its own data protection laws, you may have similar rights to those described above. Some notable examples include:
+        </p>
+        <ul>
+          <li><strong>Brazil (LGPD):</strong> The Lei Geral de Proteção de Dados provides rights similar to GDPR, including the right to confirm the existence of processing, access data, correct inaccurate data, anonymize or delete data, port data, and revoke consent.</li>
+          <li><strong>Canada (PIPEDA):</strong> The Personal Information Protection and Electronic Documents Act grants individuals the right to access their personal information held by organizations and to challenge its accuracy.</li>
+          <li><strong>United Kingdom (UK GDPR and Data Protection Act 2018):</strong> Following Brexit, the UK adopted its own version of GDPR with substantially similar rights, including access, rectification, erasure, restriction, portability, and objection.</li>
+          <li><strong>India (Digital Personal Data Protection Act 2023):</strong> India's data protection law provides rights including access, correction, and erasure of personal data, and the right to nominate another individual to exercise these rights in the event of death or incapacity.</li>
+        </ul>
+        <p>
+          Please contact us using the information in Section 10 if you wish to exercise any data protection rights under any applicable law, and we will respond in accordance with the relevant legal requirements and timelines.
         </p>
 
-        <h2 id="changes-to-this-policy">9. Changes to This Policy</h2>
+        <h2 id="data-retention">9. Data Retention</h2>
+        <p>
+          Since we do not collect personal data from visitors, data retention is not a significant concern for our website. The only data we store consists of game answers and related content, which is not personal data and is retained indefinitely for archival purposes. Cloudflare's infrastructure logs, which may temporarily contain IP addresses for security and routing purposes, are retained according to Cloudflare's own data retention policies, which are designed to minimize the period during which such data is stored. Cloudflare typically purges such logs within a short timeframe and does not use them for tracking or profiling purposes.
+        </p>
+        <p>
+          We have no databases containing personal information, no user records to retain or delete, and no session data that persists beyond your visit. When you close your browser tab, your interaction with our site is effectively complete — there is no residual personal data footprint for us to manage.
+        </p>
+
+        <h2 id="changes-to-this-policy">10. Changes to This Policy</h2>
         <p>
           We may update this Privacy Policy from time to time to reflect changes in our practices, technology, legal requirements, or other factors. When we make changes, we will update the "Last updated" date at the top of this page to indicate when the most recent revision took effect.
         </p>
         <p>
-          If we make material changes to this Privacy Policy that significantly affect how we handle data, we will provide notice on our website homepage or through other appropriate means before the changes take effect. For less significant changes, such as clarifications or formatting updates, we may simply update the policy without separate notification.
+          If we make material changes to this Privacy Policy that significantly affect how we handle data — for example, if we were to introduce user accounts, begin collecting personal information, or integrate new third-party services that process visitor data — we will provide notice on our website homepage or through other appropriate means before the changes take effect. For less significant changes, such as clarifications, formatting updates, or additions of new jurisdictions to the rights section, we may simply update the policy without separate notification.
         </p>
         <p>
           We encourage you to review this Privacy Policy periodically to stay informed about how we protect your privacy. Your continued use of our website after any changes to this policy constitutes your acceptance of the updated terms. If you do not agree with any changes, you should discontinue use of the website.
@@ -187,7 +208,7 @@ import Layout from '../layouts/Layout.astro';
           Previous versions of this Privacy Policy are not archived or publicly available. The version displayed on this page is always the current and governing version.
         </p>
 
-        <h2 id="contact-information">10. Contact Information</h2>
+        <h2 id="contact-information">11. Contact Information</h2>
         <p>
           If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, we welcome you to reach out to us. We are committed to responding to all legitimate inquiries in a timely and thorough manner.
         </p>
@@ -196,13 +217,13 @@ import Layout from '../layouts/Layout.astro';
           <li><strong>Contact Page:</strong> <a href="/contact">color-answers.pages.dev/contact</a></li>
         </ul>
         <p>
-          For data protection inquiries, please include "Privacy Inquiry" in the subject line of your message so that we can prioritize your request appropriately. We aim to respond to all privacy-related inquiries within 30 days, in accordance with GDPR requirements.
+          For data protection inquiries, please include "Privacy Inquiry" in the subject line of your message so that we can prioritize your request appropriately. We aim to respond to all privacy-related inquiries within 30 days, in accordance with GDPR requirements. For urgent security concerns, we aim to respond within 72 hours.
         </p>
         <p>
-          If you are not satisfied with our response to a privacy concern, you have the right to lodge a complaint with a supervisory authority in your jurisdiction. For EU residents, this would be the data protection authority in your member state. For California residents, you may contact the California Attorney General's office.
+          If you are not satisfied with our response to a privacy concern, you have the right to lodge a complaint with a supervisory authority in your jurisdiction. For EU residents, this would be the data protection authority in your member state (a list of EU data protection authorities is available at <a href="https://www.edpb.europa.eu/about-edpb/about-edpb/members_en" target="_blank" rel="noopener">edpb.europa.eu</a>). For California residents, you may contact the California Attorney General's office through their website at <a href="https://oag.ca.gov/privacy" target="_blank" rel="noopener">oag.ca.gov/privacy</a>. For UK residents, the relevant authority is the Information Commissioner's Office (ICO) at <a href="https://ico.org.uk" target="_blank" rel="noopener">ico.org.uk</a>.
         </p>
         <p>
-          Thank you for visiting Color Answers Hub. We are committed to maintaining a simple, transparent, and privacy-respecting website. Our minimal data practices reflect our core belief that you should be able to access daily game answers without sacrificing your privacy.
+          Thank you for visiting Color Answers Hub. We are committed to maintaining a simple, transparent, and privacy-respecting website. Our minimal data practices reflect our core belief that you should be able to access daily game answers without sacrificing your privacy. In an era where data collection has become the default, we're proud to offer an alternative: a useful service that asks nothing of you and takes nothing from you.
         </p>
 
       </div>
@@ -232,7 +253,7 @@ import Layout from '../layouts/Layout.astro';
     letter-spacing: 0.02em;
     background: var(--accent-gradient-subtle);
     color: var(--accent-color);
-    border: 1px solid rgba(91, 95, 230, 0.12);
+    border: 1px solid rgba(37, 99, 235, 0.12);
     margin-bottom: 20px;
   }
 

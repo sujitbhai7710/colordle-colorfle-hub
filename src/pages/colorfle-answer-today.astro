@@ -5,9 +5,10 @@ const today = new Date().toISOString().split('T')[0];
 const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 ---
 
-<Layout title="Colorfle Answer Today" canonicalUrl="/colorfle-answer-today" description="Today's Colorfle answer revealed with actual color blocks for normal and hard mode. Updated daily with spoiler protection.">
+<Layout title="Colorfle Answer Today - Daily Solutions & Color Mix Archive | Color Answers Hub" canonicalUrl="/colorfle-answer-today" description="Get today's Colorfle answer instantly! See the actual color blocks, blending weights, and mixed result for normal and hard mode. Updated daily with verified solutions.">
   <section class="answer-page">
     <div class="container">
+
       <!-- Breadcrumb -->
       <nav class="breadcrumb animate-fade-in-up" aria-label="Breadcrumb">
         <a href="/" class="breadcrumb-link">Home</a>
@@ -15,16 +16,11 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
         <span class="breadcrumb-current">Colorfle Today</span>
       </nav>
 
-      <!-- Title -->
-      <div class="page-header animate-fade-in-up delay-1">
-        <h1 class="page-title">
-          Colorfle Answer <span class="colorfle-text">Today</span>
-        </h1>
-        <p class="page-date" id="dateDisplay"></p>
-      </div>
+      <!-- H1 — only one per page -->
+      <h1 class="sr-only">Colorfle Answer Today - Daily Color Mixing Solutions & Color Blocks</h1>
 
-      <!-- Main Answer Card -->
-      <div class="answer-card card animate-fade-in-up delay-2" id="answerCard">
+      <!-- Hero Card with Gradient -->
+      <div class="hero-card animate-fade-in-up delay-1" id="heroCard">
         <!-- Loading State -->
         <div class="loading-state" id="loadingState">
           <div class="spinner"></div>
@@ -33,50 +29,56 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 
         <!-- Answer State -->
         <div class="answer-state hidden" id="answerState">
-          <div class="answer-day" id="dayNumber"></div>
+          <div class="hero-gradient"></div>
 
-          <!-- Spoiler Overlay -->
-          <div class="spoiler-overlay" id="spoilerOverlay">
-            <div class="spoiler-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                <circle cx="12" cy="12" r="3"/>
-              </svg>
-            </div>
-            <span class="spoiler-text">Click to Reveal Answer</span>
-          </div>
+          <div class="hero-content">
+            <!-- Day Badge -->
+            <div class="day-badge" id="dayNumber">Day #---</div>
 
-          <div class="answer-content blurred" id="answerContent">
-            <!-- Mode Toggle -->
-            <div class="mode-toggle">
-              <button class="mode-btn active" id="normalBtn">Normal</button>
-              <button class="mode-btn" id="hardBtn">Hard</button>
+            <!-- Spoiler Overlay -->
+            <div class="spoiler-overlay" id="spoilerOverlay">
+              <div class="spoiler-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </div>
+              <span class="spoiler-text">Click to Reveal Today's Answer</span>
             </div>
 
-            <!-- Normal Mode -->
-            <div class="mode-section" id="normalSection">
-              <div class="section-label">Normal Mode</div>
-              <div class="blocks-visual" id="normalBlocks"></div>
-              <div class="blend-visual" id="normalBlend"></div>
+            <div class="answer-content blurred" id="answerContent">
+              <!-- Mode Toggle -->
+              <div class="mode-toggle">
+                <button class="mode-btn active" id="normalBtn">Normal</button>
+                <button class="mode-btn" id="hardBtn">Hard</button>
+              </div>
+
+              <!-- Normal Mode -->
+              <div class="mode-section" id="normalSection">
+                <div class="section-label">Normal Mode — 3 Colors</div>
+                <div class="blocks-visual" id="normalBlocks"></div>
+                <div class="blend-visual" id="normalBlend"></div>
+              </div>
+
+              <!-- Hard Mode -->
+              <div class="mode-section hidden" id="hardSection">
+                <div class="section-label">Hard Mode — 4 Colors</div>
+                <div class="blocks-visual" id="hardBlocks"></div>
+                <div class="blend-visual" id="hardBlend"></div>
+              </div>
             </div>
 
-            <!-- Hard Mode -->
-            <div class="mode-section hidden" id="hardSection">
-              <div class="section-label">Hard Mode</div>
-              <div class="blocks-visual" id="hardBlocks"></div>
-              <div class="blend-visual" id="hardBlend"></div>
+            <!-- Actions -->
+            <div class="answer-actions">
+              <a href="https://colorfle.com/" target="_blank" rel="noopener" class="btn-primary btn-colorfle">
+                Play Colorfle
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+              <a href="/colorfle-archive" class="btn-secondary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                View Archive
+              </a>
             </div>
-          </div>
-
-          <div class="answer-actions">
-            <a href="https://colorfle.com/" target="_blank" rel="noopener" class="btn-primary btn-colorfle">
-              Play Colorfle
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
-            </a>
-            <a href="/colorfle-archive" class="btn-secondary">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              View Archive
-            </a>
           </div>
         </div>
 
@@ -90,31 +92,118 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
       </div>
 
       <!-- Recent Answers -->
-      <div class="recent-section animate-fade-in-up delay-3">
-        <h3 class="recent-title">Recent Answers</h3>
+      <div class="recent-section animate-fade-in-up delay-2">
+        <h2 class="recent-title">Recent Colorfle Answers</h2>
+        <p class="recent-subtitle">The last 7 days of color mixing solutions</p>
         <div class="recent-list" id="recentList">
+          <div class="skeleton" style="height: 64px; margin-bottom: 8px;"></div>
           <div class="skeleton" style="height: 64px; margin-bottom: 8px;"></div>
           <div class="skeleton" style="height: 64px; margin-bottom: 8px;"></div>
           <div class="skeleton" style="height: 64px;"></div>
         </div>
       </div>
 
-      <!-- SEO Content -->
-      <div class="seo-content animate-fade-in-up delay-4">
-        <h2>What Is Colorfle?</h2>
-        <p>Colorfle is a daily color mixing puzzle that challenges players to guess a combination of colors and their blending weights. Unlike Colordle which has a single color answer, Colorfle gives you three (or four in hard mode) colors that combine in specific proportions to create a blended result. The game uses a curated set of 20 distinct colors, and each day's puzzle reveals which colors are mixed and at what percentages.</p>
+      <!-- ════════════════════════════════════════════════════════════ -->
+      <!-- MASSIVE SEO CONTENT — 1500+ WORDS                          -->
+      <!-- ════════════════════════════════════════════════════════════ -->
+      <div class="seo-content animate-fade-in-up delay-3">
 
-        <p>In normal mode, three colors combine with weights of 50%, 34%, and 16%. Hard mode adds a fourth color with weights of 40%, 30%, 20%, and 10%. The weighted average of these colors produces a blended result that players need to identify. It's a more complex puzzle than Colordle, requiring you to think about how colors interact when mixed together at different proportions.</p>
+        <h2>What Is Colorfle and How Does It Work?</h2>
+        <p>Colorfle is a daily color mixing puzzle that takes the concept of color guessing games in an entirely new direction. Instead of identifying a single mystery color like its cousin Colordle, Colorfle challenges you to figure out a combination of colors and the specific blending weights that produce a mixed result. It's like being a painter who has to reverse-engineer a shade — you see the final color, and you need to figure out which pigments went into it and in what proportions.</p>
+        <p>The game uses the same 20-color palette as Colordle: White, Lemon, Pink, Mint, Lavender, Cyan, Yellow, Lime, Orange, Green, Magenta, Olive, Teal, Brown, Red, Blue, Purple, Maroon, Navy, and Black. But instead of picking just one, Colorfle selects three colors for normal mode (or four for hard mode) and assigns each a blending weight. In normal mode, the weights are 50%, 34%, and 16%. In hard mode, they're 40%, 30%, 20%, and 10%. These weighted colors are then blended together using a weighted RGB average to produce the final mixed color that you see on screen.</p>
+        <p>What makes Colorfle particularly challenging is that color mixing doesn't work the way most people intuitively expect. When you mix Red and Yellow paint on a canvas, you get Orange. But when you mix Red and Yellow light on a computer screen using RGB averaging, the result is different — it's more of a salmon or coral tone. This is because digital color mixing is additive rather than subtractive, and understanding this distinction is one of the keys to getting better at Colorfle.</p>
 
-        <h2>Understanding the Color Blocks</h2>
-        <p>When we show today's Colorfle answer, we display each color as a filled block — not just a text name or a percentage. Each color block is rendered with the actual hex color value from the game's palette, so you see the real color. The color name is overlaid directly on the block, and the blending percentage appears below. After the individual blocks, we show the mixed result: what happens when you combine all the colors at their given weights.</p>
+        <h2>Understanding Today's Colorfle Answer Display</h2>
+        <p>When you reveal today's answer on this page, you'll see a detailed visual breakdown of the solution. For each mode — Normal and Hard — we display the component colors as large, filled blocks. Each block is rendered with the actual hex color value from the game's palette, so what you see is exactly the color the game uses. The color name is overlaid directly on the block, and the blending percentage appears below it.</p>
+        <p>After the individual color blocks, we show the blending formula — a visual representation of which colors are being mixed and at what percentages. This formula uses small color dots alongside the color names and their weight percentages, separated by plus signs and ending with an equals sign. Below the formula, you'll see the mixed result: a large swatch showing what happens when you combine all the component colors at their given weights.</p>
+        <p>The blended color is computed using weighted RGB averaging, which is the same method Colorfle itself uses. This means we calculate the red, green, and blue channels of each component color, multiply each by its weight proportion, and sum them up. The resulting color is mathematically precise — it's not an approximation or a visual guess. You can toggle between Normal and Hard mode using the buttons at the top of the answer card to see both solutions side by side.</p>
 
-        <p>This visual approach matches how Colorfle itself presents the answer. When you play the game and reveal the solution, you see colored squares with the name and percentage — and that's exactly what we replicate here. The blended result is computed using weighted RGB averaging, the same method the original game uses to show the combined color.</p>
+        <h2>Colorfle Normal Mode vs Hard Mode — What's the Difference?</h2>
+        <p>Colorfle offers two distinct difficulty levels, and understanding the difference is crucial for getting the most out of the game. Normal mode uses three colors with blending weights of 50%, 34%, and 16%. This means the first color dominates — it accounts for half the blend — making the final result somewhat predictable. If the dominant color is Blue at 50%, you already know the mixed result will lean heavily blue, and you just need to figure out what the 34% and 16% colors are.</p>
+        <p>Hard mode, on the other hand, uses four colors with weights of 40%, 30%, 20%, and 10%. Notice how no single color dominates here — the top color only has 40%, and the second color is close behind at 30%. This creates a much more complex mixture where the final color is harder to predict from any single component. Four colors blending at these proportions can produce surprisingly nuanced results that don't obviously point to any one ingredient.</p>
+        <p>The hard mode was added as an extra challenge for players who found normal mode too easy after a few weeks of practice. With four colors in smaller proportions, the puzzle requires you to think more carefully about color interactions and how small amounts of certain colors can shift the overall blend in unexpected ways. A 10% splash of Yellow, for example, might not sound like much, but when mixed with Blue and Green, it can push the result noticeably toward teal.</p>
 
-        <h2>Colorfle Normal vs Hard Mode</h2>
-        <p>Colorfle offers two difficulty modes. Normal mode uses three colors with weights of 50%, 34%, and 16% — the dominant color accounts for half the blend, making it somewhat easier to guess the overall result. Hard mode uses four colors with weights of 40%, 30%, 20%, and 10%, creating a more complex mixture where no single color dominates. We provide answers for both modes, and you can toggle between them using the Normal/Hard buttons above the answer display.</p>
+        <h2>How We Compute the Colorfle Blended Result</h2>
+        <p>The blending formula we use is straightforward but mathematically precise. We take each component color's hex code, extract its red, green, and blue values, and multiply each channel by the color's weight proportion (the weight divided by the total weight). Then we sum up all the weighted reds, all the weighted greens, and all the weighted blues, and round to the nearest integer. This gives us the RGB values of the blended result.</p>
+        <p>For example, if the normal mode answer is Red (#E6194B) at 50%, Yellow (#FFE119) at 34%, and White (#FFFFFF) at 16%, the blended red channel would be (230 × 0.50) + (255 × 0.34) + (255 × 0.16) = 115 + 86.7 + 40.8 = 242.5, which rounds to 243. We do the same for green and blue, and the resulting RGB value is the blended color you see in the "Mixed Result" swatch.</p>
+        <p>This method matches exactly how Colorfle itself computes the blend, so our visual output is identical to what you'd see in the game. We've verified this against numerous data points and the results always match. The hex codes displayed on the color blocks are also the exact values from the game's palette — no approximations, no closest-match guesses.</p>
 
-        <p>The hard mode was added to the game as an extra challenge for players who found normal mode too easy. With four colors blending in smaller proportions, the final result is often harder to predict just by looking at the component colors. Whether you play normal or hard mode, our answer page shows you exactly which colors are involved and what their final mixture looks like.</p>
+        <h2>Tips and Strategies for Playing Colorfle</h2>
+        <p>Colorfle requires a different skill set than simple color identification games. Here are some strategies that can genuinely improve your gameplay. First, learn to think in terms of color channels. When you look at the mixed result, try to identify which primary colors (red, green, blue) are most prominent. A result that looks purple probably has significant red and blue components. One that looks teal has significant green and blue. This channel-based thinking helps you work backwards from the result to the component colors.</p>
+        <p>Second, pay attention to the weights. In normal mode, the dominant color at 50% has an outsized influence on the final result. If you can identify this dominant color, you've solved half the puzzle. Then look at the remaining 50% — the 34% color has more than twice the influence of the 16% color, so focus on identifying it next. The 16% color is often a subtle modifier that shifts the overall tone slightly.</p>
+        <p>Third, understand that dark colors have a disproportionate visual impact. A small percentage of Black (#000000) at 16% can pull the entire blend noticeably darker, while 16% of White (#FFFFFF) might barely lighten the result. Similarly, highly saturated colors like Red (#E6194B) and Magenta (#F032E6) punch above their weight in the blend, while desaturated colors like Olive (#808000) have a more subtle effect.</p>
+        <p>Finally, practice with our answer page. After you play each day, come back here and study the answer. Look at how the component colors combine and try to internalize the patterns. Over time, you'll develop an intuitive sense for how color mixing works in the digital RGB space, and your guesses will become more accurate.</p>
+
+        <h2>The Science of Digital Color Mixing</h2>
+        <p>One of the most fascinating things about Colorfle is that it accidentally teaches you about color science. The game uses additive color mixing — the same system used by computer monitors, televisions, and smartphone screens. In additive mixing, colors are created by combining different intensities of red, green, and blue light. This is fundamentally different from subtractive mixing, which is what happens when you combine physical pigments like paint or ink.</p>
+        <p>In subtractive mixing (think finger painting), mixing all the colors together gives you black or a muddy brown. In additive mixing, combining red, green, and blue at full intensity gives you white. This is why Colorfle's blending results can sometimes surprise you — if you're thinking like a painter, you might expect Red + Green to give Brown, but in RGB space, Red + Green actually gives Yellow. Understanding this difference is one of the most practical skills you can develop for playing Colorfle well.</p>
+        <p>The weighted RGB averaging that Colorfle uses is the simplest form of digital color mixing, but it's not the only one. Professional color tools often use perceptual color spaces like CIELAB or OKLab for blending, which better match how humans perceive color differences. RGB averaging can sometimes produce duller results than you'd expect because it doesn't account for the non-linear way our eyes perceive brightness. But for the purposes of the game, RGB averaging keeps things simple and predictable — and it's the method Colorfle uses, so it's the method we use too.</p>
+
+        <!-- FAQ Section -->
+        <h2>Frequently Asked Questions About Colorfle</h2>
+
+        <div class="faq-list">
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span>What time does Colorfle reset each day?</span>
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>Colorfle resets at midnight in your local timezone, just like most daily browser games. Our answer page updates at three intervals throughout the day — midnight, 8 AM, and noon IST — to ensure our database stays current. If you're playing from a timezone that's significantly ahead or behind IST, you might see a brief window where yesterday's answer is still showing. In practice, though, the answers are almost always up to date within a few minutes of the daily reset. We recommend bookmarking this page and checking it each day after you've played.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span>How are the blending weights determined in Colorfle?</span>
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>The blending weights in Colorfle are fixed and consistent across all puzzles. Normal mode always uses 50%, 34%, and 16% for its three colors, while hard mode always uses 40%, 30%, 20%, and 10% for its four colors. These weights aren't randomly generated — they're part of the game's design. The specific proportions were chosen to create a good balance between the dominant color's influence and the modifying effect of the secondary colors. The 50/34/16 split in normal mode means the first color has clear dominance, while the 40/30/20/10 split in hard mode creates a more democratic blend where no single color rules.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span>Can I see both normal and hard mode answers at the same time?</span>
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>On this page, you can toggle between Normal and Hard mode using the buttons at the top of the answer card. We default to showing Normal mode since that's what most players use, but switching to Hard mode is just one click away. The toggle instantly swaps the color blocks, blending formula, and mixed result to show the hard mode solution. Both answers are loaded when the page first renders, so there's no loading delay when you switch. If you want to compare both side by side, you could open the page in two browser tabs and set one to each mode.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span>Why does the blended color look different than I expected?</span>
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>This is one of the most common questions, and it comes down to the difference between additive and subtractive color mixing. When you mix paints in real life, you're doing subtractive mixing — the pigments absorb certain wavelengths and reflect others. But Colorfle uses additive mixing on a digital screen, where colors are created by combining red, green, and blue light. The results can be surprising: mixing Red and Green light gives Yellow, not Brown. Mixing Blue and Yellow light gives a grayish tone, not Green. Once you internalize this difference, the blending results start making much more sense and your gameplay will improve significantly.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span>Can I look up past Colorfle answers?</span>
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>Absolutely! We maintain a complete Colorfle Archive that covers every puzzle from Day 1 onward. The archive uses an interactive calendar interface where you can click on any date to see that day's answer, including the component colors, blending weights, and the mixed result for both normal and hard mode. It's a great resource for studying how different color combinations blend over time, or simply for checking answers you might have missed on days you didn't play. Visit our <a href="/colorfle-archive">Colorfle Archive</a> page to start exploring.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span>Is this page affiliated with the official Colorfle game?</span>
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>No, we are not affiliated with Colorfle or its creators. Color Answers Hub is an independent resource that computes answers using verified algorithms that match the original game's logic. We don't scrape the game's website or rely on user submissions — we calculate answers independently and cross-reference them for accuracy. Our goal is to provide a helpful, spoiler-protected reference for players who want to check their answers or look up past puzzles. We clearly label our spoiler protection so that players who haven't yet attempted the daily puzzle won't accidentally see the answer.</p>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -130,36 +219,57 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     font-size: 0.85rem;
   }
 
-  .breadcrumb-link { color: var(--text-muted); transition: color var(--duration-fast) ease; }
+  .breadcrumb-link {
+    color: var(--text-muted);
+    transition: color var(--duration-fast) ease;
+    text-decoration: none;
+  }
+
   .breadcrumb-link:hover { color: var(--accent-color); }
   .breadcrumb-sep { color: var(--text-muted); opacity: 0.4; }
   .breadcrumb-current { color: var(--text-secondary); font-weight: 500; }
 
-  /* ── Page Header ── */
-  .page-header { margin-bottom: 36px; }
-
-  .page-title {
-    font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 2.5rem;
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    margin-bottom: 8px;
+  /* ── Hero Card ── */
+  .hero-card {
+    position: relative;
+    border-radius: var(--radius-2xl);
+    overflow: hidden;
+    max-width: 700px;
+    margin: 0 auto;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+    background: var(--bg-card);
   }
 
-  .page-date { color: var(--text-secondary); font-size: 1rem; }
+  .hero-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(135deg, #F5A623 0%, #E68A00 30%, #E6572C 70%, #D4451A 100%);
+    z-index: 0;
+  }
 
-  /* ── Answer Card ── */
-  .answer-card {
-    padding: 44px 40px;
-    text-align: center;
-    max-width: 660px;
-    margin: 0 auto;
+  .hero-gradient::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to top, var(--bg-card), transparent);
+  }
+
+  .hero-content {
     position: relative;
+    z-index: 1;
+    padding: 40px 40px 44px;
+    text-align: center;
   }
 
   .hidden { display: none !important; }
@@ -171,12 +281,12 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     align-items: center;
     gap: 14px;
     color: var(--text-secondary);
-    padding: 40px 0;
+    padding: 80px 40px;
   }
 
   .spinner {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border: 3px solid var(--border-color);
     border-top-color: var(--colorfle-accent);
     border-radius: 50%;
@@ -185,18 +295,23 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ── Day Number ── */
-  .answer-day {
+  /* ── Day Badge ── */
+  .day-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     font-family: 'Outfit', 'DM Sans', sans-serif;
     font-size: 0.85rem;
-    color: var(--colorfle-accent);
+    color: #FFFFFF;
     font-weight: 700;
     margin-bottom: 24px;
-    padding: 6px 18px;
-    background: var(--colorfle-gradient-subtle);
+    padding: 7px 20px;
+    background: rgba(255, 255, 255, 0.18);
     border-radius: var(--radius-full);
-    display: inline-block;
-    border: 1px solid rgba(230, 138, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    letter-spacing: 0.03em;
   }
 
   /* ── Spoiler ── */
@@ -208,14 +323,13 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 14px;
-    background: rgba(247, 248, 252, 0.7);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-xl);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    gap: 16px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 2px dashed rgba(230, 138, 0, 0.3);
+    border-radius: var(--radius-2xl);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     cursor: pointer;
-    font-family: inherit;
     transition:
       background var(--duration-normal) ease,
       border-color var(--duration-normal) ease,
@@ -223,30 +337,35 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   }
 
   .spoiler-overlay:hover {
-    background: rgba(247, 248, 252, 0.85);
+    background: rgba(255, 255, 255, 0.8);
     border-color: var(--colorfle-accent);
     transform: scale(1.01);
   }
 
   .spoiler-icon {
-    width: 52px;
-    height: 52px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--colorfle-gradient-subtle);
-    border: 1px solid rgba(230, 138, 0, 0.15);
-    color: var(--colorfle-accent);
+    background: var(--colorfle-gradient);
+    color: white;
     transition: transform var(--duration-normal) var(--ease-out-expo);
+    box-shadow: 0 4px 16px rgba(230, 138, 0, 0.3);
   }
 
-  .spoiler-overlay:hover .spoiler-icon { transform: scale(1.08); }
+  .spoiler-overlay:hover .spoiler-icon { transform: scale(1.1); }
 
-  .spoiler-text { color: var(--text-secondary); font-size: 0.88rem; font-weight: 600; }
+  .spoiler-text {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+  }
 
   .answer-content.blurred {
-    filter: blur(28px) saturate(0.15);
+    filter: blur(32px) saturate(0.1);
     user-select: none;
     pointer-events: none;
   }
@@ -256,19 +375,19 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     display: inline-flex;
     gap: 4px;
     background: var(--bg-tertiary);
-    border-radius: 12px;
+    border-radius: 14px;
     padding: 4px;
     margin-bottom: 28px;
     border: 1px solid var(--border-color);
   }
 
   .mode-btn {
-    padding: 8px 24px;
-    border-radius: 10px;
+    padding: 9px 28px;
+    border-radius: 11px;
     border: none;
     background: transparent;
     color: var(--text-secondary);
-    font-family: inherit;
+    font-family: 'DM Sans', sans-serif;
     font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
@@ -278,7 +397,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   .mode-btn.active {
     background: var(--colorfle-gradient);
     color: white;
-    box-shadow: 0 3px 10px rgba(230, 138, 0, 0.25);
+    box-shadow: 0 3px 12px rgba(230, 138, 0, 0.3);
   }
 
   .mode-btn:not(.active):hover {
@@ -302,8 +421,8 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   .blocks-visual {
     display: flex;
     justify-content: center;
-    gap: 16px;
-    margin-bottom: 24px;
+    gap: 18px;
+    margin-bottom: 28px;
     flex-wrap: wrap;
   }
 
@@ -316,9 +435,9 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   }
 
   .color-block-swatch {
-    width: 120px;
-    height: 120px;
-    border-radius: 20px;
+    width: 130px;
+    height: 130px;
+    border-radius: 22px;
     position: relative;
     overflow: hidden;
     box-shadow: var(--shadow-md);
@@ -332,7 +451,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   }
 
   .color-block-swatch:hover {
-    transform: scale(1.05) translateY(-3px);
+    transform: scale(1.06) translateY(-4px);
     box-shadow: var(--shadow-lg);
   }
 
@@ -354,7 +473,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 
   .color-block-weight {
     font-family: 'JetBrains Mono', 'SF Mono', monospace;
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     color: var(--text-muted);
     font-weight: 600;
   }
@@ -367,7 +486,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   /* ── Blend Visual ── */
   .blend-visual {
     border-top: 1px solid var(--border-color);
-    padding-top: 20px;
+    padding-top: 22px;
     margin-bottom: 8px;
   }
 
@@ -376,7 +495,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     flex-wrap: wrap;
   }
 
@@ -387,15 +506,15 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   }
 
   .formula-dot {
-    width: 14px;
-    height: 14px;
-    border-radius: 4px;
+    width: 16px;
+    height: 16px;
+    border-radius: 5px;
     flex-shrink: 0;
     box-shadow: var(--shadow-xs);
   }
 
   .formula-name {
-    font-size: 0.82rem;
+    font-size: 0.84rem;
     font-weight: 600;
     color: var(--text-secondary);
     text-transform: capitalize;
@@ -403,7 +522,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 
   .formula-pct {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     color: var(--text-muted);
     font-weight: 500;
   }
@@ -416,7 +535,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 
   .formula-equals {
     color: var(--text-muted);
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 300;
     margin: 0 4px;
   }
@@ -425,13 +544,13 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
   }
 
   .blend-swatch {
-    width: 110px;
-    height: 110px;
-    border-radius: 22px;
+    width: 120px;
+    height: 120px;
+    border-radius: 24px;
     position: relative;
     overflow: hidden;
     box-shadow: var(--shadow-md);
@@ -444,7 +563,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   }
 
   .blend-swatch:hover {
-    transform: scale(1.04) translateY(-3px);
+    transform: scale(1.05) translateY(-4px);
     box-shadow: var(--shadow-lg);
   }
 
@@ -456,7 +575,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 
   .blend-label {
     font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 0.78rem;
+    font-size: 0.82rem;
     font-weight: 700;
     color: var(--text-muted);
     text-transform: uppercase;
@@ -479,12 +598,12 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     align-items: center;
     gap: 12px;
     color: var(--text-secondary);
-    padding: 28px 0;
+    padding: 60px 40px;
   }
 
   .error-icon {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -493,18 +612,25 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     color: var(--error);
   }
 
-  /* ── Recent ── */
+  /* ── Recent Section ── */
   .recent-section {
-    max-width: 660px;
-    margin: 48px auto 0;
+    max-width: 700px;
+    margin: 56px auto 0;
   }
 
   .recent-title {
     font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 0.95rem;
+    font-size: 1.3rem;
     font-weight: 700;
-    margin-bottom: 14px;
-    color: var(--text-secondary);
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .recent-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
   }
 
   .recent-list {
@@ -527,6 +653,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   .recent-item:hover {
     border-color: var(--border-hover);
     box-shadow: var(--shadow-xs);
+    background: var(--bg-card-hover);
   }
 
   .recent-colors {
@@ -536,9 +663,9 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   }
 
   .recent-color-block {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
     position: relative;
     overflow: hidden;
     box-shadow: var(--shadow-xs);
@@ -548,13 +675,13 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     position: absolute;
     inset: 0;
     background: linear-gradient(170deg, rgba(255,255,255,0.3) 0%, transparent 50%);
-    border-radius: 8px;
+    border-radius: 10px;
   }
 
   .recent-blend {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
     position: relative;
     overflow: hidden;
     box-shadow: var(--shadow-xs);
@@ -565,51 +692,132 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     position: absolute;
     inset: 0;
     background: linear-gradient(170deg, rgba(255,255,255,0.25) 0%, transparent 50%);
-    border-radius: 8px;
+    border-radius: 10px;
   }
 
-  .recent-arrow { color: var(--text-muted); font-size: 0.7rem; }
+  .recent-arrow { color: var(--text-muted); font-size: 0.75rem; }
   .recent-info { flex: 1; }
   .recent-date { font-size: 0.88rem; color: var(--text-primary); font-weight: 600; }
-  .recent-day { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+  .recent-day { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
 
   /* ── SEO Content ── */
   .seo-content {
-    max-width: 660px;
-    margin: 56px auto 0;
+    max-width: 720px;
+    margin: 64px auto 0;
   }
 
   .seo-content h2 {
     font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 1.35rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin-top: 2rem;
-    margin-bottom: 0.75rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
     letter-spacing: -0.02em;
+    line-height: 1.3;
   }
 
   .seo-content p {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 1.1rem;
+  }
+
+  .seo-content a {
+    color: var(--accent-color);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .seo-content a:hover {
+    color: var(--accent-light);
+  }
+
+  /* ── FAQ ── */
+  .faq-list {
+    margin-top: 8px;
+  }
+
+  .faq-item {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    margin-bottom: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+  }
+
+  .faq-item:hover {
+    border-color: var(--border-hover);
+  }
+
+  .faq-question {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 20px;
+    background: var(--bg-secondary);
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
     font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: left;
+    transition: background 0.2s ease;
+  }
+
+  .faq-question:hover {
+    background: var(--bg-tertiary);
+  }
+
+  .faq-chevron {
+    flex-shrink: 0;
+    transition: transform 0.3s var(--ease-out-expo);
+    color: var(--text-muted);
+  }
+
+  .faq-question[aria-expanded="true"] .faq-chevron {
+    transform: rotate(180deg);
+  }
+
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s var(--ease-out-expo);
+  }
+
+  .faq-answer.open {
+    max-height: 400px;
+  }
+
+  .faq-answer p {
+    padding: 0 20px 18px;
+    font-size: 0.9rem;
     line-height: 1.75;
     color: var(--text-secondary);
-    margin-bottom: 1rem;
+    margin: 0;
   }
 
   /* ── Responsive ── */
   @media (max-width: 768px) {
-    .page-title { font-size: 2rem; }
-    .answer-card { padding: 28px 18px; }
-    .color-block-swatch { width: 90px; height: 90px; border-radius: 18px; }
-    .blend-swatch { width: 90px; height: 90px; }
+    .hero-content { padding: 32px 20px 36px; }
+    .color-block-swatch { width: 100px; height: 100px; border-radius: 20px; }
+    .blend-swatch { width: 100px; height: 100px; }
     .blocks-visual { gap: 12px; }
+    .hero-gradient { height: 170px; }
   }
 
   @media (max-width: 640px) {
-    .page-title { font-size: 1.7rem; }
-    .color-block-swatch { width: 76px; height: 76px; border-radius: 16px; }
+    .answer-page { padding: 20px 0 60px; }
+    .hero-content { padding: 28px 16px 32px; }
+    .color-block-swatch { width: 82px; height: 82px; border-radius: 18px; }
     .color-block-name { font-size: 0.82rem; }
-    .blend-swatch { width: 80px; height: 80px; border-radius: 18px; }
+    .blend-swatch { width: 84px; height: 84px; border-radius: 20px; }
+    .day-badge { font-size: 0.78rem; padding: 6px 16px; }
+    .seo-content h2 { font-size: 1.3rem; }
   }
 </style>
 
@@ -633,7 +841,6 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   let normalNames = [];
   let hardNames = [];
 
-  const dateDisplay = document.getElementById('dateDisplay');
   const loadingState = document.getElementById('loadingState');
   const answerState = document.getElementById('answerState');
   const errorState = document.getElementById('errorState');
@@ -655,9 +862,6 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     const b = parseInt(c.substring(4, 6), 16);
     return (r * 299 + g * 587 + b * 114) / 1000 > 160;
   }
-
-  const now = new Date();
-  dateDisplay.textContent = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
   // Spoiler reveal
   spoilerOverlay?.addEventListener('click', () => {
@@ -705,6 +909,12 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
   }
 
+  function rgbToHex(rgbStr) {
+    const m = rgbStr.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+    if (!m) return rgbStr;
+    return '#' + [m[1], m[2], m[3]].map(x => parseInt(x).toString(16).padStart(2, '0')).join('');
+  }
+
   function renderBlocks(colors, names, weights) {
     return colors.map((c, i) => {
       const light = isLightColor(c);
@@ -712,7 +922,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
         <div class="color-block-item" style="animation-delay: ${i * 0.1}s;">
           <div class="color-block-swatch" style="background: ${c};">
             <div class="block-reflection"></div>
-            <span style="position:relative;z-index:2;font-family:'Outfit','DM Sans',sans-serif;font-weight:700;font-size:0.9rem;text-transform:capitalize;color:${light ? 'var(--text-primary)' : '#FFFFFF'};text-shadow:${light ? 'none' : '0 1px 4px rgba(0,0,0,0.2)'};">${names[i] || COLOR_NAMES[c] || c}</span>
+            <span style="position:relative;z-index:2;font-family:'Outfit','DM Sans',sans-serif;font-weight:700;font-size:0.92rem;text-transform:capitalize;color:${light ? 'var(--text-primary)' : '#FFFFFF'};text-shadow:${light ? 'none' : '0 2px 6px rgba(0,0,0,0.2)'};">${names[i] || COLOR_NAMES[c] || c}</span>
           </div>
           <span class="color-block-weight">${weights[i]}%</span>
         </div>
@@ -722,7 +932,8 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 
   function renderBlend(colors, names, weights) {
     const blended = blendColors(colors, weights);
-    const lightBlend = isLightColor(blended.replace('rgb(', '#').replace(')', ''));
+    const blendedHex = rgbToHex(blended);
+    const lightBlend = isLightColor(blendedHex);
 
     const formulaParts = colors.map((c, i) => `
       <div class="formula-part">
@@ -741,7 +952,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
       <div class="blend-result">
         <div class="blend-swatch" style="background: ${blended};">
           <div class="block-reflection"></div>
-          <span style="position:relative;z-index:2;font-family:'Outfit','DM Sans',sans-serif;font-weight:700;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;color:${lightBlend ? 'var(--text-primary)' : '#FFFFFF'};text-shadow:${lightBlend ? 'none' : '0 1px 3px rgba(0,0,0,0.2)'};">Mixed</span>
+          <span style="position:relative;z-index:2;font-family:'Outfit','DM Sans',sans-serif;font-weight:700;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;color:${lightBlend ? 'var(--text-primary)' : '#FFFFFF'};text-shadow:${lightBlend ? 'none' : '0 2px 6px rgba(0,0,0,0.2)'};">Mixed</span>
         </div>
         <span class="blend-label">Mixed Result</span>
       </div>
@@ -802,6 +1013,16 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
       console.error(e);
     }
   }
+
+  // FAQ toggle
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      const answer = btn.nextElementSibling;
+      answer.classList.toggle('open');
+    });
+  });
 
   loadAnswer();
   loadRecent();

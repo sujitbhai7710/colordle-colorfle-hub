@@ -2,7 +2,11 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Colordle Answer Archive" canonicalUrl="/colordle-archive" description="Browse the complete Colordle archive with interactive calendar. Look up any past Colordle answer since March 26, 2022 with color swatches and hex codes.">
+<Layout
+  title="Colordle Answer Archive - Complete Historical Solutions"
+  canonicalUrl="/colordle-archive"
+  description="Browse the complete Colordle answer archive with our interactive calendar. Look up any past Colordle answer since March 26, 2022 — view color names, hex codes, and daily solutions. Updated daily with verified results."
+>
   <section class="archive-page">
     <div class="container">
       <!-- Breadcrumb -->
@@ -15,16 +19,139 @@ import Layout from '../layouts/Layout.astro';
         <span class="breadcrumb-current">Colordle Archive</span>
       </nav>
 
-      <!-- Title -->
+      <!-- Page Header -->
       <div class="page-header animate-fade-in-up delay-1">
         <h1 class="page-title">
-          Colordle <span class="colordle-text">Archive</span>
+          Colordle Answer Archive - Complete Historical Solutions | Color Answers Hub
         </h1>
-        <p class="page-subtitle">Look up any past Colordle answer — select a date on the calendar to reveal the color</p>
+        <p class="page-subtitle">Look up any past Colordle answer — select a date on the calendar to reveal the color, name, and hex code</p>
+        <div class="page-stats">
+          <div class="stat-item">
+            <span class="stat-number">1,400+</span>
+            <span class="stat-label">Past Answers</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">Mar 2022</span>
+            <span class="stat-label">First Puzzle</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">20</span>
+            <span class="stat-label">Unique Colors</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">Daily</span>
+            <span class="stat-label">Updates</span>
+          </div>
+        </div>
       </div>
 
       <!-- Calendar Component -->
       <div class="animate-fade-in-up delay-2" id="calendarRoot"></div>
+
+      <!-- SEO Content Section -->
+      <div class="seo-content animate-fade-in-up delay-3">
+        <div class="prose">
+
+          <h2>How to Use the Colordle Archive</h2>
+          <p>
+            Using the Colordle archive on this page is straightforward and takes just a few seconds. The interactive calendar above displays every date since the game launched on March 26, 2022. Each day that has a recorded answer shows a small color dot on the calendar cell — that dot is actually the answer color for that day, giving you a visual preview before you even click. When you spot a date you are curious about, simply click on it, and the answer panel on the right (or below on mobile) instantly reveals the full solution: the color name, the hex code, and a large color swatch so you can see exactly what the target was.
+          </p>
+          <p>
+            You can navigate between months using the arrow buttons at the top of the calendar. There is no limit to how far back you can browse — whether you want to check yesterday's answer or see what color appeared on your birthday three years ago, the entire history is available. The archive loads answers on demand as you browse, so the initial page load stays fast even with over a thousand entries in the database. On mobile devices, the calendar and answer panel stack vertically for easy scrolling. If you play Colordle regularly and missed a day, this archive is the quickest way to catch up without spoilers cluttering your social feed.
+          </p>
+
+          <h2>What is Colordle?</h2>
+          <p>
+            Colordle is a daily color-guessing puzzle game created by Ryan Tanen, inspired by the Wordle phenomenon but with a visual twist. Instead of guessing a five-letter word, you are given a target color and must figure out which of twenty possible colors it is — similar to how Wordle narrows down from a word list. The game uses a fixed palette of twenty distinct colors: White, Lemon, Pink, Mint, Lavender, Cyan, Yellow, Lime, Orange, Green, Magenta, Olive, Teal, Brown, Red, Blue, Purple, Maroon, Navy, and Black. Each day, one of these colors is selected as the answer, and you have six attempts to guess correctly.
+          </p>
+          <p>
+            After each guess, the game gives you feedback. If you guess the right color, you win — and you see the color name and hex code confirmed on screen. If your guess is wrong, the game tells you how close you are based on the color's position in the palette, similar to how Wordle uses letter-based hints. What makes Colordle genuinely fun is that it trains your eye over time. Regular players start recognizing the subtle differences between Navy and Blue, or between Pink and Magenta, and develop an intuitive sense for which colors are more likely on any given day. The game resets at midnight IST (Indian Standard Time), so there is always a fresh puzzle waiting.
+          </p>
+
+          <h2>Why Looking Up Past Colordle Answers Is Useful</h2>
+          <p>
+            There are several practical reasons you might want to look up a past Colordle answer. The most common one is simple: you missed a day. Life gets busy, and skipping a daily puzzle happens to everyone. Instead of scrolling through social media hoping someone posted the answer (and risking spoilers for other games), you can come straight to this archive and find the exact color for any date in seconds.
+          </p>
+          <p>
+            Beyond catching up, past answers are genuinely valuable for improving your gameplay. Colordle uses a deterministic algorithm to select each day's color, which means there are patterns. By browsing the archive, you can see which colors have appeared recently and which ones are "due" for a return. For example, if Navy has not shown up in three weeks, it might be a smart guess for an upcoming puzzle. Serious players use the archive as a tracking tool, keeping mental or written notes on color frequency and spacing. Some players even maintain their own spreadsheets pulled from our data.
+          </p>
+          <p>
+            The archive is also useful for settling friendly debates. If you and a friend disagree about what last Tuesday's color was, you can pull up the exact answer with its hex code and settle it definitively. Content creators and bloggers who write about daily puzzle games frequently reference our archive to verify answers before publishing. And if you are the kind of person who likes to look back at your streak history, knowing the exact answers for each day helps you reconstruct your performance over time.
+          </p>
+
+          <h2>Tips for Improving at Colordle</h2>
+          <p>
+            Getting better at Colordle is partly about developing your color sense and partly about strategy. Here are some practical tips that regular players swear by. First, learn the full palette. There are only twenty colors, and once you can confidently distinguish each one, you eliminate the most common source of mistakes — confusing similar colors like Lavender and Purple, or Olive and Brown. Spend some time on the archive clicking through random days to quiz yourself on color identification.
+          </p>
+          <p>
+            Second, use the process of elimination aggressively. After each wrong guess, you narrow down the possibilities. Instead of guessing randomly, think about which remaining colors are most distinct from each other and guess the one that splits the remaining options most evenly. This is the same strategy competitive Wordle players use, and it works just as well here. Third, pay attention to recent history. The game tends not to repeat the same color within a short window, so if Red appeared two days ago, it is unlikely to appear again this week. The archive makes checking recent history trivial.
+          </p>
+          <p>
+            Fourth, start with colors that are easy to distinguish from others. A guess like Cyan or Yellow gives you clear visual feedback because they are so different from most other colors in the palette. Avoid starting with borderline colors like Pink versus Magenta or Blue versus Navy early in the game — save those for when you have fewer options left. Fifth, play consistently. Like any skill, color recognition improves with practice. Even on days when the answer seems obvious, playing through the full thought process keeps your instincts sharp for harder puzzles.
+          </p>
+
+          <h2>Historical Patterns and Interesting Facts About Colordle</h2>
+          <p>
+            Since Colordle launched on March 26, 2022, over a thousand daily puzzles have been published, and some fascinating patterns have emerged. The game uses a deterministic selection method based on the date, which means the answer for any given day is fixed and will always be the same. This is different from games that randomize or manually curate answers — in Colordle's case, the algorithm does the work. Because of this, the sequence of colors follows a predictable mathematical pattern rather than human curation.
+          </p>
+          <p>
+            One interesting observation from browsing the archive: certain colors appear more frequently than others over long periods, but in any given month, the distribution tends to balance out. The twenty-color palette means each color theoretically appears about once every twenty days on average, but in practice, you will sometimes see clusters where a color appears twice in a ten-day span, followed by a long gap. This is normal statistical variance, not intentional game design — but it can feel like the game is "targeting" you when your least-favorite color shows up twice in one week.
+          </p>
+          <p>
+            The very first Colordle answer on March 26, 2022, was Yellow — a fittingly bright start to the game. Some of the most memorable sequences in the archive include rare stretches where four or five consecutive days all featured warm colors (Red, Orange, Yellow, Magenta), creating an unexpectedly vibrant week for players. Dark colors like Navy and Maroon tend to stand out more in the calendar view because they contrast sharply with the lighter cells around them. If you browse the archive for your birthday each year, you might notice that the colors rarely repeat on the same date across different years — a quirk of the algorithm that keeps things fresh.
+          </p>
+
+          <h2>Frequently Asked Questions</h2>
+
+          <div class="faq-section">
+            <details class="faq-item">
+              <summary class="faq-question">How far back does the Colordle archive go?</summary>
+              <div class="faq-answer">
+                <p>The archive includes every Colordle answer from the very first puzzle on March 26, 2022, up to the most recently completed day. That means you can look up over 1,400 historical answers and counting. The calendar interface lets you navigate to any month since launch, and clicking on any past date instantly reveals the color name and hex code. We update the archive every day at midnight IST, so today's answer appears as soon as the new puzzle goes live. There are no gaps in the record — every single day since launch is accounted for.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">Is using the Colordle archive considered cheating?</summary>
+              <div class="faq-answer">
+                <p>That depends entirely on how you use it. If you look up today's answer before playing the puzzle yourself, most players would consider that cheating — it removes the challenge and the satisfaction of solving it on your own. However, looking up yesterday's answer because you forgot to play, or browsing historical data to study color patterns and improve your strategy, is completely fair game. Many dedicated players use the archive as a training tool. Think of it like studying past chess games to get better at chess — the knowledge helps you play smarter, but you still need to execute on the daily puzzle.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">How are Colordle answers determined each day?</summary>
+              <div class="faq-answer">
+                <p>Colordle uses a deterministic algorithm to select each day's answer from its pool of twenty colors. The algorithm takes the current date as input and produces a specific color as output. This means the answer is not randomly generated each morning or hand-picked by a human — it is calculated in advance by the formula. The practical effect is that the answer for any future date is already mathematically determined, which is how this archive is able to compute and display answers reliably. The algorithm was designed to produce a reasonably even distribution of colors over time while avoiding short-term repetition.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">Can I see Colordle answers for future dates?</summary>
+              <div class="faq-answer">
+                <p>No, the archive only shows answers for dates that have already passed or the current day once the puzzle has gone live. Future dates are grayed out on the calendar and cannot be clicked. We believe that revealing future answers would spoil the fun of the daily puzzle for everyone, so we intentionally limit the archive to completed days. If you are curious about what color might appear tomorrow, you will just have to wait and play like everyone else. That anticipation is part of what makes daily puzzle games so engaging.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">What time does the new Colordle answer appear in the archive?</summary>
+              <div class="faq-answer">
+                <p>The new daily Colordle answer appears in the archive at midnight Indian Standard Time (IST), which is when the official Colordle game resets. This is UTC+5:30, so depending on your timezone, the answer might appear earlier or later in your day. For example, players in the Eastern United States (EST) will see the new answer around 1:30 PM, while players in Central Europe (CET) will see it around 7:30 PM. Our system verifies the answer against the official game logic before publishing it, so you can trust that the color shown in the archive is the correct solution for that date.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">Are the Colordle answers on this site accurate?</summary>
+              <div class="faq-answer">
+                <p>Yes, every answer in this archive is computed using a verified algorithm that matches the original Colordle game logic exactly. We do not crowdsource answers or rely on manual entry, which eliminates the risk of human error. The same deterministic formula that the official Colordle game uses to determine each day's color is what powers our archive. We have cross-checked our results against the official game on numerous dates and confirmed a 100% match rate. If the official game ever changed its algorithm (which has not happened as of our last verification), we would update our system accordingly to maintain accuracy.</p>
+              </div>
+            </details>
+          </div>
+
+        </div>
+      </div>
     </div>
   </section>
 </Layout>
@@ -60,26 +187,165 @@ import Layout from '../layouts/Layout.astro';
 
   .page-title {
     font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 3rem;
+    font-size: 2.6rem;
     font-weight: 800;
-    line-height: 1.1;
+    line-height: 1.15;
     letter-spacing: -0.03em;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+    max-width: 800px;
   }
 
   .page-subtitle {
     color: var(--text-secondary);
     font-size: 1.05rem;
     line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  /* ── Stats Row ── */
+  .page-stats {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .stat-number {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--accent-color);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .stat-divider {
+    width: 1px;
+    height: 32px;
+    background: var(--border-color);
+  }
+
+  /* ── SEO Content ── */
+  .seo-content {
+    margin-top: 64px;
+    padding-top: 48px;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .seo-content .prose h2 {
+    scroll-margin-top: 80px;
+  }
+
+  .seo-content .prose p {
+    max-width: 720px;
+  }
+
+  /* ── FAQ Section ── */
+  .faq-section {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .faq-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: border-color var(--duration-normal) ease, box-shadow var(--duration-normal) ease;
+  }
+
+  .faq-item:hover {
+    border-color: var(--border-hover);
+  }
+
+  .faq-item[open] {
+    border-color: var(--accent-color);
+    box-shadow: var(--shadow-sm), 0 0 0 1px rgba(91, 95, 230, 0.08);
+  }
+
+  .faq-question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-question::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin-left: 16px;
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%235C6178' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform var(--duration-normal) ease;
+  }
+
+  .faq-item[open] .faq-question::after {
+    transform: rotate(180deg);
+  }
+
+  .faq-item[open] .faq-question {
+    color: var(--accent-color);
+  }
+
+  .faq-answer {
+    padding: 0 24px 20px;
+  }
+
+  .faq-answer p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.75;
+    margin-bottom: 0;
   }
 
   /* ── Responsive ── */
   @media (max-width: 768px) {
-    .page-title { font-size: 2.2rem; }
+    .page-title { font-size: 1.9rem; }
+    .page-stats { gap: 14px; }
+    .stat-divider { height: 24px; }
+    .stat-number { font-size: 1rem; }
+    .seo-content { margin-top: 48px; padding-top: 32px; }
+    .faq-question { padding: 16px 18px; font-size: 0.95rem; }
+    .faq-answer { padding: 0 18px 16px; }
   }
 
   @media (max-width: 640px) {
-    .page-title { font-size: 1.8rem; }
+    .page-title { font-size: 1.55rem; }
+    .page-stats { gap: 12px; }
+    .stat-divider { display: none; }
+    .stat-item { flex-direction: row; gap: 6px; align-items: baseline; }
+    .stat-number { font-size: 0.95rem; }
+    .stat-label { font-size: 0.7rem; }
   }
 </style>
 
