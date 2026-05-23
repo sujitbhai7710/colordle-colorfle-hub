@@ -4,14 +4,9 @@ import Layout from '../layouts/Layout.astro';
 const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 ---
 
-<Layout title="Home" description="Get daily answers for Colordle and Colorfle color guessing games. Updated every day with verified solutions.">
+<Layout title="Home" canonicalUrl="/" description="Get daily answers for Colordle and Colorfle color guessing games. Updated every day at midnight IST with verified solutions and full archives.">
   <!-- ═══ Hero Section ═══ -->
   <section class="hero">
-    <div class="hero-bg">
-      <div class="orb orb-1"></div>
-      <div class="orb orb-2"></div>
-      <div class="orb orb-3"></div>
-    </div>
     <div class="container hero-content">
       <div class="badge badge-pulse animate-fade-in-up">Updated Daily</div>
       <h1 class="hero-title animate-fade-in-up delay-1">
@@ -21,55 +16,61 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
         Get instant answers for Colordle and Colorfle. Updated every day at midnight IST with verified solutions.
       </p>
       <div class="hero-actions animate-fade-in-up delay-3">
-        <a href="/colordle-answer-today" class="btn-primary">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+        <a href="/colordle-answer-today" class="btn-primary btn-colordle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
           Colordle Answer
         </a>
-        <a href="/colorfle-answer-today" class="btn-secondary">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <a href="/colorfle-answer-today" class="btn-primary btn-colorfle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
           Colorfle Answer
         </a>
       </div>
     </div>
   </section>
 
-  <!-- ═══ Game Cards with Live Preview ═══ -->
+  <!-- ═══ Today's Answers Cards ═══ -->
   <section class="section">
     <div class="container">
+      <h2 class="section-title animate-fade-in-up">Today's <span class="gradient-text">Answers</span></h2>
+      <p class="section-subtitle animate-fade-in-up delay-1">Live previews with actual colors — click a card to see the full reveal</p>
       <div class="game-cards">
         <!-- Colordle Card -->
-        <a href="/colordle-answer-today" class="game-card glass-card animate-fade-in-up delay-1">
+        <a href="/colordle-answer-today" class="game-card card animate-fade-in-up delay-1">
           <div class="card-top">
             <div class="card-icon-wrap colordle-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
             </div>
             <span class="badge">Daily</span>
           </div>
           <h3 class="card-title">Colordle</h3>
-          <p class="card-desc">Guess the mystery color name! Today's answer revealed with color swatch and hex code.</p>
+          <p class="card-desc">Guess the mystery color name! Today's answer revealed with the actual color swatch and hex code.</p>
           <div class="card-preview" id="colordlePreview">
-            <div class="preview-skeleton skeleton"></div>
+            <div class="skeleton" style="width:96px;height:96px;border-radius:50%;"></div>
           </div>
           <div class="card-footer">
-            <span class="card-cta">View Today's Answer <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+            <span class="card-cta">View Today's Answer <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
           </div>
         </a>
 
         <!-- Colorfle Card -->
-        <a href="/colorfle-answer-today" class="game-card glass-card animate-fade-in-up delay-2">
+        <a href="/colorfle-answer-today" class="game-card card animate-fade-in-up delay-2">
           <div class="card-top">
             <div class="card-icon-wrap colorfle-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
             </div>
             <span class="badge">Daily</span>
           </div>
           <h3 class="card-title">Colorfle</h3>
-          <p class="card-desc">Guess the 3-color combination! Normal and hard mode answers available.</p>
+          <p class="card-desc">Guess the 3-color combination! Normal and hard mode answers with real color blocks.</p>
           <div class="card-preview" id="colorflePreview">
-            <div class="preview-skeleton skeleton"></div>
+            <div class="preview-skeleton-row">
+              <div class="skeleton" style="width:56px;height:56px;border-radius:14px;"></div>
+              <div class="skeleton" style="width:56px;height:56px;border-radius:14px;"></div>
+              <div class="skeleton" style="width:56px;height:56px;border-radius:14px;"></div>
+            </div>
           </div>
           <div class="card-footer">
-            <span class="card-cta">View Today's Answer <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+            <span class="card-cta">View Today's Answer <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
           </div>
         </a>
       </div>
@@ -77,18 +78,15 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   </section>
 
   <!-- ═══ Archive Section ═══ -->
-  <section class="section" style="padding-top: 0;">
+  <section class="section" style="padding-top:0;">
     <div class="container">
       <h2 class="section-title">Browse the <span class="gradient-text">Archive</span></h2>
       <p class="section-subtitle">Look up past answers using our interactive calendar</p>
       <div class="archive-cards">
-        <a href="/colordle-archive" class="archive-card glass-card">
-          <div class="archive-icon-wrap">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2"/>
-              <line x1="16" y1="2" x2="16" y2="6"/>
-              <line x1="8" y1="2" x2="8" y2="6"/>
-              <line x1="3" y1="10" x2="21" y2="10"/>
+        <a href="/colordle-archive" class="archive-card card">
+          <div class="archive-icon-wrap" style="background:var(--colordle-gradient-subtle);color:var(--colordle-accent);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
             </svg>
           </div>
           <div class="archive-info">
@@ -97,13 +95,10 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
           </div>
           <svg class="archive-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="/colorfle-archive" class="archive-card glass-card">
-          <div class="archive-icon-wrap">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2"/>
-              <line x1="16" y1="2" x2="16" y2="6"/>
-              <line x1="8" y1="2" x2="8" y2="6"/>
-              <line x1="3" y1="10" x2="21" y2="10"/>
+        <a href="/colorfle-archive" class="archive-card card">
+          <div class="archive-icon-wrap" style="background:var(--colorfle-gradient-subtle);color:var(--colorfle-accent);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
             </svg>
           </div>
           <div class="archive-info">
@@ -117,119 +112,67 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   </section>
 
   <!-- ═══ How It Works ═══ -->
-  <section class="section">
+  <section class="section" style="background:var(--bg-secondary);">
     <div class="container">
       <h2 class="section-title">How It <span class="gradient-text">Works</span></h2>
       <p class="section-subtitle">We compute answers using the same algorithms as the original games</p>
       <div class="steps">
-        <div class="step glass-card">
+        <div class="step card">
           <div class="step-number">01</div>
           <h4 class="step-title">Algorithm Verified</h4>
-          <p class="step-desc">Our algorithms match the official game logic exactly, verified against third-party sources.</p>
+          <p class="step-desc">Our algorithms match the official game logic exactly, verified against third-party sources and the game archives.</p>
         </div>
-        <div class="step glass-card">
+        <div class="step card">
           <div class="step-number">02</div>
           <h4 class="step-title">Auto Updated</h4>
-          <p class="step-desc">Cron jobs run at 12AM, 8AM, and 12PM IST daily to ensure answers are always current.</p>
+          <p class="step-desc">Cron jobs run at 12AM, 8AM, and 12PM IST daily to ensure answers are always current for every timezone.</p>
         </div>
-        <div class="step glass-card">
+        <div class="step card">
           <div class="step-number">03</div>
           <h4 class="step-title">Full Archive</h4>
-          <p class="step-desc">Every answer is stored in our database, so you can look up any date from the games' history.</p>
+          <p class="step-desc">Every answer is stored in our database, so you can look up any date from the games' history since Day 1.</p>
         </div>
       </div>
     </div>
   </section>
 </Layout>
 
-<style>
+<style is:global>
   /* ═══ Hero ═══ */
   .hero {
-    position: relative;
-    padding: 120px 0 72px;
+    padding: 80px 0 48px;
     text-align: center;
-    overflow: hidden;
-  }
-
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  .orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.35;
-  }
-
-  .orb-1 {
-    width: 500px;
-    height: 500px;
-    background: #6366F1;
-    top: -15%;
-    left: -10%;
-    animation: float 14s ease-in-out infinite;
-  }
-
-  .orb-2 {
-    width: 400px;
-    height: 400px;
-    background: #8B5CF6;
-    top: -5%;
-    right: -8%;
-    animation: float 18s ease-in-out infinite reverse;
-    animation-delay: -4s;
-  }
-
-  .orb-3 {
-    width: 350px;
-    height: 350px;
-    background: #EC4899;
-    bottom: -20%;
-    left: 30%;
-    animation: float 16s ease-in-out infinite;
-    animation-delay: -8s;
-    opacity: 0.2;
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    25% { transform: translate(30px, -30px) scale(1.05); }
-    50% { transform: translate(-20px, 20px) scale(0.95); }
-    75% { transform: translate(15px, -10px) scale(1.02); }
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
   }
 
   .hero-content {
-    position: relative;
-    z-index: 1;
-    max-width: 700px;
+    max-width: 640px;
     margin: 0 auto;
   }
 
   .hero-title {
-    font-size: 4rem;
-    font-weight: 900;
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
     line-height: 1.08;
     letter-spacing: -0.035em;
-    margin: 20px 0;
+    margin: 16px 0;
   }
 
   .hero-subtitle {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     color: var(--text-secondary);
     line-height: 1.7;
-    margin-bottom: 36px;
-    max-width: 520px;
+    margin-bottom: 32px;
+    max-width: 480px;
     margin-left: auto;
     margin-right: auto;
   }
 
   .hero-actions {
     display: flex;
-    gap: 16px;
+    gap: 12px;
     justify-content: center;
     flex-wrap: wrap;
   }
@@ -242,7 +185,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   }
 
   .game-card {
-    padding: 32px;
+    padding: 28px;
     text-decoration: none;
     color: var(--text-primary);
     display: flex;
@@ -250,68 +193,70 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   }
 
   .game-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-glow, 0 0 40px rgba(139, 92, 246, 0.12));
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
   }
 
   .card-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
 
   .card-icon-wrap {
-    width: 48px;
-    height: 48px;
-    border-radius: 14px;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   .colordle-icon {
-    background: linear-gradient(135deg, #6366F1, #8B5CF6);
+    background: var(--colordle-gradient);
     color: white;
   }
 
   .colorfle-icon {
-    background: linear-gradient(135deg, #F59E0B, #EF4444);
+    background: var(--colorfle-gradient);
     color: white;
   }
 
   .card-title {
-    font-size: 1.5rem;
-    font-weight: 800;
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
     letter-spacing: -0.02em;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
   .card-desc {
     color: var(--text-secondary);
-    font-size: 0.92rem;
+    font-size: 0.9rem;
     line-height: 1.6;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
   .card-preview {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 24px 0;
-    margin-bottom: 20px;
-    min-height: 100px;
+    flex-direction: column;
+    padding: 20px 0;
+    margin-bottom: 16px;
+    min-height: 120px;
+    gap: 10px;
   }
 
-  .preview-skeleton {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
+  .preview-skeleton-row {
+    display: flex;
+    gap: 10px;
   }
 
   .card-footer {
     border-top: 1px solid var(--border-color);
-    padding-top: 16px;
+    padding-top: 14px;
     margin-top: auto;
   }
 
@@ -319,7 +264,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    color: var(--accent-light);
+    color: var(--accent-color);
     font-weight: 600;
     font-size: 0.88rem;
     transition: gap var(--duration-normal) ease;
@@ -327,6 +272,122 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 
   .game-card:hover .card-cta {
     gap: 10px;
+  }
+
+  /* ═══ Live Preview Styles ═══ */
+  .preview-colordle-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    animation: scaleIn 0.5s var(--ease-out-expo) both;
+  }
+
+  .preview-dot {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-color);
+  }
+
+  .preview-dot .color-reflection {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(170deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.08) 30%, transparent 50%);
+    border-radius: 50%;
+  }
+
+  .preview-color-name {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: capitalize;
+    color: var(--text-primary);
+  }
+
+  .preview-color-hex {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .preview-colorfle-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    animation: scaleIn 0.5s var(--ease-out-expo) both;
+  }
+
+  .preview-blocks-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .preview-mini-block {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .preview-mini-block .color-reflection {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(170deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.06) 30%, transparent 50%);
+    border-radius: 14px;
+  }
+
+  .preview-color-names {
+    display: flex;
+    gap: 4px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+
+  .preview-color-names span {
+    width: 56px;
+    text-align: center;
+  }
+
+  .preview-blend {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .preview-blend-swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .preview-blend-swatch .color-reflection {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(170deg, rgba(255,255,255,0.3) 0%, transparent 50%);
+    border-radius: 8px;
+  }
+
+  .preview-blend-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   /* ═══ Archive Cards ═══ */
@@ -340,7 +401,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 24px;
+    padding: 20px;
     text-decoration: none;
     color: var(--text-primary);
   }
@@ -356,9 +417,6 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--accent-gradient-subtle);
-    color: var(--accent-light);
-    border: 1px solid rgba(139, 92, 246, 0.15);
     flex-shrink: 0;
   }
 
@@ -368,6 +426,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   }
 
   .archive-info h3 {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
     font-size: 1.05rem;
     font-weight: 700;
     margin-bottom: 4px;
@@ -386,7 +445,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 
   .archive-card:hover .archive-arrow {
     transform: translateX(4px);
-    color: var(--accent-light);
+    color: var(--accent-color);
   }
 
   /* ═══ Steps ═══ */
@@ -397,23 +456,25 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   }
 
   .step {
-    padding: 32px;
+    padding: 28px;
     text-align: center;
   }
 
   .step-number {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
     font-size: 2.5rem;
-    font-weight: 900;
+    font-weight: 800;
     background: var(--accent-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     line-height: 1;
     letter-spacing: -0.03em;
   }
 
   .step-title {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
     font-size: 1.05rem;
     font-weight: 700;
     margin-bottom: 8px;
@@ -426,125 +487,86 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     line-height: 1.6;
   }
 
-  /* ═══ Live Preview Styles (injected by JS) ═══ */
-  .preview-dot {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.08) inset,
-      0 12px 28px -6px rgba(0, 0, 0, 0.4),
-      0 0 40px var(--dot-glow, transparent);
-    animation: scaleIn 0.6s var(--ease-out-expo) both;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .preview-dot::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: linear-gradient(170deg, rgba(255,255,255,0.22) 0%, transparent 50%);
-  }
-
-  .preview-dots-row {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .preview-mini-dot {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.08) inset,
-      0 8px 16px -4px rgba(0, 0, 0, 0.4);
-    animation: scaleIn 0.5s var(--ease-out-expo) both;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .preview-mini-dot::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 12px;
-    background: linear-gradient(170deg, rgba(255,255,255,0.18) 0%, transparent 45%);
-  }
-
-  .preview-plus {
-    color: var(--text-muted);
-    font-size: 1.1rem;
-    font-weight: 300;
-  }
-
-  @keyframes scaleIn {
-    from {
-      opacity: 0;
-      transform: scale(0.8);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
   /* ═══ Responsive ═══ */
   @media (max-width: 1024px) {
-    .hero-title {
-      font-size: 3rem;
-    }
+    .hero-title { font-size: 2.8rem; }
   }
 
   @media (max-width: 768px) {
     .hero {
-      padding: 88px 0 56px;
+      padding: 56px 0 36px;
     }
 
-    .hero-title {
-      font-size: 2.4rem;
-    }
+    .hero-title { font-size: 2.4rem; }
+    .hero-subtitle { font-size: 1rem; }
 
-    .hero-subtitle {
-      font-size: 1rem;
-    }
-
-    .game-cards {
-      grid-template-columns: 1fr;
-    }
-
-    .archive-cards {
-      grid-template-columns: 1fr;
-    }
-
-    .steps {
-      grid-template-columns: 1fr;
-    }
+    .game-cards { grid-template-columns: 1fr; }
+    .archive-cards { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 640px) {
-    .hero-title {
-      font-size: 2rem;
-    }
+    .hero-title { font-size: 2rem; }
   }
 </style>
 
 <script define:vars={{ apiUrl }}>
+  const COLOR_NAMES = {
+    '#FFFFFF': 'White', '#FFFAC8': 'Lemon', '#FABEBE': 'Pink',
+    '#AAFFC3': 'Mint', '#E6BEFF': 'Lavender', '#46F0F0': 'Cyan',
+    '#FFE119': 'Yellow', '#BCF60C': 'Lime', '#F58231': 'Orange',
+    '#3CB44B': 'Green', '#F032E6': 'Magenta', '#808000': 'Olive',
+    '#008080': 'Teal', '#9A6324': 'Brown', '#E6194B': 'Red',
+    '#4363D8': 'Blue', '#911EB4': 'Purple', '#800000': 'Maroon',
+    '#000075': 'Navy', '#000000': 'Black',
+  };
+
+  const NORMAL_WEIGHTS = [50, 34, 16];
+
+  function blendColors(colors, weights) {
+    if (!colors.length) return '#888';
+    const w = weights || colors.map(() => 1 / colors.length);
+    const totalWeight = w.reduce((a, b) => a + b, 0);
+    let r = 0, g = 0, b = 0;
+    colors.forEach((c, i) => {
+      const hex = c.replace('#', '');
+      const cr = parseInt(hex.substring(0, 2), 16);
+      const cg = parseInt(hex.substring(2, 4), 16);
+      const cb = parseInt(hex.substring(4, 6), 16);
+      const wt = w[i] / totalWeight;
+      r += cr * wt;
+      g += cg * wt;
+      b += cb * wt;
+    });
+    return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
+  }
+
+  function isLightColor(hex) {
+    const c = hex.replace('#', '');
+    const r = parseInt(c.substring(0, 2), 16);
+    const g = parseInt(c.substring(2, 4), 16);
+    const b = parseInt(c.substring(4, 6), 16);
+    return (r * 299 + g * 587 + b * 114) / 1000 > 160;
+  }
+
   const colordlePreview = document.getElementById('colordlePreview');
   const colorflePreview = document.getElementById('colorflePreview');
 
   async function loadPreviews() {
     try {
-      // Load Colordle today
       const colordleRes = await fetch(`${apiUrl}/api/colordle/today`);
       if (colordleRes.ok) {
         const data = await colordleRes.json();
         if (colordlePreview) {
+          const textColor = isLightColor(data.color_hex || '#888') ? 'var(--text-primary)' : '#FFFFFF';
           colordlePreview.innerHTML = `
-            <div class="preview-dot" style="background: ${data.color_hex || '#888'}; --dot-glow: ${data.color_hex || '#888'}40;"></div>
+            <div class="preview-colordle-wrap">
+              <div class="preview-dot" style="background: ${data.color_hex || '#888'};">
+                <div class="color-reflection"></div>
+                <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.85rem;color:${textColor};text-transform:capitalize;text-shadow:${isLightColor(data.color_hex || '#888') ? 'none' : '0 1px 4px rgba(0,0,0,0.3)'};">${data.color_name || '???'}</span>
+              </div>
+              <div class="preview-color-hex">${data.color_hex || ''}</div>
+            </div>
           `;
         }
       }
@@ -553,17 +575,38 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     }
 
     try {
-      // Load Colorfle today
       const colorfleRes = await fetch(`${apiUrl}/api/colorfle/today`);
       if (colorfleRes.ok) {
         const data = await colorfleRes.json();
         const colors = JSON.parse(data.normal_answer || '[]');
+        const names = JSON.parse(data.normal_names || '[]');
+        const blended = blendColors(colors, NORMAL_WEIGHTS);
+
         if (colorflePreview && colors.length > 0) {
-          const dotsHtml = colors.map((c, i) => `
-            <div class="preview-mini-dot" style="background: ${c}; animation-delay: ${i * 0.12}s;"></div>
-            ${i < colors.length - 1 ? '<span class="preview-plus">+</span>' : ''}
-          `).join('');
-          colorflePreview.innerHTML = `<div class="preview-dots-row">${dotsHtml}</div>`;
+          const blocksHtml = colors.map((c, i) => {
+            const light = isLightColor(c);
+            return `
+              <div class="preview-mini-block" style="background: ${c};">
+                <div class="color-reflection"></div>
+                <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.65rem;color:${light ? 'var(--text-primary)' : '#FFFFFF'};text-shadow:${light ? 'none' : '0 1px 2px rgba(0,0,0,0.3)'};">${names[i] || ''}</span>
+              </div>
+            `;
+          }).join('');
+
+          const namesHtml = names.map(n => `<span>${n}</span>`).join('');
+
+          colorflePreview.innerHTML = `
+            <div class="preview-colorfle-wrap">
+              <div class="preview-blocks-row">${blocksHtml}</div>
+              <div class="preview-color-names">${namesHtml}</div>
+              <div class="preview-blend">
+                <div class="preview-blend-swatch" style="background: ${blended};">
+                  <div class="color-reflection"></div>
+                </div>
+                <span class="preview-blend-label">Mixed Result</span>
+              </div>
+            </div>
+          `;
         }
       }
     } catch (e) {

@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Colorfle Answer Archive" description="Browse the complete Colorfle archive. Look up any past Colorfle answer using our interactive calendar.">
+<Layout title="Colorfle Answer Archive" canonicalUrl="/colorfle-archive" description="Browse the complete Colorfle archive with interactive calendar. Look up any past Colorfle answer since April 25, 2022 with color blocks and blend results.">
   <section class="archive-page">
     <div class="container">
       <!-- Breadcrumb -->
@@ -18,9 +18,9 @@ import Layout from '../layouts/Layout.astro';
       <!-- Title -->
       <div class="page-header animate-fade-in-up delay-1">
         <h1 class="page-title">
-          Colorfle<br/><span class="gradient-text">Archive</span>
+          Colorfle <span class="colorfle-text">Archive</span>
         </h1>
-        <p class="page-subtitle">Look up any past Colorfle answer — select a date on the calendar to reveal it</p>
+        <p class="page-subtitle">Look up any past Colorfle answer — select a date on the calendar to reveal the colors</p>
       </div>
 
       <!-- Calendar Component -->
@@ -29,7 +29,7 @@ import Layout from '../layouts/Layout.astro';
   </section>
 </Layout>
 
-<style>
+<style is:global>
   .archive-page {
     padding: 40px 0 96px;
   }
@@ -59,8 +59,9 @@ import Layout from '../layouts/Layout.astro';
   .page-header { margin-bottom: 40px; }
 
   .page-title {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
     font-size: 3rem;
-    font-weight: 900;
+    font-weight: 800;
     line-height: 1.1;
     letter-spacing: -0.03em;
     margin-bottom: 8px;

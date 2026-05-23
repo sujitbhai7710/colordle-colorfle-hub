@@ -1,0 +1,553 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Color Answers Hub",
+  "url": "https://color-answers.pages.dev",
+  "description": "Daily answers for Colordle and Colorfle color guessing games. Updated every day at midnight IST with verified solutions.",
+  "sameAs": []
+};
+---
+
+<Layout
+  title="About"
+  description="Learn about Color Answers Hub — how we compute daily Colordle and Colorfle answers, our commitment to accuracy, and the technology behind the site."
+  canonicalUrl="/about"
+>
+  <section class="about-page">
+
+    <!-- ═══ Hero ═══ -->
+    <div class="about-hero">
+      <div class="container hero-inner">
+        <span class="badge badge-pulse animate-fade-in-up">Our Story</span>
+        <h1 class="hero-title animate-fade-in-up delay-1">
+          About <span class="gradient-text">Color Answers Hub</span>
+        </h1>
+        <p class="hero-subtitle animate-fade-in-up delay-2">
+          The story behind why we built a daily answer site for color guessing games — and how we make sure every answer is right.
+        </p>
+      </div>
+    </div>
+
+    <!-- ═══ Main Content ═══ -->
+    <div class="container content-grid">
+
+      <!-- Sidebar Nav (desktop) -->
+      <aside class="sidebar-nav animate-fade-in-up delay-3">
+        <nav>
+          <a href="#why-we-built-this" class="sidebar-link">Why We Built This</a>
+          <a href="#how-answers-work" class="sidebar-link">How Our Answers Work</a>
+          <a href="#games-we-cover" class="sidebar-link">The Games We Cover</a>
+          <a href="#commitment-to-accuracy" class="sidebar-link">Our Commitment to Accuracy</a>
+          <a href="#speed-and-simplicity" class="sidebar-link">Built for Speed</a>
+        </nav>
+      </aside>
+
+      <!-- Content Column -->
+      <div class="content-col">
+
+        <!-- Section 1: Why We Built This -->
+        <section id="why-we-built-this" class="prose card content-card animate-fade-in-up delay-2">
+          <h2>Why We Built This</h2>
+          <p>
+            Here's the thing about color guessing games: they're genuinely fun right up until they're not. You stare at a circle on your screen, you type "purple," it says wrong. You type "violet," wrong again. You type "lavender" — still wrong. Now you're deep in the rabbit hole of color naming, second-guessing whether "chartreuse" is even a real word (it is), and you've burned through six guesses on what turns out to be "Olive." Frustrating doesn't even cover it.
+          </p>
+          <p>
+            We've been there. A lot. That feeling of wanting to just <em>know</em> the answer — not to cheat, necessarily, but to put yourself out of your misery and maybe learn something along the way — is what led to this site. Some people want to check their guess before they lock it in. Others gave up three guesses ago and just want to see what the answer was so they can move on with their day. Both are completely valid reasons, and we built Color Answers Hub for both of those people.
+          </p>
+          <p>
+            The other thing that bugged us: existing answer sites were either slow to update, had wrong answers, or were plastered with so many ads that you'd accidentally click on a weight loss pill banner while trying to find today's Colorfle solution. We thought there should be a clean, fast, accurate alternative. So we built one.
+          </p>
+          <p>
+            This site isn't affiliated with Colordle or Colorfle. We're fans of both games who got tired of guessing wrong and not having a reliable place to check answers. That's the entire origin story. No venture capital, no startup pitch deck, no "disrupting the color game answer industry." Just a clean site that does one thing well.
+          </p>
+        </section>
+
+        <!-- Section 2: How Our Answers Work -->
+        <section id="how-answers-work" class="prose card content-card animate-fade-in-up delay-3">
+          <h2>How Our Answers Work</h2>
+          <p>
+            We don't manually look up answers and type them into a database every morning. That would be both unreliable and incredibly tedious. Instead, we run the exact same algorithms that the original games use to generate their daily puzzles. When the game picks today's color, it follows a deterministic process — same date, same answer, every single time. We replicated that process.
+          </p>
+          <p>
+            For <strong>Colordle</strong>, the algorithm is a seeded selection process. It starts from a known epoch (the game's internal day counter maps back to March 26, 2022 as Day 1) and uses a deterministic function to pick a color name from the pool for each day. The first 1,016 days use a fixed list from the game's <code>colors.json</code> file. After that, it switches to an algorithmic selection from a larger color pool, with a blocklist to avoid repeat or similar-sounding colors. We ported this logic line by line from the game's client-side JavaScript, including the specific hash function and n-gram filtering that prevents colors like "Mint Green" from showing up right after "Green."
+          </p>
+          <p>
+            For <strong>Colorfle</strong>, the game uses a seeded pseudo-random number generator — specifically, the <code>seedrandom</code> library (v3.0.5) using the ARC4 algorithm. The seed is constructed from the mode (normal or hard), the day, the month, and the year. So for any given date, we can compute exactly which 3 colors (normal mode) or 4 colors (hard mode) the game will pick from its palette of 20 colors.
+          </p>
+          <p>
+            The key detail with Colorfle is the timezone. The game runs entirely in your browser using your local time, which means someone in New York and someone in Mumbai could technically see different puzzles on the same calendar day. Since we need to serve <em>one</em> answer to everyone, we use IST (Indian Standard Time, UTC+5:30) as our reference timezone. This matches the game's largest player base and the timezone where the original Colorfle game gained most of its traction. The Colorfle puzzle rolls over at 5:00 PM IST each day, and our system accounts for that.
+          </p>
+          <p>
+            To make sure answers are always current, we run automated cron jobs three times a day — at 12:00 AM, 8:00 AM, and 12:00 PM IST. The midnight run catches the new day's puzzle right as it drops. The 8 AM and noon runs are safety nets in case anything went sideways with the first computation. Each cron job recomputes the day's answers, verifies them against our existing records, and updates the database if there's a new day to add.
+          </p>
+        </section>
+
+        <!-- Section 3: The Games We Cover -->
+        <section id="games-we-cover" class="prose card content-card animate-fade-in-up delay-4">
+          <h2>The Games We Cover</h2>
+
+          <div class="game-detail">
+            <div class="game-detail-header">
+              <div class="game-icon colordle-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+              </div>
+              <h3 class="colordle-text">Colordle</h3>
+            </div>
+            <p>
+              Colordle launched on March 26, 2022, created by Ryan Tanen. The concept is simple and maddening in equal measure: you see a solid circle filled with a color, and you have to guess the name of that color. The game pulls from a list of over a thousand color names — and we're not talking about basic "red" and "blue" here. The list includes names like "Lemon Chiffon," "Pastel Pink," "Lavender," and "Mint Green" alongside less obvious entries. You get a limited number of guesses, and after each wrong guess, the game tells you if the correct answer comes alphabetically before or after your guess.
+            </p>
+            <p>
+              What makes Colordle tricky is that color perception is subjective, and color naming conventions are all over the place. Two people can look at the exact same shade and one will call it "Purple" while the other calls it "Violet" — and the game only accepts one specific name. The alphabetical hint helps narrow things down, but by the time you've guessed wrong four times, you're usually ready to just see the answer. That's where we come in.
+            </p>
+            <p>
+              Our Colordle answers include the exact color name, the hex code, and a visual color swatch so you can see the actual color on screen. We also maintain a complete archive going all the way back to Day 1 (March 26, 2022), so you can look up any historical answer.
+            </p>
+          </div>
+
+          <div class="game-detail">
+            <div class="game-detail-header">
+              <div class="game-icon colorfle-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+              </div>
+              <h3 class="colorfle-text">Colorfle</h3>
+            </div>
+            <p>
+              Colorfle launched on April 25, 2022, and it takes the color guessing concept in a different direction. Instead of naming a single color, you're trying to figure out a combination of colors. The game picks 3 colors (in normal mode) or 4 colors (in hard mode) from a fixed palette of 20 colors, then blends them together using weighted mixing. You see the blended result and have to guess which individual colors went into it. It's part color theory, part deduction, and entirely addictive.
+            </p>
+            <p>
+              The 20-color palette includes: White, Lemon Chiffon, Pastel Pink, Mint Green, Lavender, Cyan, Yellow, Lime, Orange, Green, Magenta, Olive, Teal, Brown, Red, Blue, Purple, Maroon, Navy, and Black. That's your entire universe of possibilities, but with 1,140 possible 3-color combinations in normal mode (and 4,845 in hard mode), the answer space is still huge. The blending weights aren't equal either — in normal mode, the three colors are weighted at 50%, 34%, and 16%, which means one color dominates the blend while the others are more subtle. This makes it really hard to pick out that 16% contribution color by eye alone.
+            </p>
+            <p>
+              Our Colorfle answers show all three (or four) colors with their individual color blocks, their names, and the resulting blended swatch so you can see exactly how the combination comes together. We cover both normal and hard mode every day, and we maintain a full archive back to the game's launch date.
+            </p>
+          </div>
+        </section>
+
+        <!-- Section 4: Our Commitment to Accuracy -->
+        <section id="commitment-to-accuracy" class="prose card content-card animate-fade-in-up delay-5">
+          <h2>Our Commitment to Accuracy</h2>
+          <p>
+            We take accuracy seriously, probably more seriously than a color game answer site needs to. But here's our reasoning: if you're coming to this site to check an answer, and we give you the wrong one, we've made your day worse instead of better. That defeats the entire point.
+          </p>
+          <p>
+            Our approach to accuracy has three layers:
+          </p>
+          <div class="accuracy-layers">
+            <div class="accuracy-item card">
+              <div class="accuracy-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <h3>Algorithm Verification</h3>
+              <p>We didn't just guess at how these games work. We ported the exact client-side JavaScript from both games into our backend, preserving every hash function, every seed construction, every edge case. For Colordle, that means replicating the specific deterministic selection algorithm including the n-gram filtering that prevents similar color names from appearing consecutively. For Colorfle, it means using the exact same seedrandom library with the same seed format.</p>
+            </div>
+            <div class="accuracy-item card">
+              <div class="accuracy-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              </div>
+              <h3>Historical Backfill</h3>
+              <p>We didn't start tracking answers from the day we launched. We computed every single answer from Day 1 of both games. For Colordle, that's every day since March 26, 2022. For Colorfle, every day since April 25, 2022. The entire historical archive was generated by running the algorithms retroactively, which means our archive is complete and consistent — not patched together from different sources over time.</p>
+            </div>
+            <div class="accuracy-item card">
+              <div class="accuracy-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              </div>
+              <h3>Periodic Recompute</h3>
+              <p>Every so often, we re-run the entire computation from scratch. Why? Because if we ever discovered a bug in our algorithm implementation — or if one of the source data files (like Colordle's color pool or blocklist) got updated — we want to catch and fix any answers that might have been affected. The cron jobs that run three times daily handle new days, but a full recomputation ensures our historical data stays pristine too.</p>
+            </div>
+          </div>
+          <p>
+            If you ever spot an answer that looks wrong — and we mean genuinely wrong, not just "I would have called that color something else" — let us know. We'd rather investigate a false alarm than leave a wrong answer sitting in our database.
+          </p>
+        </section>
+
+        <!-- Section 5: Built for Speed and Simplicity -->
+        <section id="speed-and-simplicity" class="prose card content-card animate-fade-in-up">
+          <h2>Built for Speed and Simplicity</h2>
+          <p>
+            We had a clear goal when building this site: it should load fast, look clean, and give you the answer you came for without making you jump through hoops. No pop-ups, no interstitial ads, no newsletter signup modal before you can see what today's Colordle answer is. You come here, you see the answer, you leave. That's the entire flow.
+          </p>
+          <p>
+            On the technical side, here's what powers Color Answers Hub:
+          </p>
+          <div class="tech-grid">
+            <div class="tech-item">
+              <span class="tech-label">Frontend</span>
+              <span class="tech-value">Astro — a static site generator that ships zero JavaScript by default. The pages are pre-rendered HTML, which means they load instantly. The only JavaScript on the site is for interactive elements like the spoiler reveals and the calendar picker in the archive.</span>
+            </div>
+            <div class="tech-item">
+              <span class="tech-label">Hosting</span>
+              <span class="tech-value">Cloudflare Pages with edge deployment. The static assets are served from Cloudflare's CDN, so the site is fast regardless of where you are in the world. Average page load is under 200ms for most locations.</span>
+            </div>
+            <div class="tech-item">
+              <span class="tech-label">Backend</span>
+              <span class="tech-value">A Cloudflare Worker handles the API endpoints and the daily cron jobs. It computes answers, stores them in the database, and serves them to the frontend. The Worker runs at the edge too, so API responses are fast.</span>
+            </div>
+            <div class="tech-item">
+              <span class="tech-label">Database</span>
+              <span class="tech-value">Cloudflare D1, which is a SQLite-based serverless database. Every answer ever computed is stored here with its date, game type, answer data, and verification status. The archive pages query this database to show historical answers.</span>
+            </div>
+            <div class="tech-item">
+              <span class="tech-label">Automation</span>
+              <span class="tech-value">Cron triggers on the Cloudflare Worker run three times daily (12 AM, 8 AM, and 12 PM IST) to compute new answers and update the database. The site rebuilds and redeploys automatically whenever the database changes.</span>
+            </div>
+          </div>
+          <p>
+            The whole stack is designed to be as simple as possible. No Kubernetes clusters, no microservices talking to each other over message queues, no 47-step deployment pipeline. A Worker, a database, a static site. That's it. Fewer moving parts means fewer things that can break, and when something does break, it's easy to track down and fix.
+          </p>
+          <p>
+            We also care about the site working well on your phone. Color games are a lunch-break activity, a commute distraction, a "I've got two minutes to kill" kind of thing. So our layout is fully responsive, the text is readable on small screens, and the interactive elements are touch-friendly. No pinching and zooming required.
+          </p>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section animate-fade-in-up">
+          <div class="cta-card card">
+            <h2>Check Today's Answers</h2>
+            <p>Enough reading about how it works — go see it in action.</p>
+            <div class="cta-actions">
+              <a href="/colordle-answer-today" class="btn-primary btn-colordle">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+                Colordle Answer
+              </a>
+              <a href="/colorfle-answer-today" class="btn-primary btn-colorfle">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                Colorfle Answer
+              </a>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Structured Data: Organization -->
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+</Layout>
+
+<style>
+  /* ═══ About Page Wrapper ═══ */
+  .about-page {
+    min-height: 100vh;
+  }
+
+  /* ═══ Hero ═══ */
+  .about-hero {
+    padding: 72px 0 48px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+  }
+
+  .hero-inner {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .hero-title {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin: 14px 0;
+  }
+
+  .hero-subtitle {
+    font-size: 1.08rem;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* ═══ Content Grid (sidebar + content) ═══ */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 40px;
+    padding-top: 48px;
+    padding-bottom: 80px;
+  }
+
+  /* ═══ Sidebar Nav ═══ */
+  .sidebar-nav {
+    position: sticky;
+    top: 88px;
+    align-self: start;
+  }
+
+  .sidebar-nav nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .sidebar-link {
+    display: block;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition:
+      color var(--duration-fast) ease,
+      background var(--duration-fast) ease;
+    line-height: 1.5;
+  }
+
+  .sidebar-link:hover {
+    color: var(--accent-color);
+    background: var(--accent-gradient-subtle);
+  }
+
+  /* ═══ Content Column ═══ */
+  .content-col {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    min-width: 0;
+  }
+
+  .content-card {
+    padding: 36px 40px;
+  }
+
+  .content-card.prose h2 {
+    margin-top: 0;
+  }
+
+  /* ═══ Game Detail Sections ═══ */
+  .game-detail {
+    margin-bottom: 2rem;
+  }
+
+  .game-detail:last-child {
+    margin-bottom: 0;
+  }
+
+  .game-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 1rem;
+  }
+
+  .game-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .game-icon.colordle-icon {
+    background: var(--colordle-gradient);
+    color: white;
+  }
+
+  .game-icon.colorfle-icon {
+    background: var(--colorfle-gradient);
+    color: white;
+  }
+
+  .game-detail-header h3 {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+
+  /* ═══ Accuracy Layers ═══ */
+  .accuracy-layers {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 1.5rem 0;
+  }
+
+  .accuracy-item {
+    padding: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .accuracy-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--accent-gradient-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .accuracy-item h3 {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .accuracy-item p {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+  }
+
+  /* ═══ Tech Grid ═══ */
+  .tech-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 1.5rem 0;
+  }
+
+  .tech-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px 20px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+  }
+
+  .tech-label {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    background: var(--accent-gradient-subtle);
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+
+  .tech-value {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  /* ═══ CTA Section ═══ */
+  .cta-section {
+    margin-top: 8px;
+  }
+
+  .cta-card {
+    padding: 48px 40px;
+    text-align: center;
+    background: var(--bg-secondary);
+    border-color: var(--border-hover);
+  }
+
+  .cta-card h2 {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .cta-card p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-bottom: 28px;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ═══ Prose overrides for content cards ═══ */
+  .content-card.prose code {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 0.85em;
+    background: var(--bg-tertiary);
+    padding: 2px 7px;
+    border-radius: 5px;
+    color: var(--accent-light);
+    font-weight: 500;
+  }
+
+  /* ═══ Responsive ═══ */
+  @media (max-width: 1024px) {
+    .hero-title {
+      font-size: 2.6rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .about-hero {
+      padding: 56px 0 36px;
+    }
+
+    .hero-title {
+      font-size: 2.2rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+    }
+
+    .content-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      padding-top: 32px;
+      padding-bottom: 56px;
+    }
+
+    .sidebar-nav {
+      display: none;
+    }
+
+    .content-card {
+      padding: 28px 24px;
+    }
+
+    .cta-card {
+      padding: 36px 24px;
+    }
+
+    .cta-card h2 {
+      font-size: 1.4rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-title {
+      font-size: 1.85rem;
+    }
+
+    .content-card {
+      padding: 24px 20px;
+    }
+
+    .accuracy-item {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tech-item {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+</style>

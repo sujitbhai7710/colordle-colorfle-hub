@@ -1,9 +1,18 @@
-// Colorfle answer algorithm - exact port using npm seedrandom (alea algorithm)
+// Colorfle answer algorithm - exact port using npm seedrandom (ARC4/RC4-based)
 // This matches the game's client-side seeded PRNG exactly
+//
+// IMPORTANT: The Colorfle game uses LOCAL browser time for all computations.
+// Since our server runs in UTC, we use IST (Asia/Kolkata) as the reference timezone
+// to match the primary audience. The game itself has no server-side enforcement -
+// different timezones can see different daily puzzles.
+//
+// The game uses seedrandom v3.0.5 (ARC4 algorithm), NOT alea.
 
 import seedrandom from 'seedrandom';
 
-const COLORFLE_START_DATE = new Date('2022-04-25T17:00:00Z');
+// Colorfle epoch: April 25, 2022 at 5:00 PM (in the reference timezone)
+// In IST: April 25, 2022 at 5:00 PM IST = April 25 11:30 AM UTC
+const COLORFLE_EPOCH_IST = new Date('2022-04-25T17:00:00+05:30');
 
 const COLORFLE_COLORS = [
   '#FFFFFF', '#FFFAC8', '#FABEBE', '#AAFFC3', '#E6BEFF',
@@ -30,16 +39,38 @@ export interface ColorfleAnswer {
   dayNumber: number;
 }
 
+// Get the IST date components for a given date
+function getISTDateParts(d: Date): { year: number; month: number; day: number; hour: number } {
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    hour12: false,
+  });
+  const parts = formatter.formatToParts(d);
+  const year = parseInt(parts.find(p => p.type === 'year')!.value);
+  const month = parseInt(parts.find(p => p.type === 'month')!.value);
+  const day = parseInt(parts.find(p => p.type === 'day')!.value);
+  const hour = parseInt(parts.find(p => p.type === 'hour')!.value);
+  return { year, month, day, hour };
+}
+
+// Compute day number based on IST timezone
+// The game uses: days since epoch (Apr 25 2022, 5PM local) with DST adjustment
 export function getColorfleDayNumber(date: Date): number {
-  const q = COLORFLE_START_DATE;
-  const z = 60 * (date.getTimezoneOffset() - q.getTimezoneOffset()) * 1000;
-  const R = date.getTime() - q.getTime() - z;
-  return Math.floor(R / 86400000);
+  const istParts = getISTDateParts(date);
+  // Create a Date object representing the current IST time
+  // We use a simplified approach: compare against the epoch in IST
+  const nowIST = new Date(`${istParts.year}-${String(istParts.month).padStart(2,'0')}-${String(istParts.day).padStart(2,'0')}T${String(istParts.hour).padStart(2,'0')}:00:00+05:30`);
+  const diffMs = nowIST.getTime() - COLORFLE_EPOCH_IST.getTime();
+  return Math.floor(diffMs / 86400000);
 }
 
 // Compute the answer for a given mode and date string
 // The game uses seed format: "{mode} {day} {month} {year}"
-// where mode is 0 for normal, 1 for hard
+// where month is 0-indexed (Jan=0, Feb=1, ..., Dec=11)
 function computeAnswer(mode: number, dateStr: string, numBlocks: number): string[] {
   const seed = `${mode} ${dateStr}`;
   const rng = seedrandom(seed);
@@ -56,20 +87,35 @@ function computeAnswer(mode: number, dateStr: string, numBlocks: number): string
   return answer;
 }
 
-// Get the next puzzle date (5PM local time boundary)
-function getNextPuzzleDate(now: Date): Date {
-  const d = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 17, 0, 0, 0);
-  if (d.getTime() <= now.getTime()) {
-    d.setDate(d.getDate() + 1);
+// Get the next puzzle date in IST (5PM boundary)
+// If it's before 5PM IST, the next puzzle is today at 5PM
+// If it's after 5PM IST, the next puzzle is tomorrow at 5PM
+function getNextPuzzleDateIST(date: Date): { day: number; month: number; year: number } {
+  const istParts = getISTDateParts(date);
+  let day = istParts.day;
+  let month = istParts.month - 1; // Convert to 0-indexed for the seed
+  let year = istParts.year;
+
+  // If past 5PM IST, the "next puzzle" is for tomorrow
+  if (istParts.hour >= 17) {
+    const nextDate = new Date(date);
+    nextDate.setDate(nextDate.getDate() + 1);
+    const nextParts = getISTDateParts(nextDate);
+    day = nextParts.day;
+    month = nextParts.month - 1;
+    year = nextParts.year;
   }
-  return d;
+
+  return { day, month, year };
 }
 
 export function getColorfleAnswer(date: Date): ColorfleAnswer {
   const dayNumber = getColorfleDayNumber(date);
-  const nextDate = getNextPuzzleDate(date);
-  // Seed format exactly matching the game: "day month year"
-  const dateStr = `${nextDate.getDate()} ${nextDate.getMonth()} ${nextDate.getFullYear()}`;
+  const nextPuzzle = getNextPuzzleDateIST(date);
+
+  // Seed format exactly matching the game: "{mode} {day} {month} {year}"
+  // Note: month is 0-indexed (the game uses getMonth() which is 0-indexed)
+  const dateStr = `${nextPuzzle.day} ${nextPuzzle.month} ${nextPuzzle.year}`;
 
   // Normal mode: 3 blocks, seed mode = 0
   const normal = computeAnswer(0, dateStr, 3);

@@ -4,8 +4,14 @@ compatibility_date = "2024-12-01"
 compatibility_flags = ["nodejs_compat"]
 account_id = "ac1e8cfe748b673d1997aa434ad2494e"
 
+# Cron triggers in UTC that map to IST times:
+# 12:00 AM IST = 18:30 UTC (previous day) → "30 18 * * *"
+# 8:00 AM IST = 02:30 UTC → "30 2 * * *"
+# 12:00 PM IST = 06:30 UTC → "30 6 * * *"
+# 6:00 PM IST = 12:30 UTC → "30 12 * * *"
+# Added 6PM IST to ensure answers are refreshed before evening
 [triggers]
-crons = ["30 18 * * *", "30 2 * * *", "30 6 * * *"]
+crons = ["30 18 * * *", "30 2 * * *", "30 6 * * *", "30 12 * * *"]
 
 [[d1_databases]]
 binding = "DB"

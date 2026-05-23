@@ -1,2 +1,10 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://color-answers.pages.dev/sitemap.xml
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /

@@ -6,6 +6,8 @@
     color_hex?: string;
     normal_answer?: string;
     hard_answer?: string;
+    normal_names?: string;
+    hard_names?: string;
   }
 
   interface Props {
@@ -22,6 +24,7 @@
   let answers = $state<Record<string, DayAnswer>>({});
   let monthData = $state<DayAnswer[]>([]);
   let monthLoading = $state(false);
+  let archiveMode = $state<'normal' | 'hard'>('normal');
 
   const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'];
@@ -36,6 +39,27 @@
     '#4363D8': 'Blue', '#911EB4': 'Purple', '#800000': 'Maroon',
     '#000075': 'Navy', '#000000': 'Black',
   };
+
+  const NORMAL_WEIGHTS = [50, 34, 16];
+  const HARD_WEIGHTS = [40, 30, 20, 10];
+
+  function blendColors(colors: string[], weights: number[]): string {
+    if (!colors.length) return '#888';
+    const w = weights.length === colors.length ? weights : colors.map(() => 1 / colors.length);
+    const totalWeight = w.reduce((a, b) => a + b, 0);
+    let r = 0, g = 0, b = 0;
+    colors.forEach((c, i) => {
+      const hex = c.replace('#', '');
+      const cr = parseInt(hex.substring(0, 2), 16);
+      const cg = parseInt(hex.substring(2, 4), 16);
+      const cb = parseInt(hex.substring(4, 6), 16);
+      const wt = w[i] / totalWeight;
+      r += cr * wt;
+      g += cg * wt;
+      b += cb * wt;
+    });
+    return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
+  }
 
   function getDaysInMonth(year: number, month: number): number {
     return new Date(year, month + 1, 0).getDate();
@@ -188,6 +212,34 @@
       : []
   );
 
+  let normalNames = $derived(
+    game === 'colorfle' && selectedAnswer?.normal_names
+      ? JSON.parse(selectedAnswer.normal_names)
+      : []
+  );
+
+  let hardNames = $derived(
+    game === 'colorfle' && selectedAnswer?.hard_names
+      ? JSON.parse(selectedAnswer.hard_names)
+      : []
+  );
+
+  let currentColors = $derived(
+    archiveMode === 'normal' ? normalColors : hardColors
+  );
+
+  let currentNames = $derived(
+    archiveMode === 'normal' ? normalNames : hardNames
+  );
+
+  let currentWeights = $derived(
+    archiveMode === 'normal' ? NORMAL_WEIGHTS : HARD_WEIGHTS
+  );
+
+  let currentBlended = $derived(
+    currentColors.length > 0 ? blendColors(currentColors, currentWeights) : ''
+  );
+
   $effect(() => {
     loadMonthData();
   });
@@ -195,7 +247,7 @@
 
 <div class="archive-wrapper">
   <!-- Calendar -->
-  <div class="calendar glass-card">
+  <div class="calendar card">
     <div class="calendar-header">
       <button class="nav-btn" onclick={prevMonth} aria-label="Previous month">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
@@ -243,7 +295,7 @@
   <!-- Inline Answer Panel -->
   <div class="answer-section">
     {#if selectedDate}
-      <div class="answer-panel glass-card" key={selectedDate}>
+      <div class="answer-panel card" key={selectedDate}>
         {#if loading}
           <div class="loading-state">
             <div class="spinner"></div>
@@ -276,44 +328,58 @@
                 <span class="answer-day">Day #{selectedAnswer.day_number}</span>
               </div>
 
-              <div class="answer-mode">
-                <span class="mode-label">Normal</span>
-                <div class="answer-blocks-row">
-                  {#each normalColors as color, i}
-                    <div
-                      class="answer-block"
-                      style="background: {color}; --block-color: {color};"
-                    >
-                      <div class="block-reflection"></div>
+              <!-- Mode toggle for colorfle -->
+              <div class="answer-mode-toggle">
+                <button
+                  class="amode-btn"
+                  class:active={archiveMode === 'normal'}
+                  onclick={() => archiveMode = 'normal'}
+                >Normal</button>
+                <button
+                  class="amode-btn"
+                  class:active={archiveMode === 'hard'}
+                  onclick={() => archiveMode = 'hard'}
+                >Hard</button>
+              </div>
+
+              <!-- Color blocks visual -->
+              {#if currentColors.length > 0}
+                <div class="colorfle-blocks">
+                  {#each currentColors as color, i}
+                    <div class="colorfle-block-item">
+                      <div class="colorfle-block-swatch" style="background: {color};">
+                        <div class="block-reflection"></div>
+                      </div>
+                      <span class="colorfle-block-name">{currentNames[i] || COLOR_NAMES[color] || color}</span>
+                      <span class="colorfle-block-weight">{currentWeights[i]}%</span>
                     </div>
                   {/each}
                 </div>
-                <span class="mode-hex-row">
-                  {#each normalColors as color, i}
-                    <span class="hex-label">{COLOR_NAMES[color] || color}</span>
-                  {/each}
-                </span>
-              </div>
 
-              {#if hardColors.length > 0}
-                <div class="answer-mode">
-                  <span class="mode-label">Hard</span>
-                  <div class="answer-blocks-row">
-                    {#each hardColors as color, i}
-                      <div
-                        class="answer-block"
-                        style="background: {color}; --block-color: {color};"
-                      >
+                <!-- Blend result -->
+                {#if currentBlended}
+                  <div class="colorfle-blend">
+                    <div class="blend-formula-row">
+                      {#each currentColors as color, i}
+                        <div class="formula-chip">
+                          <span class="chip-dot" style="background: {color};"></span>
+                          <span class="chip-name">{currentNames[i] || COLOR_NAMES[color] || color}</span>
+                          <span class="chip-pct">{currentWeights[i]}%</span>
+                        </div>
+                        {#if i < currentColors.length - 1}
+                          <span class="formula-plus">+</span>
+                        {/if}
+                      {/each}
+                      <span class="formula-eq">=</span>
+                    </div>
+                    <div class="blend-result-row">
+                      <div class="colorfle-blend-swatch" style="background: {currentBlended};">
                         <div class="block-reflection"></div>
                       </div>
-                    {/each}
+                      <span class="blend-result-label">Mixed Result</span>
+                    </div>
                   </div>
-                  <span class="mode-hex-row">
-                    {#each hardColors as color, i}
-                      <span class="hex-label">{COLOR_NAMES[color] || color}</span>
-                    {/each}
-                  </span>
-                </div>
+                {/if}
               {/if}
             </div>
           {/if}
@@ -327,7 +393,7 @@
         {/if}
       </div>
     {:else}
-      <div class="answer-panel hint-panel glass-card">
+      <div class="answer-panel hint-panel card">
         <div class="hint-icon">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="4" width="18" height="18" rx="2"/>
@@ -354,6 +420,10 @@
   /* ── Calendar ── */
   .calendar {
     padding: 28px;
+    background: var(--bg-card, #FFFFFF);
+    border: 1px solid var(--border-color, #E2E5EF);
+    border-radius: var(--radius-xl, 20px);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(26, 29, 46, 0.06));
   }
 
   .calendar-header {
@@ -364,9 +434,10 @@
   }
 
   .month-title {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
     font-size: 1.15rem;
     font-weight: 700;
-    color: var(--text-primary, #F1F5F9);
+    color: var(--text-primary, #1A1D2E);
     letter-spacing: -0.01em;
   }
 
@@ -377,9 +448,9 @@
     width: 40px;
     height: 40px;
     border-radius: 12px;
-    border: 1px solid var(--glass-border, rgba(255,255,255,0.06));
+    border: 1px solid var(--border-color, #E2E5EF);
     background: transparent;
-    color: var(--text-secondary, #94A3B8);
+    color: var(--text-secondary, #5C6178);
     cursor: pointer;
     transition:
       border-color var(--duration-fast, 150ms) ease,
@@ -388,9 +459,9 @@
   }
 
   .nav-btn:hover {
-    border-color: var(--accent-color, #8B5CF6);
-    color: var(--accent-light, #A78BFA);
-    background: rgba(139, 92, 246, 0.08);
+    border-color: var(--accent-color, #5B5FE6);
+    color: var(--accent-color, #5B5FE6);
+    background: var(--accent-gradient-subtle, rgba(91,95,230,0.08));
   }
 
   .calendar-grid {
@@ -403,7 +474,7 @@
     text-align: center;
     font-size: 0.7rem;
     font-weight: 600;
-    color: var(--text-muted, #64748B);
+    color: var(--text-muted, #8B8FA3);
     padding: 8px 0 12px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -416,10 +487,10 @@
     align-items: center;
     justify-content: center;
     gap: 3px;
-    border-radius: 12px;
+    border-radius: 10px;
     border: 1px solid transparent;
     background: transparent;
-    color: var(--text-primary, #F1F5F9);
+    color: var(--text-primary, #1A1D2E);
     cursor: pointer;
     transition:
       background var(--duration-fast, 150ms) ease,
@@ -429,8 +500,8 @@
   }
 
   .day-cell:hover:not(:disabled) {
-    background: rgba(139, 92, 246, 0.1);
-    border-color: rgba(139, 92, 246, 0.25);
+    background: rgba(91, 95, 230, 0.08);
+    border-color: rgba(91, 95, 230, 0.2);
     transform: scale(1.05);
   }
 
@@ -440,8 +511,8 @@
   }
 
   .day-cell.today {
-    border-color: var(--accent-color, #8B5CF6);
-    background: rgba(139, 92, 246, 0.12);
+    border-color: var(--accent-color, #5B5FE6);
+    background: rgba(91, 95, 230, 0.08);
   }
 
   .day-cell.today .day-number {
@@ -450,12 +521,12 @@
 
   .day-cell.future,
   .day-cell.before {
-    opacity: 0.2;
+    opacity: 0.25;
     cursor: default;
   }
 
   .day-cell.selected {
-    background: var(--accent-gradient, linear-gradient(135deg, #6366F1, #8B5CF6, #EC4899));
+    background: var(--accent-gradient, linear-gradient(135deg, #5B5FE6, #7C5CFC, #E2478A));
     color: white;
     border-color: transparent;
     font-weight: 700;
@@ -473,7 +544,6 @@
     height: 5px;
     border-radius: 50%;
     display: block;
-    box-shadow: 0 0 6px var(--swatch-color, transparent);
   }
 
   .day-cell.selected .day-indicator {
@@ -494,6 +564,10 @@
     align-items: center;
     justify-content: center;
     animation: scaleIn 0.4s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)) both;
+    background: var(--bg-card, #FFFFFF);
+    border: 1px solid var(--border-color, #E2E5EF);
+    border-radius: var(--radius-xl, 20px);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(26, 29, 46, 0.06));
   }
 
   @keyframes scaleIn {
@@ -522,18 +596,18 @@
 
   .answer-date {
     font-size: 0.88rem;
-    color: var(--text-secondary, #94A3B8);
+    color: var(--text-secondary, #5C6178);
     font-weight: 500;
   }
 
   .answer-day {
     font-size: 0.82rem;
-    color: var(--accent-light, #A78BFA);
+    color: var(--accent-color, #5B5FE6);
     font-weight: 700;
     padding: 4px 12px;
-    background: var(--accent-gradient-subtle, linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.15), rgba(236,72,153,0.15)));
+    background: var(--accent-gradient-subtle, rgba(91,95,230,0.08));
     border-radius: var(--radius-full, 9999px);
-    border: 1px solid rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(91, 95, 230, 0.1);
   }
 
   /* ── Colordle Answer ── */
@@ -550,10 +624,7 @@
     border-radius: 20px;
     position: relative;
     overflow: hidden;
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.08) inset,
-      0 16px 32px -8px rgba(0, 0, 0, 0.4),
-      0 0 40px color-mix(in srgb, var(--swatch-color) 25%, transparent);
+    box-shadow: var(--shadow-md, 0 4px 12px rgba(26, 29, 46, 0.07));
     flex-shrink: 0;
   }
 
@@ -574,59 +645,79 @@
   }
 
   .answer-color-name {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
     font-size: 1.4rem;
     font-weight: 800;
     text-transform: capitalize;
     margin-bottom: 4px;
     letter-spacing: -0.01em;
+    color: var(--text-primary, #1A1D2E);
   }
 
   .answer-hex {
     font-family: 'JetBrains Mono', 'SF Mono', monospace;
     font-size: 0.85rem;
-    color: var(--text-secondary, #94A3B8);
+    color: var(--text-secondary, #5C6178);
     font-weight: 500;
   }
 
   /* ── Colorfle Answer ── */
-  .answer-mode {
+  .answer-mode-toggle {
+    display: inline-flex;
+    gap: 4px;
+    background: var(--bg-tertiary, #EEF0F6);
+    border-radius: 12px;
+    padding: 3px;
     margin-bottom: 20px;
+    border: 1px solid var(--border-color, #E2E5EF);
   }
 
-  .answer-mode:last-child {
-    margin-bottom: 0;
+  .amode-btn {
+    padding: 7px 20px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary, #5C6178);
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
   }
 
-  .mode-label {
-    display: inline-block;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: var(--text-muted, #64748B);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 12px;
-    padding: 4px 12px;
-    background: rgba(255,255,255,0.04);
-    border-radius: var(--radius-full, 9999px);
+  .amode-btn.active {
+    background: var(--accent-gradient, linear-gradient(135deg, #5B5FE6, #7C5CFC, #E2478A));
+    color: white;
+    box-shadow: 0 3px 8px rgba(91, 95, 230, 0.25);
   }
 
-  .answer-blocks-row {
+  .amode-btn:not(.active):hover {
+    background: var(--bg-secondary, #FFFFFF);
+    color: var(--text-primary, #1A1D2E);
+  }
+
+  .colorfle-blocks {
     display: flex;
-    gap: 10px;
+    gap: 12px;
     justify-content: center;
-    margin-bottom: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
   }
 
-  .answer-block {
-    width: 56px;
-    height: 56px;
-    border-radius: 14px;
+  .colorfle-block-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .colorfle-block-swatch {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
     position: relative;
     overflow: hidden;
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.08) inset,
-      0 8px 20px -6px rgba(0, 0, 0, 0.4),
-      0 0 30px color-mix(in srgb, var(--block-color) 20%, transparent);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(26, 29, 46, 0.06));
   }
 
   .block-reflection {
@@ -639,27 +730,105 @@
       transparent 50%
     );
     pointer-events: none;
+    border-radius: inherit;
   }
 
-  .mode-hex-row {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
+  .colorfle-block-name {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-primary, #1A1D2E);
+    text-transform: capitalize;
   }
 
-  .hex-label {
-    width: 56px;
-    text-align: center;
-    font-size: 0.65rem;
+  .colorfle-block-weight {
     font-family: 'JetBrains Mono', monospace;
-    color: var(--text-muted, #64748B);
+    font-size: 0.62rem;
+    color: var(--text-muted, #5A6178);
     font-weight: 500;
+  }
+
+  /* ── Colorfle Blend ── */
+  .colorfle-blend {
+    border-top: 1px solid var(--border-color, #E2E5EF);
+    padding-top: 18px;
+  }
+
+  .blend-formula-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .formula-chip {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .chip-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .chip-name {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-secondary, #5C6178);
+    text-transform: capitalize;
+  }
+
+  .chip-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--text-muted, #5A6178);
+  }
+
+  .formula-plus {
+    color: var(--text-muted, #5A6178);
+    font-size: 0.8rem;
+    font-weight: 300;
+  }
+
+  .formula-eq {
+    color: var(--text-muted, #5A6178);
+    font-size: 0.9rem;
+    font-weight: 300;
+    margin-left: 2px;
+  }
+
+  .blend-result-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .colorfle-blend-swatch {
+    width: 80px;
+    height: 80px;
+    border-radius: 18px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(26, 29, 46, 0.06));
+  }
+
+  .blend-result-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted, #5A6178);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
   }
 
   /* ── States ── */
   .loading-state {
     text-align: center;
-    color: var(--text-secondary, #94A3B8);
+    color: var(--text-secondary, #5C6178);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -669,8 +838,8 @@
   .spinner {
     width: 32px;
     height: 32px;
-    border: 3px solid var(--glass-border, rgba(255,255,255,0.06));
-    border-top-color: var(--accent-color, #8B5CF6);
+    border: 3px solid var(--border-color, #E2E5EF);
+    border-top-color: var(--accent-color, #5B5FE6);
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
   }
@@ -681,7 +850,7 @@
 
   .no-answer {
     text-align: center;
-    color: var(--text-muted, #64748B);
+    color: var(--text-muted, #5A6178);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -695,8 +864,8 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: rgba(239, 68, 68, 0.1);
-    color: var(--error, #EF4444);
+    background: rgba(207, 34, 46, 0.08);
+    color: var(--error, #CF222E);
   }
 
   .hint-panel {
@@ -706,17 +875,17 @@
   }
 
   .hint-icon {
-    color: var(--text-muted, #64748B);
+    color: var(--text-muted, #5A6178);
   }
 
   .hint-text {
-    color: var(--text-secondary, #94A3B8);
+    color: var(--text-secondary, #5C6178);
     font-size: 0.95rem;
     font-weight: 500;
   }
 
   .hint-sub {
-    color: var(--text-muted, #64748B);
+    color: var(--text-muted, #8B8FA3);
     font-size: 0.82rem;
   }
 
@@ -739,13 +908,9 @@
       text-align: center;
     }
 
-    .answer-block {
-      width: 48px;
-      height: 48px;
-    }
-
-    .hex-label {
-      width: 48px;
+    .colorfle-block-swatch {
+      width: 52px;
+      height: 52px;
     }
   }
 </style>

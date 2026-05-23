@@ -5,15 +5,12 @@ const today = new Date().toISOString().split('T')[0];
 const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 ---
 
-<Layout title="Colorfle Answer Today" description="Today's Colorfle answer revealed. Get the daily normal and hard mode color combinations with spoiler protection.">
+<Layout title="Colorfle Answer Today" canonicalUrl="/colorfle-answer-today" description="Today's Colorfle answer revealed with actual color blocks for normal and hard mode. Updated daily with spoiler protection.">
   <section class="answer-page">
     <div class="container">
       <!-- Breadcrumb -->
       <nav class="breadcrumb animate-fade-in-up" aria-label="Breadcrumb">
-        <a href="/" class="breadcrumb-link">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-          Home
-        </a>
+        <a href="/" class="breadcrumb-link">Home</a>
         <span class="breadcrumb-sep">/</span>
         <span class="breadcrumb-current">Colorfle Today</span>
       </nav>
@@ -21,13 +18,13 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
       <!-- Title -->
       <div class="page-header animate-fade-in-up delay-1">
         <h1 class="page-title">
-          Colorfle Answer<br/><span class="gradient-text">Today</span>
+          Colorfle Answer <span class="colorfle-text">Today</span>
         </h1>
         <p class="page-date" id="dateDisplay"></p>
       </div>
 
       <!-- Main Answer Card -->
-      <div class="answer-card glass-card animate-fade-in-up delay-2" id="answerCard">
+      <div class="answer-card card animate-fade-in-up delay-2" id="answerCard">
         <!-- Loading State -->
         <div class="loading-state" id="loadingState">
           <div class="spinner"></div>
@@ -56,18 +53,23 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
               <button class="mode-btn" id="hardBtn">Hard</button>
             </div>
 
-            <!-- Normal Mode Blocks -->
-            <div class="blocks-section" id="normalSection"></div>
+            <!-- Normal Mode -->
+            <div class="mode-section" id="normalSection">
+              <div class="section-label">Normal Mode</div>
+              <div class="blocks-visual" id="normalBlocks"></div>
+              <div class="blend-visual" id="normalBlend"></div>
+            </div>
 
-            <!-- Hard Mode Blocks -->
-            <div class="blocks-section hidden" id="hardSection"></div>
-
-            <!-- Blend Preview -->
-            <div class="blend-section" id="blendSection"></div>
+            <!-- Hard Mode -->
+            <div class="mode-section hidden" id="hardSection">
+              <div class="section-label">Hard Mode</div>
+              <div class="blocks-visual" id="hardBlocks"></div>
+              <div class="blend-visual" id="hardBlend"></div>
+            </div>
           </div>
 
           <div class="answer-actions">
-            <a href="https://colorfle.com/" target="_blank" rel="noopener" class="btn-primary">
+            <a href="https://colorfle.com/" target="_blank" rel="noopener" class="btn-primary btn-colorfle">
               Play Colorfle
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
             </a>
@@ -91,18 +93,36 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
       <div class="recent-section animate-fade-in-up delay-3">
         <h3 class="recent-title">Recent Answers</h3>
         <div class="recent-list" id="recentList">
-          <div class="skeleton" style="height: 56px; margin-bottom: 8px;"></div>
-          <div class="skeleton" style="height: 56px; margin-bottom: 8px;"></div>
-          <div class="skeleton" style="height: 56px;"></div>
+          <div class="skeleton" style="height: 64px; margin-bottom: 8px;"></div>
+          <div class="skeleton" style="height: 64px; margin-bottom: 8px;"></div>
+          <div class="skeleton" style="height: 64px;"></div>
         </div>
+      </div>
+
+      <!-- SEO Content -->
+      <div class="seo-content animate-fade-in-up delay-4">
+        <h2>What Is Colorfle?</h2>
+        <p>Colorfle is a daily color mixing puzzle that challenges players to guess a combination of colors and their blending weights. Unlike Colordle which has a single color answer, Colorfle gives you three (or four in hard mode) colors that combine in specific proportions to create a blended result. The game uses a curated set of 20 distinct colors, and each day's puzzle reveals which colors are mixed and at what percentages.</p>
+
+        <p>In normal mode, three colors combine with weights of 50%, 34%, and 16%. Hard mode adds a fourth color with weights of 40%, 30%, 20%, and 10%. The weighted average of these colors produces a blended result that players need to identify. It's a more complex puzzle than Colordle, requiring you to think about how colors interact when mixed together at different proportions.</p>
+
+        <h2>Understanding the Color Blocks</h2>
+        <p>When we show today's Colorfle answer, we display each color as a filled block — not just a text name or a percentage. Each color block is rendered with the actual hex color value from the game's palette, so you see the real color. The color name is overlaid directly on the block, and the blending percentage appears below. After the individual blocks, we show the mixed result: what happens when you combine all the colors at their given weights.</p>
+
+        <p>This visual approach matches how Colorfle itself presents the answer. When you play the game and reveal the solution, you see colored squares with the name and percentage — and that's exactly what we replicate here. The blended result is computed using weighted RGB averaging, the same method the original game uses to show the combined color.</p>
+
+        <h2>Colorfle Normal vs Hard Mode</h2>
+        <p>Colorfle offers two difficulty modes. Normal mode uses three colors with weights of 50%, 34%, and 16% — the dominant color accounts for half the blend, making it somewhat easier to guess the overall result. Hard mode uses four colors with weights of 40%, 30%, 20%, and 10%, creating a more complex mixture where no single color dominates. We provide answers for both modes, and you can toggle between them using the Normal/Hard buttons above the answer display.</p>
+
+        <p>The hard mode was added to the game as an extra challenge for players who found normal mode too easy. With four colors blending in smaller proportions, the final result is often harder to predict just by looking at the component colors. Whether you play normal or hard mode, our answer page shows you exactly which colors are involved and what their final mixture looks like.</p>
       </div>
     </div>
   </section>
 </Layout>
 
-<style>
+<style is:global>
   .answer-page {
-    padding: 40px 0 96px;
+    padding: 32px 0 80px;
   }
 
   /* ── Breadcrumb ── */
@@ -110,43 +130,34 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     font-size: 0.85rem;
   }
 
-  .breadcrumb-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    color: var(--text-muted);
-    transition: color var(--duration-fast) ease;
-  }
-
-  .breadcrumb-link:hover { color: var(--accent-light); }
-  .breadcrumb-sep { color: var(--text-muted); opacity: 0.5; }
+  .breadcrumb-link { color: var(--text-muted); transition: color var(--duration-fast) ease; }
+  .breadcrumb-link:hover { color: var(--accent-color); }
+  .breadcrumb-sep { color: var(--text-muted); opacity: 0.4; }
   .breadcrumb-current { color: var(--text-secondary); font-weight: 500; }
 
   /* ── Page Header ── */
-  .page-header { margin-bottom: 40px; }
+  .page-header { margin-bottom: 36px; }
 
   .page-title {
-    font-size: 3rem;
-    font-weight: 900;
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
     line-height: 1.1;
     letter-spacing: -0.03em;
     margin-bottom: 8px;
   }
 
-  .page-date {
-    color: var(--text-secondary);
-    font-size: 1rem;
-  }
+  .page-date { color: var(--text-secondary); font-size: 1rem; }
 
   /* ── Answer Card ── */
   .answer-card {
-    padding: 48px;
+    padding: 44px 40px;
     text-align: center;
-    max-width: 620px;
+    max-width: 660px;
     margin: 0 auto;
     position: relative;
   }
@@ -158,16 +169,16 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
     color: var(--text-secondary);
-    padding: 48px 0;
+    padding: 40px 0;
   }
 
   .spinner {
-    width: 36px;
-    height: 36px;
-    border: 3px solid var(--glass-border);
-    border-top-color: var(--accent-color);
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--colorfle-accent);
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
   }
@@ -176,15 +187,16 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 
   /* ── Day Number ── */
   .answer-day {
-    font-size: 0.88rem;
-    color: var(--accent-light);
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--colorfle-accent);
     font-weight: 700;
-    margin-bottom: 28px;
-    padding: 6px 16px;
-    background: var(--accent-gradient-subtle);
+    margin-bottom: 24px;
+    padding: 6px 18px;
+    background: var(--colorfle-gradient-subtle);
     border-radius: var(--radius-full);
     display: inline-block;
-    border: 1px solid rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(230, 138, 0, 0.1);
   }
 
   /* ── Spoiler ── */
@@ -196,12 +208,12 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    background: rgba(11, 13, 23, 0.5);
-    border: 1px solid var(--glass-border);
+    gap: 14px;
+    background: rgba(247, 248, 252, 0.7);
+    border: 1px solid var(--border-color);
     border-radius: var(--radius-xl);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     cursor: pointer;
     font-family: inherit;
     transition:
@@ -211,8 +223,8 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   }
 
   .spoiler-overlay:hover {
-    background: rgba(11, 13, 23, 0.6);
-    border-color: var(--accent-color);
+    background: rgba(247, 248, 252, 0.85);
+    border-color: var(--colorfle-accent);
     transform: scale(1.01);
   }
 
@@ -223,22 +235,18 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--accent-gradient-subtle);
-    border: 1px solid rgba(139, 92, 246, 0.2);
-    color: var(--accent-light);
+    background: var(--colorfle-gradient-subtle);
+    border: 1px solid rgba(230, 138, 0, 0.15);
+    color: var(--colorfle-accent);
     transition: transform var(--duration-normal) var(--ease-out-expo);
   }
 
-  .spoiler-overlay:hover .spoiler-icon { transform: scale(1.1); }
+  .spoiler-overlay:hover .spoiler-icon { transform: scale(1.08); }
 
-  .spoiler-text {
-    color: var(--text-secondary);
-    font-size: 0.88rem;
-    font-weight: 600;
-  }
+  .spoiler-text { color: var(--text-secondary); font-size: 0.88rem; font-weight: 600; }
 
   .answer-content.blurred {
-    filter: blur(24px) saturate(0.2);
+    filter: blur(28px) saturate(0.15);
     user-select: none;
     pointer-events: none;
   }
@@ -247,165 +255,212 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   .mode-toggle {
     display: inline-flex;
     gap: 4px;
-    background: rgba(255, 255, 255, 0.04);
-    border-radius: 14px;
+    background: var(--bg-tertiary);
+    border-radius: 12px;
     padding: 4px;
-    margin-bottom: 32px;
-    border: 1px solid var(--glass-border);
+    margin-bottom: 28px;
+    border: 1px solid var(--border-color);
   }
 
   .mode-btn {
-    padding: 10px 28px;
-    border-radius: 11px;
+    padding: 8px 24px;
+    border-radius: 10px;
     border: none;
     background: transparent;
     color: var(--text-secondary);
     font-family: inherit;
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.25s ease;
   }
 
   .mode-btn.active {
-    background: var(--accent-gradient);
+    background: var(--colorfle-gradient);
     color: white;
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+    box-shadow: 0 3px 10px rgba(230, 138, 0, 0.25);
   }
 
   .mode-btn:not(.active):hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--bg-secondary);
     color: var(--text-primary);
   }
 
-  /* ── Blocks Section ── */
-  .blocks-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 24px;
-  }
+  /* ── Mode Section ── */
+  .mode-section { animation: fadeInUp 0.35s var(--ease-out-expo) both; }
 
-  .blocks-label {
+  .section-label {
     font-size: 0.72rem;
     font-weight: 700;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    margin-bottom: 8px;
+    margin-bottom: 20px;
   }
 
-  .blocks-row {
+  /* ── Color Blocks Visual ── */
+  .blocks-visual {
     display: flex;
-    gap: 16px;
     justify-content: center;
+    gap: 16px;
+    margin-bottom: 24px;
     flex-wrap: wrap;
-    align-items: flex-start;
   }
 
-  .block-item {
+  .color-block-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    animation: blockIn 0.5s var(--ease-out-expo) both;
+    animation: blockIn 0.4s var(--ease-out-expo) both;
   }
 
-  .color-block {
-    width: 88px;
-    height: 88px;
+  .color-block-swatch {
+    width: 120px;
+    height: 120px;
     border-radius: 20px;
     position: relative;
     overflow: hidden;
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.08) inset,
-      0 12px 28px -8px rgba(0, 0, 0, 0.4),
-      0 0 40px var(--block-glow, transparent);
+    box-shadow: var(--shadow-md);
     transition:
       transform 0.3s var(--ease-out-expo),
       box-shadow 0.3s ease;
-    cursor: pointer;
+    cursor: default;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .color-block:hover {
-    transform: scale(1.08) translateY(-3px);
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.12) inset,
-      0 20px 40px -12px rgba(0, 0, 0, 0.5),
-      0 0 60px var(--block-glow, transparent);
+  .color-block-swatch:hover {
+    transform: scale(1.05) translateY(-3px);
+    box-shadow: var(--shadow-lg);
   }
 
   .block-reflection {
     position: absolute;
     inset: 0;
-    background: linear-gradient(170deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.04) 35%, transparent 50%);
+    background: linear-gradient(170deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.06) 35%, transparent 50%);
     pointer-events: none;
+    border-radius: inherit;
   }
 
-  .block-label {
+  .color-block-name {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.92rem;
+    text-transform: capitalize;
+    color: var(--text-primary);
+  }
+
+  .color-block-weight {
     font-family: 'JetBrains Mono', 'SF Mono', monospace;
     font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  @keyframes blockIn {
+    from { transform: scale(0.85) translateY(10px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+
+  /* ── Blend Visual ── */
+  .blend-visual {
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+    margin-bottom: 8px;
+  }
+
+  .blend-formula {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+
+  .formula-part {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .formula-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .formula-name {
+    font-size: 0.82rem;
     font-weight: 600;
     color: var(--text-secondary);
     text-transform: capitalize;
   }
 
-  .block-weight {
-    font-size: 0.68rem;
+  .formula-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
     color: var(--text-muted);
     font-weight: 500;
   }
 
-  @keyframes blockIn {
-    from { transform: scale(0.8) translateY(10px); opacity: 0; }
-    to { transform: scale(1) translateY(0); opacity: 1; }
+  .formula-plus {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 300;
   }
 
-  /* ── Blend Section ── */
-  .blend-section {
-    margin-bottom: 28px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border-color);
+  .formula-equals {
+    color: var(--text-muted);
+    font-size: 1rem;
+    font-weight: 300;
+    margin: 0 4px;
   }
 
-  .blend-preview {
+  .blend-result {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
   }
 
   .blend-swatch {
-    width: 72px;
-    height: 72px;
-    border-radius: 16px;
+    width: 110px;
+    height: 110px;
+    border-radius: 22px;
     position: relative;
     overflow: hidden;
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.08) inset,
-      0 8px 20px -6px rgba(0, 0, 0, 0.4),
-      0 0 40px var(--blend-glow, transparent);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      transform 0.3s var(--ease-out-expo),
+      box-shadow 0.3s ease;
+  }
+
+  .blend-swatch:hover {
+    transform: scale(1.04) translateY(-3px);
+    box-shadow: var(--shadow-lg);
   }
 
   .blend-swatch .block-reflection {
     position: absolute;
     inset: 0;
-    background: linear-gradient(170deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.04) 35%, transparent 50%);
+    background: linear-gradient(170deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.06) 35%, transparent 50%);
   }
 
   .blend-label {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
     font-size: 0.78rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .blend-formula {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--text-muted);
+    letter-spacing: 0.06em;
   }
 
   /* ── Actions ── */
@@ -414,6 +469,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     gap: 12px;
     justify-content: center;
     flex-wrap: wrap;
+    margin-top: 12px;
   }
 
   /* ── Error ── */
@@ -423,32 +479,32 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     align-items: center;
     gap: 12px;
     color: var(--text-secondary);
-    padding: 32px 0;
+    padding: 28px 0;
   }
 
   .error-icon {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: rgba(239, 68, 68, 0.1);
+    background: rgba(207, 34, 46, 0.08);
     color: var(--error);
   }
 
   /* ── Recent ── */
   .recent-section {
-    max-width: 620px;
+    max-width: 660px;
     margin: 48px auto 0;
   }
 
   .recent-title {
-    font-size: 1rem;
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 0.95rem;
     font-weight: 700;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     color: var(--text-secondary);
-    letter-spacing: -0.01em;
   }
 
   .recent-list {
@@ -461,57 +517,99 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 14px 18px;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
+    padding: 14px 16px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     transition: all 0.2s ease;
   }
 
   .recent-item:hover {
-    background: var(--bg-card-hover);
-    border-color: var(--glass-border-hover);
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-xs);
   }
 
-  .recent-dots {
+  .recent-colors {
     display: flex;
     gap: 4px;
     flex-shrink: 0;
   }
 
-  .recent-dot {
-    width: 28px;
-    height: 28px;
-    border-radius: 7px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  .recent-color-block {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
     position: relative;
     overflow: hidden;
+    box-shadow: var(--shadow-xs);
   }
 
-  .recent-dot::after {
-    content: '';
+  .recent-color-block .color-reflection {
     position: absolute;
     inset: 0;
-    border-radius: 7px;
-    background: linear-gradient(170deg, rgba(255,255,255,0.18) 0%, transparent 45%);
+    background: linear-gradient(170deg, rgba(255,255,255,0.3) 0%, transparent 50%);
+    border-radius: 8px;
   }
 
-  .recent-date {
-    font-size: 0.82rem;
-    color: var(--text-muted);
+  .recent-blend {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-xs);
+    border: 1px solid var(--border-color);
+  }
+
+  .recent-blend .color-reflection {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(170deg, rgba(255,255,255,0.25) 0%, transparent 50%);
+    border-radius: 8px;
+  }
+
+  .recent-arrow { color: var(--text-muted); font-size: 0.7rem; }
+  .recent-info { flex: 1; }
+  .recent-date { font-size: 0.88rem; color: var(--text-primary); font-weight: 600; }
+  .recent-day { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+
+  /* ── SEO Content ── */
+  .seo-content {
+    max-width: 660px;
+    margin: 56px auto 0;
+  }
+
+  .seo-content h2 {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+  }
+
+  .seo-content p {
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
   }
 
   /* ── Responsive ── */
   @media (max-width: 768px) {
-    .page-title { font-size: 2.2rem; }
-    .answer-card { padding: 32px 20px; }
-    .color-block { width: 68px; height: 68px; border-radius: 16px; }
-    .blend-swatch { width: 60px; height: 60px; }
+    .page-title { font-size: 2rem; }
+    .answer-card { padding: 28px 18px; }
+    .color-block-swatch { width: 90px; height: 90px; border-radius: 18px; }
+    .blend-swatch { width: 90px; height: 90px; }
+    .blocks-visual { gap: 12px; }
   }
 
   @media (max-width: 640px) {
-    .page-title { font-size: 1.8rem; }
-    .color-block { width: 60px; height: 60px; }
+    .page-title { font-size: 1.7rem; }
+    .color-block-swatch { width: 76px; height: 76px; border-radius: 16px; }
+    .color-block-name { font-size: 0.82rem; }
+    .blend-swatch { width: 80px; height: 80px; border-radius: 18px; }
   }
 </style>
 
@@ -530,20 +628,33 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   const HARD_WEIGHTS = [40, 30, 20, 10];
 
   let currentMode = 'normal';
+  let normalColors = [];
+  let hardColors = [];
+  let normalNames = [];
+  let hardNames = [];
 
   const dateDisplay = document.getElementById('dateDisplay');
   const loadingState = document.getElementById('loadingState');
   const answerState = document.getElementById('answerState');
   const errorState = document.getElementById('errorState');
   const dayNumber = document.getElementById('dayNumber');
-  const normalSection = document.getElementById('normalSection');
-  const hardSection = document.getElementById('hardSection');
-  const blendSection = document.getElementById('blendSection');
+  const normalBlocks = document.getElementById('normalBlocks');
+  const hardBlocks = document.getElementById('hardBlocks');
+  const normalBlend = document.getElementById('normalBlend');
+  const hardBlend = document.getElementById('hardBlend');
   const recentList = document.getElementById('recentList');
   const spoilerOverlay = document.getElementById('spoilerOverlay');
   const answerContent = document.getElementById('answerContent');
   const normalBtn = document.getElementById('normalBtn');
   const hardBtn = document.getElementById('hardBtn');
+
+  function isLightColor(hex) {
+    const c = hex.replace('#', '');
+    const r = parseInt(c.substring(0, 2), 16);
+    const g = parseInt(c.substring(2, 4), 16);
+    const b = parseInt(c.substring(4, 6), 16);
+    return (r * 299 + g * 587 + b * 114) / 1000 > 160;
+  }
 
   const now = new Date();
   dateDisplay.textContent = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -561,6 +672,8 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 
   function switchMode(mode) {
     currentMode = mode;
+    const normalSection = document.getElementById('normalSection');
+    const hardSection = document.getElementById('hardSection');
     if (mode === 'normal') {
       normalBtn.classList.add('active');
       hardBtn.classList.remove('active');
@@ -572,7 +685,6 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
       hardSection.classList.remove('hidden');
       normalSection.classList.add('hidden');
     }
-    updateBlend();
   }
 
   function blendColors(colors, weights) {
@@ -593,42 +705,45 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
   }
 
-  let normalColors = [];
-  let hardColors = [];
-
-  function updateBlend() {
-    const colors = currentMode === 'normal' ? normalColors : hardColors;
-    const weights = currentMode === 'normal' ? NORMAL_WEIGHTS : HARD_WEIGHTS;
-    if (!colors.length) { blendSection.innerHTML = ''; return; }
-
-    const blended = blendColors(colors, weights);
-    const formula = currentMode === 'normal'
-      ? '50% + 34% + 16%'
-      : '40% + 30% + 20% + 10%';
-
-    blendSection.innerHTML = `
-      <div class="blend-preview">
-        <div class="blend-swatch" style="background: ${blended}; --blend-glow: ${blended}40;">
-          <div class="block-reflection"></div>
+  function renderBlocks(colors, names, weights) {
+    return colors.map((c, i) => {
+      const light = isLightColor(c);
+      return `
+        <div class="color-block-item" style="animation-delay: ${i * 0.1}s;">
+          <div class="color-block-swatch" style="background: ${c};">
+            <div class="block-reflection"></div>
+            <span style="position:relative;z-index:2;font-family:'Outfit','DM Sans',sans-serif;font-weight:700;font-size:0.9rem;text-transform:capitalize;color:${light ? 'var(--text-primary)' : '#FFFFFF'};text-shadow:${light ? 'none' : '0 1px 4px rgba(0,0,0,0.2)'};">${names[i] || COLOR_NAMES[c] || c}</span>
+          </div>
+          <span class="color-block-weight">${weights[i]}%</span>
         </div>
-        <span class="blend-label">Mixed Result</span>
-        <span class="blend-formula">${formula}</span>
-      </div>
-    `;
+      `;
+    }).join('');
   }
 
-  function renderBlocks(colors, weights) {
+  function renderBlend(colors, names, weights) {
+    const blended = blendColors(colors, weights);
+    const lightBlend = isLightColor(blended.replace('rgb(', '#').replace(')', ''));
+
+    const formulaParts = colors.map((c, i) => `
+      <div class="formula-part">
+        <div class="formula-dot" style="background: ${c};"></div>
+        <span class="formula-name">${names[i] || COLOR_NAMES[c] || c}</span>
+        <span class="formula-pct">${weights[i]}%</span>
+      </div>
+      ${i < colors.length - 1 ? '<span class="formula-plus">+</span>' : ''}
+    `).join('');
+
     return `
-      <div class="blocks-row">
-        ${colors.map((c, i) => `
-          <div class="block-item" style="animation-delay: ${i * 0.12}s;">
-            <div class="color-block" style="background: ${c}; --block-glow: ${c}30;">
-              <div class="block-reflection"></div>
-            </div>
-            <span class="block-label">${COLOR_NAMES[c] || c}</span>
-            ${weights[i] ? `<span class="block-weight">${weights[i]}%</span>` : ''}
-          </div>
-        `).join('')}
+      <div class="blend-formula">
+        ${formulaParts}
+        <span class="formula-equals">=</span>
+      </div>
+      <div class="blend-result">
+        <div class="blend-swatch" style="background: ${blended};">
+          <div class="block-reflection"></div>
+          <span style="position:relative;z-index:2;font-family:'Outfit','DM Sans',sans-serif;font-weight:700;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;color:${lightBlend ? 'var(--text-primary)' : '#FFFFFF'};text-shadow:${lightBlend ? 'none' : '0 1px 3px rgba(0,0,0,0.2)'};">Mixed</span>
+        </div>
+        <span class="blend-label">Mixed Result</span>
       </div>
     `;
   }
@@ -645,10 +760,13 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
       dayNumber.textContent = `Day #${data.day_number}`;
       normalColors = JSON.parse(data.normal_answer || '[]');
       hardColors = JSON.parse(data.hard_answer || '[]');
+      normalNames = JSON.parse(data.normal_names || '[]');
+      hardNames = JSON.parse(data.hard_names || '[]');
 
-      normalSection.innerHTML = renderBlocks(normalColors, NORMAL_WEIGHTS);
-      hardSection.innerHTML = renderBlocks(hardColors, HARD_WEIGHTS);
-      updateBlend();
+      normalBlocks.innerHTML = renderBlocks(normalColors, normalNames, NORMAL_WEIGHTS);
+      hardBlocks.innerHTML = renderBlocks(hardColors, hardNames, HARD_WEIGHTS);
+      normalBlend.innerHTML = renderBlend(normalColors, normalNames, NORMAL_WEIGHTS);
+      hardBlend.innerHTML = renderBlend(hardColors, hardNames, HARD_WEIGHTS);
     } catch (e) {
       loadingState.classList.add('hidden');
       errorState.classList.remove('hidden');
@@ -664,12 +782,19 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 
       recentList.innerHTML = data.slice(0, 7).map(item => {
         const colors = JSON.parse(item.normal_answer || '[]');
+        const names = JSON.parse(item.normal_names || '[]');
+        const blended = blendColors(colors, NORMAL_WEIGHTS);
         return `
           <div class="recent-item">
-            <div class="recent-dots">
-              ${colors.map(c => `<div class="recent-dot" style="background: ${c}"></div>`).join('')}
+            <div class="recent-colors">
+              ${colors.map(c => `<div class="recent-color-block" style="background: ${c}"><div class="color-reflection"></div></div>`).join('')}
             </div>
-            <div class="recent-date">${item.date} · Day #${item.day_number}</div>
+            <span class="recent-arrow">→</span>
+            <div class="recent-blend" style="background: ${blended}"><div class="color-reflection"></div></div>
+            <div class="recent-info">
+              <div class="recent-date">${item.date}</div>
+              <div class="recent-day">Day #${item.day_number} · ${names.join(' + ')}</div>
+            </div>
           </div>
         `;
       }).join('');
