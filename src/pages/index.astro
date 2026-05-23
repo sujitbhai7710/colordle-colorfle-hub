@@ -100,7 +100,10 @@ const faqData = [
               </div>
               <div class="preview-teaser">
                 <div class="teaser-blur-circle"></div>
-                <span class="teaser-text">Click to reveal answer</span>
+                <a href="/colordle-answer-today" class="teaser-btn btn-colordle-teaser">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+                  See Today's Colordle Answer
+                </a>
               </div>
             </div>
             <div class="preview-divider"></div>
@@ -116,15 +119,14 @@ const faqData = [
                   <div class="teaser-blur-square"></div>
                   <div class="teaser-blur-square"></div>
                 </div>
-                <span class="teaser-text">Click to reveal answer</span>
+                <a href="/colorfle-answer-today" class="teaser-btn btn-colorfle-teaser">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                  See Today's Colorfle Answer
+                </a>
               </div>
             </div>
           </div>
-          <div class="preview-card-footer">
-            <a href="/colordle-answer-today" class="preview-card-link">View Colordle Answer →</a>
-            <span class="preview-card-sep">|</span>
-            <a href="/colorfle-answer-today" class="preview-card-link">View Colorfle Answer →</a>
-          </div>
+
         </div>
       </div>
     </div>
@@ -557,40 +559,17 @@ const faqData = [
     background: var(--border-color);
   }
 
-  .preview-card-footer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 16px;
-    padding-top: 14px;
-    border-top: 1px solid var(--border-color);
-    flex-wrap: wrap;
-  }
-
-  .preview-card-link {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--accent-color);
-    text-decoration: none;
-    transition: color var(--duration-fast) ease;
-  }
-
-  .preview-card-link:hover {
-    color: var(--accent-dark);
-  }
-
   /* ── Teaser Card Styles (No Spoilers) ── */
   .preview-teaser {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 14px;
     min-height: 80px;
-    padding: 16px;
+    padding: 20px 16px;
     background: rgba(255,255,255,0.5);
-    border: 2px dashed rgba(37, 99, 235, 0.2);
+    border: 2px dashed rgba(37, 99, 235, 0.15);
     border-radius: var(--radius-lg);
     text-align: center;
   }
@@ -618,16 +597,47 @@ const faqData = [
     opacity: 0.7;
   }
 
-  .teaser-text {
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    letter-spacing: 0.02em;
+  /* ── Teaser Buttons ── */
+  .teaser-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    white-space: nowrap;
   }
 
-  .preview-card-sep {
-    color: var(--border-color);
-    margin: 0 4px;
+  .teaser-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+  }
+
+  .btn-colordle-teaser {
+    background: linear-gradient(135deg, #5B5FE6 0%, #7C5CFC 100%);
+    color: #FFFFFF;
+  }
+
+  .btn-colordle-teaser:hover {
+    background: linear-gradient(135deg, #4B4FD6 0%, #6C4CEC 100%);
+    color: #FFFFFF;
+  }
+
+  .btn-colorfle-teaser {
+    background: linear-gradient(135deg, #F5A623 0%, #E68A00 100%);
+    color: #FFFFFF;
+  }
+
+  .btn-colorfle-teaser:hover {
+    background: linear-gradient(135deg, #E59613 0%, #D67A00 100%);
+    color: #FFFFFF;
   }
 
   /* ═══ GAME CARDS ═══ */

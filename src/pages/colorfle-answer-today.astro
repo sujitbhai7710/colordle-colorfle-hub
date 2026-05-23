@@ -16,7 +16,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
         <span class="breadcrumb-current">Colorfle Today</span>
       </nav>
 
-      <h1 class="page-h1 animate-fade-in-up">Colorfle Answer Today</h1>
+      <h1 class="page-h1 animate-fade-in-up" id="pageTitle">Colorfle Answer Today</h1>
 
       <!-- Hero Card with Gradient -->
       <div class="hero-card animate-fade-in-up delay-1" id="heroCard">
@@ -233,20 +233,28 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   /* ── Page H1 ── */
   .page-h1 {
     font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 800;
     letter-spacing: -0.03em;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     color: var(--text-primary);
     line-height: 1.15;
+    text-align: center;
+  }
+
+  .page-h1 .h1-date {
+    font-size: 0.55em;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0;
   }
 
   @media (min-width: 768px) {
-    .page-h1 { font-size: 2.4rem; }
+    .page-h1 { font-size: 2.2rem; }
   }
 
   @media (max-width: 640px) {
-    .page-h1 { font-size: 1.6rem; margin-bottom: 12px; }
+    .page-h1 { font-size: 1.45rem; margin-bottom: 10px; }
   }
 
   /* ── Hero Card ── */
@@ -631,8 +639,8 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   /* ── Archive CTA ── */
   .archive-cta {
     max-width: 700px;
-    margin: 40px auto 0;
-    padding: 28px;
+    margin: 24px auto 0;
+    padding: 24px;
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-2xl);
@@ -662,15 +670,16 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   /* ── SEO Content ── */
   .seo-content {
     max-width: 720px;
-    margin: 40px auto 0;
-    padding: 28px;
+    margin: 24px auto 0;
+    padding: 20px;
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-2xl);
+    border-radius: var(--radius-xl);
   }
 
   @media (max-width: 640px) {
-    .seo-content { padding: 16px; margin: 28px auto 0; }
+    .seo-content { padding: 14px; margin: 16px auto 0; }
+    .archive-cta { padding: 16px; margin: 16px auto 0; }
   }
 
   .seo-content h2 {
@@ -789,6 +798,14 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 </style>
 
 <script define:vars={{ apiUrl, today }}>
+  // Set date in H1
+  const pageTitle = document.getElementById('pageTitle');
+  if (pageTitle) {
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    pageTitle.innerHTML = `Colorfle Answer Today <span class="h1-date">(${dateStr})</span>`;
+  }
+
   const COLOR_NAMES = {
     '#FFFFFF': 'White', '#FFFAC8': 'Lemon', '#FABEBE': 'Pink',
     '#AAFFC3': 'Mint', '#E6BEFF': 'Lavender', '#46F0F0': 'Cyan',
