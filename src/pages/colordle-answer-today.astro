@@ -16,8 +16,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
         <span class="breadcrumb-current">Colordle Today</span>
       </nav>
 
-      <!-- H1 — only one per page -->
-      <h1 class="sr-only">Colordle Answer Today - Daily Solutions & Color Swatches</h1>
+      <h1 class="page-h1 animate-fade-in-up">Colordle Answer Today</h1>
 
       <!-- Hero Card with Gradient -->
       <div class="hero-card animate-fade-in-up delay-1" id="heroCard">
@@ -87,16 +86,14 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
         </div>
       </div>
 
-      <!-- Recent Answers -->
-      <div class="recent-section animate-fade-in-up delay-2">
-        <h2 class="recent-title">Recent Colordle Answers</h2>
-        <p class="recent-subtitle">The last 7 days of color solutions at a glance</p>
-        <div class="recent-list" id="recentList">
-          <div class="skeleton" style="height: 56px; margin-bottom: 8px;"></div>
-          <div class="skeleton" style="height: 56px; margin-bottom: 8px;"></div>
-          <div class="skeleton" style="height: 56px; margin-bottom: 8px;"></div>
-          <div class="skeleton" style="height: 56px;"></div>
-        </div>
+      <!-- Archive Link -->
+      <div class="archive-cta animate-fade-in-up delay-2">
+        <h2 class="archive-cta-title">Recent Colordle Answers</h2>
+        <p class="archive-cta-subtitle">Want to see recent and past Colordle answers? Visit our interactive archive to browse all answers with color swatches and hex codes.</p>
+        <a href="/colordle-archive" class="btn-primary btn-colordle">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Visit Colordle Archive
+        </a>
       </div>
 
       <!-- ════════════════════════════════════════════════════════════ -->
@@ -206,7 +203,26 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 
 <style is:global>
   .answer-page {
-    padding: 32px 0 80px;
+    padding: 20px 0 80px;
+  }
+
+  /* ── Page H1 ── */
+  .page-h1 {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+    line-height: 1.15;
+  }
+
+  @media (min-width: 768px) {
+    .page-h1 { font-size: 2.4rem; }
+  }
+
+  @media (max-width: 640px) {
+    .page-h1 { font-size: 1.6rem; margin-bottom: 12px; }
   }
 
   /* ── Breadcrumb ── */
@@ -214,7 +230,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     font-size: 0.85rem;
   }
 
@@ -492,96 +508,45 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     color: var(--error);
   }
 
-  /* ── Recent Section ── */
-  .recent-section {
+  /* ── Archive CTA ── */
+  .archive-cta {
     max-width: 600px;
-    margin: 56px auto 0;
+    margin: 40px auto 0;
+    padding: 28px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-2xl);
+    text-align: center;
   }
 
-  .recent-title {
+  .archive-cta-title {
     font-family: 'Outfit', 'DM Sans', sans-serif;
     font-size: 1.3rem;
     font-weight: 700;
     color: var(--text-primary);
     letter-spacing: -0.02em;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
   }
 
-  .recent-subtitle {
+  .archive-cta-subtitle {
     font-size: 0.9rem;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     margin-bottom: 20px;
+    line-height: 1.6;
   }
 
-  .recent-list {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .recent-item {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 12px 16px;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    transition: all 0.2s ease;
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .recent-item:hover {
-    border-color: var(--border-hover);
-    box-shadow: var(--shadow-xs);
-    background: var(--bg-card-hover);
-  }
-
-  .recent-dot {
-    width: 44px;
-    height: 44px;
-    border-radius: 14px;
-    flex-shrink: 0;
-    position: relative;
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-  }
-
-  .recent-dot .color-reflection {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(170deg, rgba(255,255,255,0.3) 0%, transparent 45%);
-    border-radius: 14px;
-  }
-
-  .recent-info { flex: 1; }
-
-  .recent-name {
-    font-weight: 600;
-    font-size: 0.92rem;
-    text-transform: capitalize;
-    letter-spacing: -0.01em;
-    color: var(--text-primary);
-  }
-
-  .recent-date {
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    margin-top: 2px;
-  }
-
-  .recent-hex {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    font-weight: 500;
+  @media (max-width: 640px) {
+    .archive-cta { padding: 20px; margin: 28px auto 0; }
   }
 
   /* ── SEO Content ── */
   .seo-content {
     max-width: 720px;
-    margin: 64px auto 0;
+    margin: 40px auto 0;
+    padding: 28px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-2xl);
   }
 
   .seo-content h2 {
@@ -695,7 +660,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     .color-name { font-size: 1.4rem; }
     .swatch-label { font-size: 1.2rem; }
     .day-badge { font-size: 0.78rem; padding: 6px 16px; }
-    .recent-dot { width: 38px; height: 38px; border-radius: 10px; }
+    .seo-content { padding: 16px; margin: 28px auto 0; }
     .seo-content h2 { font-size: 1.3rem; }
   }
 </style>
@@ -710,7 +675,6 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   const swatchLabel = document.getElementById('swatchLabel');
   const colorName = document.getElementById('colorName');
   const colorHex = document.getElementById('colorHex');
-  const recentList = document.getElementById('recentList');
   const spoilerOverlay = document.getElementById('spoilerOverlay');
   const swatchContent = document.getElementById('swatchContent');
   const answerInfo = document.getElementById('answerInfo');
@@ -768,31 +732,6 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     }
   }
 
-  async function loadRecent() {
-    try {
-      const to = today;
-      const from = new Date(Date.now() - 7 * 86400000).toISOString().split('T')[0];
-      const res = await fetch(`${apiUrl}/api/colordle/range?from=${from}&to=${to}`);
-      if (!res.ok) return;
-      const data = await res.json();
-
-      recentList.innerHTML = data.slice(0, 7).map(item => `
-        <div class="recent-item">
-          <div class="recent-dot" style="background: ${item.color_hex || '#888'}">
-            <div class="color-reflection"></div>
-          </div>
-          <div class="recent-info">
-            <div class="recent-name">${item.color_name || 'Unknown'}</div>
-            <div class="recent-date">${item.date} · Day #${item.day_number}</div>
-          </div>
-          <span class="recent-hex">${item.color_hex || ''}</span>
-        </div>
-      `).join('');
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
   // FAQ toggle
   document.querySelectorAll('.faq-question').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -804,5 +743,4 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   });
 
   loadAnswer();
-  loadRecent();
 </script>
