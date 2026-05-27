@@ -12,7 +12,7 @@ const breadcrumbs = [
 ---
 
 <Layout
-  title="Blog — Color Games, Puzzles & More"
+  title="Blog — Color Games, Puzzles & Brain Science"
   description="Articles about color puzzle games, brain science, game design, and daily puzzle strategies. Learn why games like Colordle and Colorfle are so addictive and how they improve your brain."
   canonicalUrl="/blog"
   keywords="color game blog, puzzle game articles, Colordle tips, Colorfle strategies, color psychology, brain training games"
@@ -20,7 +20,7 @@ const breadcrumbs = [
 >
   <style is:global>
     .blog-hero {
-      padding: 80px 0 48px;
+      padding: 80px 0 56px;
       background: var(--bg-hero);
       border-bottom: 1px solid var(--border-color);
     }
@@ -29,47 +29,39 @@ const breadcrumbs = [
       max-width: 720px;
     }
 
-    .blog-hero-badge {
-      margin-bottom: 16px;
-    }
+    .blog-hero-badge { margin-bottom: 16px; }
 
     .blog-hero h1 {
       font-family: 'Outfit', 'DM Sans', sans-serif;
-      font-size: 2.5rem;
+      font-size: 2.75rem;
       font-weight: 800;
       letter-spacing: -0.03em;
       color: var(--text-primary);
       margin-bottom: 16px;
-      line-height: 1.15;
+      line-height: 1.12;
     }
 
     .blog-hero p {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       color: var(--text-secondary);
-      line-height: 1.7;
-      max-width: 560px;
+      line-height: 1.75;
+      max-width: 580px;
     }
 
     @media (max-width: 768px) {
-      .blog-hero {
-        padding: 48px 0 32px;
-      }
-      .blog-hero h1 {
-        font-size: 1.75rem;
-      }
-      .blog-hero p {
-        font-size: 1rem;
-      }
+      .blog-hero { padding: 48px 0 32px; }
+      .blog-hero h1 { font-size: 1.9rem; }
+      .blog-hero p { font-size: 1rem; }
     }
 
     .blog-list-section {
-      padding: 64px 0;
+      padding: 64px 0 80px;
     }
 
     .blog-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 24px;
+      gap: 28px;
     }
 
     @media (min-width: 768px) {
@@ -81,35 +73,33 @@ const breadcrumbs = [
     .blog-card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-xl);
       box-shadow: var(--shadow-sm);
-      padding: 28px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
       transition:
         border-color var(--duration-normal) ease,
         box-shadow var(--duration-slow) ease,
         transform var(--duration-slow) var(--ease-out-expo);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
     }
 
     .blog-card:hover {
       border-color: var(--border-hover);
       box-shadow: var(--shadow-lg);
-      transform: translateY(-2px);
+      transform: translateY(-3px);
     }
 
     .blog-card-meta {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       font-size: 0.82rem;
       color: var(--text-muted);
     }
 
-    .blog-card-date {
-      font-weight: 500;
-    }
+    .blog-card-date { font-weight: 500; }
 
     .blog-card-tag {
       display: inline-flex;
@@ -125,9 +115,9 @@ const breadcrumbs = [
 
     .blog-card h2 {
       font-family: 'Outfit', 'DM Sans', sans-serif;
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 700;
-      letter-spacing: -0.015em;
+      letter-spacing: -0.02em;
       color: var(--text-primary);
       line-height: 1.35;
     }
@@ -137,14 +127,12 @@ const breadcrumbs = [
       text-decoration: none;
     }
 
-    .blog-card h2 a:hover {
-      color: var(--accent-color);
-    }
+    .blog-card h2 a:hover { color: var(--accent-color); }
 
     .blog-card-excerpt {
-      font-size: 0.92rem;
+      font-size: 0.95rem;
       color: var(--text-secondary);
-      line-height: 1.65;
+      line-height: 1.7;
       flex: 1;
     }
 
@@ -152,23 +140,25 @@ const breadcrumbs = [
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       font-weight: 600;
       color: var(--accent-color);
       text-decoration: none;
       margin-top: 4px;
     }
 
-    .blog-card-read:hover {
-      gap: 10px;
-    }
+    .blog-card-read:hover { gap: 10px; }
 
     .blog-card-read svg {
       transition: transform var(--duration-fast) ease;
     }
 
-    .blog-card-read:hover svg {
-      transform: translateX(3px);
+    .blog-card-read:hover svg { transform: translateX(3px); }
+
+    .blog-card-reading-time {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 500;
     }
 
     .blog-empty {
@@ -177,9 +167,7 @@ const breadcrumbs = [
       color: var(--text-muted);
     }
 
-    .blog-empty p {
-      font-size: 1.05rem;
-    }
+    .blog-empty p { font-size: 1.05rem; }
   </style>
 
   <!-- Hero -->
@@ -190,7 +178,7 @@ const breadcrumbs = [
           <span class="badge">Blog</span>
         </div>
         <h1>Color Games, Puzzles & Brain Science</h1>
-        <p>Articles about why color puzzle games hook us, how they affect your brain, and tips for getting better at daily puzzles like Colordle and Colorfle.</p>
+        <p>Deep-dive articles about why color puzzle games hook us, how they affect your brain, and practical tips for getting better at daily puzzles like Colordle and Colorfle.</p>
       </div>
     </div>
   </section>
@@ -203,9 +191,12 @@ const breadcrumbs = [
           {allPosts.map((post) => (
             <article class="blog-card">
               <div class="blog-card-meta">
-                <time class="blog-card-date" datetime={post.data.pubDate.toISOString()}>
+                <time datetime={post.data.pubDate.toISOString()}>
                   {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                 </time>
+                <span class="blog-card-reading-time">8 min read</span>
+              </div>
+              <div>
                 {post.data.tags.slice(0, 2).map((tag) => (
                   <span class="blog-card-tag">{tag}</span>
                 ))}
