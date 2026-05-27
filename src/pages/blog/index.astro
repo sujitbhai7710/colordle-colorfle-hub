@@ -1,0 +1,229 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const breadcrumbs = [
+  { name: 'Blog', url: '/blog' }
+];
+---
+
+<Layout
+  title="Blog — Color Games, Puzzles & More"
+  description="Articles about color puzzle games, brain science, game design, and daily puzzle strategies. Learn why games like Colordle and Colorfle are so addictive and how they improve your brain."
+  canonicalUrl="/blog"
+  keywords="color game blog, puzzle game articles, Colordle tips, Colorfle strategies, color psychology, brain training games"
+  breadcrumbs={breadcrumbs}
+>
+  <style is:global>
+    .blog-hero {
+      padding: 80px 0 48px;
+      background: var(--bg-hero);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .blog-hero-inner {
+      max-width: 720px;
+    }
+
+    .blog-hero-badge {
+      margin-bottom: 16px;
+    }
+
+    .blog-hero h1 {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      line-height: 1.15;
+    }
+
+    .blog-hero p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 560px;
+    }
+
+    @media (max-width: 768px) {
+      .blog-hero {
+        padding: 48px 0 32px;
+      }
+      .blog-hero h1 {
+        font-size: 1.75rem;
+      }
+      .blog-hero p {
+        font-size: 1rem;
+      }
+    }
+
+    .blog-list-section {
+      padding: 64px 0;
+    }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    @media (min-width: 768px) {
+      .blog-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .blog-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 28px;
+      transition:
+        border-color var(--duration-normal) ease,
+        box-shadow var(--duration-slow) ease,
+        transform var(--duration-slow) var(--ease-out-expo);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .blog-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+
+    .blog-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .blog-card-date {
+      font-weight: 500;
+    }
+
+    .blog-card-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: var(--accent-gradient-subtle);
+      color: var(--accent-color);
+      border: 1px solid rgba(37, 99, 235, 0.1);
+    }
+
+    .blog-card h2 {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--text-primary);
+      line-height: 1.35;
+    }
+
+    .blog-card h2 a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .blog-card h2 a:hover {
+      color: var(--accent-color);
+    }
+
+    .blog-card-excerpt {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .blog-card-read {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--accent-color);
+      text-decoration: none;
+      margin-top: 4px;
+    }
+
+    .blog-card-read:hover {
+      gap: 10px;
+    }
+
+    .blog-card-read svg {
+      transition: transform var(--duration-fast) ease;
+    }
+
+    .blog-card-read:hover svg {
+      transform: translateX(3px);
+    }
+
+    .blog-empty {
+      text-align: center;
+      padding: 80px 0;
+      color: var(--text-muted);
+    }
+
+    .blog-empty p {
+      font-size: 1.05rem;
+    }
+  </style>
+
+  <!-- Hero -->
+  <section class="blog-hero">
+    <div class="container">
+      <div class="blog-hero-inner">
+        <div class="blog-hero-badge">
+          <span class="badge">Blog</span>
+        </div>
+        <h1>Color Games, Puzzles & Brain Science</h1>
+        <p>Articles about why color puzzle games hook us, how they affect your brain, and tips for getting better at daily puzzles like Colordle and Colorfle.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Post List -->
+  <section class="blog-list-section">
+    <div class="container">
+      {allPosts.length > 0 ? (
+        <div class="blog-grid">
+          {allPosts.map((post) => (
+            <article class="blog-card">
+              <div class="blog-card-meta">
+                <time class="blog-card-date" datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </time>
+                {post.data.tags.slice(0, 2).map((tag) => (
+                  <span class="blog-card-tag">{tag}</span>
+                ))}
+              </div>
+              <h2><a href={`/blog/${post.id}`}>{post.data.title}</a></h2>
+              <p class="blog-card-excerpt">{post.data.description}</p>
+              <a href={`/blog/${post.id}`} class="blog-card-read">
+                Read article
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div class="blog-empty">
+          <p>No articles yet. Check back soon!</p>
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>

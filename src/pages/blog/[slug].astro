@@ -1,0 +1,321 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const breadcrumbs = [
+  { name: 'Blog', url: '/blog' },
+  { name: post.data.title, url: `/blog/${post.id}` },
+];
+---
+
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  canonicalUrl={`/blog/${post.id}`}
+  keywords={post.data.tags.join(', ')}
+  breadcrumbs={breadcrumbs}
+>
+  <style is:global>
+    .blog-post-hero {
+      padding: 64px 0 40px;
+      background: var(--bg-hero);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .blog-post-hero-inner {
+      max-width: 720px;
+    }
+
+    .blog-post-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: color var(--duration-fast) ease;
+    }
+
+    .blog-post-back:hover {
+      color: var(--accent-color);
+    }
+
+    .blog-post-back svg {
+      transition: transform var(--duration-fast) ease;
+    }
+
+    .blog-post-back:hover svg {
+      transform: translateX(-3px);
+    }
+
+    .blog-post-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .blog-post-author {
+      font-weight: 500;
+    }
+
+    .blog-post-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .blog-post-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 12px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: var(--accent-gradient-subtle);
+      color: var(--accent-color);
+      border: 1px solid rgba(37, 99, 235, 0.1);
+    }
+
+    .blog-post-hero h1 {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    @media (max-width: 768px) {
+      .blog-post-hero {
+        padding: 40px 0 24px;
+      }
+      .blog-post-hero h1 {
+        font-size: 1.6rem;
+      }
+    }
+
+    .blog-post-content {
+      padding: 56px 0 80px;
+    }
+
+    .blog-post-content-inner {
+      max-width: 720px;
+    }
+
+    .blog-post-content-inner :global(h2) {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .blog-post-content-inner :global(h3) {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.015em;
+    }
+
+    .blog-post-content-inner :global(p) {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+    }
+
+    .blog-post-content-inner :global(strong) {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .blog-post-content-inner :global(ul),
+    .blog-post-content-inner :global(ol) {
+      margin-bottom: 1.25rem;
+      padding-left: 1.5rem;
+    }
+
+    .blog-post-content-inner :global(li) {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .blog-post-content-inner :global(blockquote) {
+      border-left: 3px solid var(--accent-color);
+      padding: 12px 20px;
+      margin: 1.5rem 0;
+      background: var(--brand-50);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-style: italic;
+      color: var(--text-secondary);
+    }
+
+    .blog-post-content-inner :global(a) {
+      color: var(--accent-color);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .blog-post-content-inner :global(a:hover) {
+      color: var(--accent-dark);
+    }
+
+    .blog-post-content-inner :global(hr) {
+      border: none;
+      border-top: 1px solid var(--border-color);
+      margin: 2.5rem 0;
+    }
+
+    .blog-post-content-inner :global(code) {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88em;
+      background: var(--bg-tertiary);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .blog-post-content-inner :global(pre) {
+      background: var(--bg-dark);
+      color: #e5e7eb;
+      padding: 20px;
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      margin: 1.5rem 0;
+    }
+
+    .blog-post-content-inner :global(pre code) {
+      background: none;
+      padding: 0;
+      font-size: 0.88rem;
+    }
+
+    .blog-post-nav {
+      max-width: 720px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border-color);
+      margin-top: 40px;
+    }
+
+    .blog-post-nav a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--accent-color);
+      text-decoration: none;
+    }
+
+    .blog-post-nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* Article structured data styling */
+    .blog-article {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sm);
+      padding: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .blog-article {
+        padding: 24px;
+      }
+    }
+  </style>
+
+  <!-- Hero -->
+  <section class="blog-post-hero">
+    <div class="container">
+      <div class="blog-post-hero-inner">
+        <a href="/blog" class="blog-post-back">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to Blog
+        </a>
+        <div class="blog-post-meta">
+          <time datetime={post.data.pubDate.toISOString()}>{formattedDate}</time>
+          <span>·</span>
+          <span class="blog-post-author">{post.data.author}</span>
+        </div>
+        <div class="blog-post-tags">
+          {post.data.tags.map((tag: string) => (
+            <span class="blog-post-tag">{tag}</span>
+          ))}
+        </div>
+        <h1>{post.data.title}</h1>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="blog-post-content">
+    <div class="container">
+      <div class="blog-post-content-inner">
+        <article class="blog-article">
+          <Content />
+        </article>
+        <div class="blog-post-nav">
+          <a href="/blog">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Back to all articles
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Article Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": post.data.title,
+    "description": post.data.description,
+    "datePublished": post.data.pubDate.toISOString(),
+    "dateModified": (post.data.updatedDate || post.data.pubDate).toISOString(),
+    "author": {
+      "@type": "Organization",
+      "name": post.data.author
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Color Answers Hub",
+      "url": "https://color-answers.pages.dev"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://color-answers.pages.dev/blog/${post.id}`
+    }
+  })} />
+</Layout>

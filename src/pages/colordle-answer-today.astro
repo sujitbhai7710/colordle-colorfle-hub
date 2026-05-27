@@ -47,10 +47,12 @@ const colorHex = colordleData?.color_hex || '';
 
       <h1 class="page-h1 animate-fade-in-up">Colordle Answer Today <span class="h1-date">({formattedDate})</span></h1>
 
-      <!-- Hero Card with Gradient -->
+      <!-- CSS-only spoiler checkbox -->
+      <input type="checkbox" id="spoilerCheck" class="spoiler-check" aria-hidden="true" />
+
+      <!-- Hero Card -->
       <div class="hero-card animate-fade-in-up delay-1">
         {fetchError ? (
-          <!-- Error State -->
           <div class="error-state">
             <div class="error-icon">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
@@ -58,53 +60,48 @@ const colorHex = colordleData?.color_hex || '';
             <p>Could not load today's answer. Please try again later.</p>
           </div>
         ) : (
-          <div class="answer-state">
-            <div class="hero-gradient"></div>
+          <div class="hero-content">
+            <!-- Day Badge -->
+            <div class="day-badge">Day #{dayNumber}</div>
 
-            <div class="hero-content">
-              <!-- Day Badge -->
-              <div class="day-badge">Day #{dayNumber}</div>
-
-              <!-- Spoiler-protected swatch -->
-              <div class="swatch-container" id="swatchContainer">
-                <div class="spoiler-overlay" id="spoilerOverlay">
-                  <div class="spoiler-icon">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                      <circle cx="12" cy="12" r="3"/>
-                    </svg>
-                  </div>
-                  <span class="spoiler-text">Click to Reveal Today's Answer</span>
+            <!-- Spoiler-protected swatch -->
+            <div class="swatch-container">
+              <label for="spoilerCheck" class="spoiler-overlay">
+                <div class="spoiler-icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
                 </div>
-                <div class="swatch-content blurred" id="swatchContent">
-                  <div class="color-swatch" style={`background: ${colorHex || '#888'};`}>
-                    <div class="color-reflection"></div>
-                    <div class="swatch-label" style={`color: ${isLight ? 'var(--text-primary)' : '#FFFFFF'}; text-shadow: ${isLight ? '0 1px 3px rgba(0,0,0,0.06)' : '0 2px 8px rgba(0,0,0,0.2)'};`}>{colorName}</div>
-                  </div>
+                <span class="spoiler-text">Click to Reveal Today's Answer</span>
+              </label>
+              <div class="swatch-content blurred">
+                <div class="color-swatch" style={`background: ${colorHex || '#888'};`}>
+                  <div class="swatch-label" style={`color: ${isLight ? 'var(--text-primary)' : '#FFFFFF'}; text-shadow: ${isLight ? '0 1px 3px rgba(0,0,0,0.06)' : '0 2px 8px rgba(0,0,0,0.2)'};`}>{colorName}</div>
                 </div>
               </div>
+            </div>
 
-              <!-- Color Info -->
-              <div class="answer-info blurred" id="answerInfo">
-                <h2 class="color-name">{colorName}</h2>
-                <p class="color-hex" id="colorHex" title="Click to copy">{colorHex}</p>
-                <span class="copy-hint">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                  Click hex to copy
-                </span>
-              </div>
+            <!-- Color Info -->
+            <div class="answer-info blurred">
+              <h2 class="color-name">{colorName}</h2>
+              <p class="color-hex" id="colorHex" title="Click to copy">{colorHex}</p>
+              <span class="copy-hint">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                Click hex to copy
+              </span>
+            </div>
 
-              <!-- Actions -->
-              <div class="answer-actions">
-                <a href="https://colordle.ryantanen.com/" target="_blank" rel="noopener" class="btn-primary btn-colordle">
-                  Play Colordle
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
-                </a>
-                <a href="/colordle-archive" class="btn-secondary">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                  View Archive
-                </a>
-              </div>
+            <!-- Actions -->
+            <div class="answer-actions">
+              <a href="https://colordle.ryantanen.com/" target="_blank" rel="noopener" class="btn-primary btn-colordle">
+                Play Colordle
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+              <a href="/colordle-archive" class="btn-secondary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                View Archive
+              </a>
             </div>
           </div>
         )}
@@ -120,9 +117,7 @@ const colorHex = colordleData?.color_hex || '';
         </a>
       </div>
 
-      <!-- ════════════════════════════════════════════════════════════ -->
-      <!-- MASSIVE SEO CONTENT — 1500+ WORDS                          -->
-      <!-- ════════════════════════════════════════════════════════════ -->
+      <!-- SEO CONTENT -->
       <div class="seo-content animate-fade-in-up delay-3">
 
         <h2>What Is Colordle and Why Do People Love It?</h2>
@@ -159,65 +154,59 @@ const colorHex = colordleData?.color_hex || '';
         <h2>Frequently Asked Questions About Colordle</h2>
 
         <div class="faq-list">
-          <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
+          <details class="faq-item">
+            <summary class="faq-question">
               <span>What time does the Colordle answer reset?</span>
-              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
+            </summary>
             <div class="faq-answer">
               <p>Colordle resets at midnight based on your local timezone, just like most daily browser games. However, our answer page updates slightly differently — we run automated refreshes at midnight IST, 8 AM IST, and noon IST to ensure our database is always current. If you're checking the page right around midnight in a different timezone, you might briefly see yesterday's answer before our system updates. In practice, though, the answer is almost always current within a few minutes of the new day starting. We recommend bookmarking this page and checking back each morning for the latest Colordle solution.</p>
             </div>
-          </div>
+          </details>
 
-          <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
+          <details class="faq-item">
+            <summary class="faq-question">
               <span>Is the answer on this page always correct?</span>
-              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
+            </summary>
             <div class="faq-answer">
               <p>Yes, absolutely. We use the exact same deterministic algorithm that powers the original Colordle game. We don't scrape the game's website or rely on user submissions — we compute the answer independently using verified logic. Our algorithm takes the current date, converts it to a day number (counting from the game's start date of March 26, 2022), and applies the same selection process. We've cross-referenced our results against the official game hundreds of times and they've matched every single time. If the game ever changes its algorithm, we'll update ours to match.</p>
             </div>
-          </div>
+          </details>
 
-          <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
+          <details class="faq-item">
+            <summary class="faq-question">
               <span>Can I look up past Colordle answers?</span>
-              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
+            </summary>
             <div class="faq-answer">
               <p>You sure can! We maintain a complete Colordle Archive that goes all the way back to Day 1 — March 26, 2022. The archive features an interactive calendar where you can click on any date to instantly see that day's answer, including the color swatch, name, and hex code. It's perfect for checking answers you might have missed, tracking color patterns over time, or just satisfying your curiosity about what the game picked on a random Tuesday two years ago. Head over to our <a href="/colordle-archive">Colordle Archive</a> page to explore.</p>
             </div>
-          </div>
+          </details>
 
-          <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
+          <details class="faq-item">
+            <summary class="faq-question">
               <span>What's the difference between Colordle and Colorfle?</span>
-              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
+            </summary>
             <div class="faq-answer">
               <p>Colordle and Colorfle are both daily color guessing games, but they work very differently. Colordle gives you a single mystery color to guess from a palette of 20 options. Colorfle, on the other hand, is about color mixing — it shows you three (or four in hard mode) colors that blend together at specific weights to create a combined result, and you have to figure out which colors are involved and at what percentages. Think of Colordle as a color identification challenge and Colorfle as a color mixing puzzle. Both are fun in their own way, and we provide daily answers for both games on separate pages.</p>
             </div>
-          </div>
+          </details>
 
-          <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
+          <details class="faq-item">
+            <summary class="faq-question">
               <span>Why is there a blur on the answer when I first load the page?</span>
-              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
+            </summary>
             <div class="faq-answer">
-              <p>The blur is our spoiler protection feature. We know that some people visit this page before they've played the game, and we don't want to ruin the experience by accidentally showing them the answer. The blurred overlay hides the color swatch and name until you're ready to see it. Simply click the "Click to Reveal" button and the blur will be removed, showing you the full answer. It's the same principle as spoiler tags on forums and social media — we give you control over when you see the information, so there are no accidental spoilers.</p>
+              <p>The blur is our spoiler protection feature. We know that some people visit this page before they've played the game, and we don't want to ruin the experience by accidentally showing them the answer. The blurred overlay hides the color swatch and name until you're ready to see it. Simply click the "Click to Reveal" overlay and the blur will be removed, showing you the full answer. It's the same principle as spoiler tags on forums and social media — we give you control over when you see the information, so there are no accidental spoilers.</p>
             </div>
-          </div>
+          </details>
 
-          <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
+          <details class="faq-item">
+            <summary class="faq-question">
               <span>How many guesses do I get in Colordle?</span>
-              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
+            </summary>
             <div class="faq-answer">
               <p>Colordle gives you six attempts to guess the correct color from the 20-color palette. After each wrong guess, the game shows you the actual color you guessed so you can visually compare it to the target. This feedback mechanism is key to narrowing down the answer — if your guess was too warm, you know to try a cooler color next. Six guesses might not sound like a lot when you're choosing from 20 options, but with smart elimination, most experienced players can solve it in three or four. First-guess wins are rare but deeply satisfying.</p>
             </div>
-          </div>
+          </details>
         </div>
 
       </div>
@@ -236,16 +225,15 @@ const colorHex = colordleData?.color_hex || '';
     font-size: 1.8rem;
     font-weight: 800;
     letter-spacing: -0.03em;
-    margin-bottom: 12px;
+    margin-bottom: 28px;
     color: var(--text-primary);
-    line-height: 1.15;
+    line-height: 1.3;
     text-align: center;
   }
 
   .page-h1 .h1-date {
-    font-size: 0.55em;
-    font-weight: 500;
-    color: var(--text-muted);
+    font-weight: 600;
+    color: var(--text-secondary);
     letter-spacing: 0;
   }
 
@@ -254,7 +242,7 @@ const colorHex = colordleData?.color_hex || '';
   }
 
   @media (max-width: 640px) {
-    .page-h1 { font-size: 1.45rem; margin-bottom: 10px; }
+    .page-h1 { font-size: 1.5rem; margin-bottom: 24px; }
   }
 
   /* ── Breadcrumb ── */
@@ -276,6 +264,15 @@ const colorHex = colordleData?.color_hex || '';
   .breadcrumb-sep { color: var(--text-muted); opacity: 0.4; }
   .breadcrumb-current { color: var(--text-secondary); font-weight: 500; }
 
+  /* ── CSS-only Spoiler Checkbox ── */
+  .spoiler-check {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
   /* ── Hero Card ── */
   .hero-card {
     position: relative;
@@ -283,39 +280,15 @@ const colorHex = colordleData?.color_hex || '';
     overflow: hidden;
     max-width: 600px;
     margin: 0 auto;
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-lg);
-    background: var(--bg-card);
-  }
-
-  .hero-gradient {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 220px;
-    background: linear-gradient(135deg, #5B5FE6 0%, #7C5CFC 40%, #9D5CE6 70%, #6366F1 100%);
-    z-index: 0;
-  }
-
-  .hero-gradient::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 80px;
-    background: linear-gradient(to top, var(--bg-card), transparent);
+    border: 2px solid #1a1a2e;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    background: #ffffff;
   }
 
   .hero-content {
-    position: relative;
-    z-index: 1;
     padding: 40px 40px 44px;
     text-align: center;
   }
-
-  .hidden { display: none !important; }
 
   /* ── Day Badge ── */
   .day-badge {
@@ -323,20 +296,18 @@ const colorHex = colordleData?.color_hex || '';
     align-items: center;
     gap: 6px;
     font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 0.85rem;
-    color: #FFFFFF;
+    font-size: 0.82rem;
+    color: var(--colordle-accent);
     font-weight: 700;
     margin-bottom: 28px;
-    padding: 7px 20px;
-    background: rgba(255, 255, 255, 0.18);
+    padding: 6px 18px;
+    background: var(--colordle-gradient-subtle);
     border-radius: var(--radius-full);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(37, 99, 235, 0.15);
     letter-spacing: 0.03em;
   }
 
-  /* ── Spoiler ── */
+  /* ── Spoiler Overlay (label acting as click target) ── */
   .swatch-container {
     position: relative;
     display: flex;
@@ -346,34 +317,30 @@ const colorHex = colordleData?.color_hex || '';
 
   .spoiler-overlay {
     position: absolute;
-    inset: -16px;
+    inset: -12px;
     z-index: 10;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 16px;
-    background: rgba(255, 255, 255, 0.6);
-    border: 2px dashed rgba(91, 95, 230, 0.3);
+    gap: 14px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 2px dashed rgba(37, 99, 235, 0.25);
     border-radius: var(--radius-2xl);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     cursor: pointer;
-    transition:
-      background var(--duration-normal) ease,
-      border-color var(--duration-normal) ease,
-      transform var(--duration-normal) var(--ease-out-expo);
+    transition: background var(--duration-normal) ease, border-color var(--duration-normal) ease, opacity 0.3s ease, visibility 0.3s ease;
   }
 
   .spoiler-overlay:hover {
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.9);
     border-color: var(--colordle-accent);
-    transform: scale(1.01);
   }
 
   .spoiler-icon {
-    width: 56px;
-    height: 56px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -381,44 +348,54 @@ const colorHex = colordleData?.color_hex || '';
     background: var(--colordle-gradient);
     color: white;
     transition: transform var(--duration-normal) var(--ease-out-expo);
-    box-shadow: 0 4px 16px rgba(91, 95, 230, 0.3);
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
   }
 
-  .spoiler-overlay:hover .spoiler-icon { transform: scale(1.1); }
+  .spoiler-overlay:hover .spoiler-icon { transform: scale(1.08); }
 
   .spoiler-text {
     color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 600;
     font-family: 'DM Sans', sans-serif;
   }
 
+  /* When checkbox is checked, hide overlay and reveal answer */
+  .spoiler-check:checked ~ .hero-card .spoiler-overlay {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .spoiler-check:checked ~ .hero-card .blurred {
+    filter: none;
+    user-select: auto;
+    pointer-events: auto;
+  }
+
   .swatch-content.blurred {
-    filter: blur(32px) saturate(0.1);
+    filter: blur(28px) saturate(0.1);
     user-select: none;
     pointer-events: none;
+    transition: filter 0.5s ease;
   }
 
   .answer-info.blurred {
     filter: blur(24px) saturate(0.1);
     user-select: none;
     pointer-events: none;
+    transition: filter 0.5s ease;
   }
 
   /* ── Color Swatch ── */
   .color-swatch {
-    width: 220px;
-    height: 220px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
     position: relative;
     overflow: hidden;
-    box-shadow:
-      0 12px 40px rgba(26, 29, 46, 0.2),
-      0 4px 12px rgba(26, 29, 46, 0.1),
-      inset 0 -4px 12px rgba(0,0,0,0.1);
-    transition:
-      transform 0.4s var(--ease-out-expo),
-      box-shadow 0.4s ease;
+    box-shadow: 0 8px 30px rgba(26, 29, 46, 0.15), inset 0 -4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -426,33 +403,28 @@ const colorHex = colordleData?.color_hex || '';
   }
 
   .color-swatch:hover {
-    transform: scale(1.05) translateY(-6px);
-    box-shadow:
-      0 20px 60px rgba(26, 29, 46, 0.25),
-      0 8px 20px rgba(26, 29, 46, 0.12),
-      inset 0 -4px 12px rgba(0,0,0,0.1);
+    transform: scale(1.05) translateY(-4px);
+    box-shadow: 0 16px 50px rgba(26, 29, 46, 0.2), inset 0 -4px 12px rgba(0,0,0,0.08);
   }
 
   .swatch-label {
     position: relative;
     z-index: 2;
     font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 1.7rem;
+    font-size: 1.6rem;
     font-weight: 800;
     text-transform: capitalize;
     letter-spacing: -0.02em;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.15);
   }
 
   /* ── Answer Info ── */
   .answer-info {
     margin-bottom: 28px;
-    transition: filter 0.5s var(--ease-out-expo);
   }
 
   .color-name {
     font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 800;
     text-transform: capitalize;
     margin-bottom: 6px;
@@ -462,7 +434,7 @@ const colorHex = colordleData?.color_hex || '';
 
   .color-hex {
     font-family: 'JetBrains Mono', 'SF Mono', monospace;
-    font-size: 1.05rem;
+    font-size: 1rem;
     color: var(--colordle-accent);
     font-weight: 600;
     letter-spacing: 0.03em;
@@ -472,11 +444,11 @@ const colorHex = colordleData?.color_hex || '';
     transition: background 0.2s ease, color 0.2s ease;
     display: inline-block;
     background: var(--colordle-gradient-subtle);
-    border: 1px solid rgba(91, 95, 230, 0.12);
+    border: 1px solid rgba(37, 99, 235, 0.12);
   }
 
   .color-hex:hover {
-    background: rgba(91, 95, 230, 0.12);
+    background: rgba(37, 99, 235, 0.12);
     color: var(--text-primary);
   }
 
@@ -522,10 +494,11 @@ const colorHex = colordleData?.color_hex || '';
   /* ── Archive CTA ── */
   .archive-cta {
     max-width: 600px;
-    margin: 24px auto 0;
+    margin: 28px auto 0;
     padding: 24px;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
+    background: #ffffff;
+    border: 2px solid #1a1a2e;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     border-radius: var(--radius-2xl);
     text-align: center;
   }
@@ -547,16 +520,17 @@ const colorHex = colordleData?.color_hex || '';
   }
 
   @media (max-width: 640px) {
-    .archive-cta { padding: 20px; margin: 28px auto 0; }
+    .archive-cta { padding: 20px; margin: 20px auto 0; }
   }
 
   /* ── SEO Content ── */
   .seo-content {
     max-width: 720px;
-    margin: 24px auto 0;
-    padding: 20px;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
+    margin: 28px auto 0;
+    padding: 24px;
+    background: #ffffff;
+    border: 2px solid #1a1a2e;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     border-radius: var(--radius-xl);
   }
 
@@ -588,7 +562,7 @@ const colorHex = colordleData?.color_hex || '';
     color: var(--accent-light);
   }
 
-  /* ── FAQ ── */
+  /* ── FAQ with native <details> ── */
   .faq-list {
     margin-top: 8px;
   }
@@ -605,14 +579,17 @@ const colorHex = colordleData?.color_hex || '';
     border-color: var(--border-hover);
   }
 
+  .faq-item[open] {
+    border-color: var(--colordle-accent);
+  }
+
   .faq-question {
-    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
     padding: 16px 20px;
-    background: var(--bg-secondary);
+    background: #ffffff;
     border: none;
     cursor: pointer;
     font-family: 'DM Sans', sans-serif;
@@ -621,30 +598,28 @@ const colorHex = colordleData?.color_hex || '';
     color: var(--text-primary);
     text-align: left;
     transition: background 0.2s ease;
+    list-style: none;
   }
+
+  .faq-question::-webkit-details-marker { display: none; }
+  .faq-question::marker { display: none; content: ''; }
 
   .faq-question:hover {
     background: var(--bg-tertiary);
   }
 
-  .faq-chevron {
-    flex-shrink: 0;
-    transition: transform 0.3s var(--ease-out-expo);
+  .faq-question::after {
+    content: '+';
+    font-size: 1.2rem;
+    font-weight: 300;
     color: var(--text-muted);
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
   }
 
-  .faq-question[aria-expanded="true"] .faq-chevron {
-    transform: rotate(180deg);
-  }
-
-  .faq-answer {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.35s var(--ease-out-expo);
-  }
-
-  .faq-answer.open {
-    max-height: 400px;
+  .faq-item[open] .faq-question::after {
+    content: '−';
+    color: var(--colordle-accent);
   }
 
   .faq-answer p {
@@ -658,40 +633,26 @@ const colorHex = colordleData?.color_hex || '';
   /* ── Responsive ── */
   @media (max-width: 768px) {
     .hero-content { padding: 32px 20px 36px; }
-    .color-swatch { width: 180px; height: 180px; }
-    .color-name { font-size: 1.6rem; }
-    .swatch-label { font-size: 1.4rem; }
-    .hero-gradient { height: 180px; }
+    .color-swatch { width: 170px; height: 170px; }
+    .color-name { font-size: 1.5rem; }
+    .swatch-label { font-size: 1.3rem; }
   }
 
   @media (max-width: 640px) {
     .answer-page { padding: 20px 0 60px; }
     .hero-content { padding: 28px 16px 32px; }
-    .color-swatch { width: 160px; height: 160px; }
-    .color-name { font-size: 1.4rem; }
-    .swatch-label { font-size: 1.2rem; }
-    .day-badge { font-size: 0.78rem; padding: 6px 16px; }
-    .seo-content { padding: 14px; margin: 16px auto 0; }
+    .color-swatch { width: 150px; height: 150px; }
+    .color-name { font-size: 1.3rem; }
+    .swatch-label { font-size: 1.15rem; }
+    .day-badge { font-size: 0.78rem; padding: 5px 14px; }
+    .seo-content { padding: 16px; margin: 20px auto 0; }
     .seo-content h2 { font-size: 1.2rem; }
     .archive-cta { padding: 16px; margin: 16px auto 0; }
   }
 </style>
 
 <script>
-  // Spoiler reveal
-  const spoilerOverlay = document.getElementById('spoilerOverlay');
-  const swatchContent = document.getElementById('swatchContent');
-  const answerInfo = document.getElementById('answerInfo');
-
-  spoilerOverlay?.addEventListener('click', () => {
-    spoilerOverlay.style.display = 'none';
-    swatchContent.classList.remove('blurred');
-    answerInfo.classList.remove('blurred');
-    swatchContent.style.filter = 'none';
-    answerInfo.style.filter = 'none';
-  });
-
-  // Copy hex code
+  // Copy hex code (only JS remaining on this page)
   const colorHex = document.getElementById('colorHex');
   colorHex?.addEventListener('click', () => {
     const hex = colorHex.textContent;
@@ -701,15 +662,5 @@ const colorHex = colordleData?.color_hex || '';
       colorHex.textContent = 'Copied!';
       setTimeout(() => { colorHex.textContent = original; }, 1200);
     }
-  });
-
-  // FAQ toggle
-  document.querySelectorAll('.faq-question').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const expanded = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', String(!expanded));
-      const answer = btn.nextElementSibling;
-      answer.classList.toggle('open');
-    });
   });
 </script>

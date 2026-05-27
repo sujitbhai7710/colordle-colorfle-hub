@@ -5,4 +5,7 @@ export default defineConfig({
   output: 'static',
   integrations: [svelte()],
   site: 'https://color-answers.pages.dev',
+  build: {
+    inlineStylesheets: 'always',
+  },
 });

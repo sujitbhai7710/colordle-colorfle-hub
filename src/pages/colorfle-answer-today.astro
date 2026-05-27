@@ -51,21 +51,17 @@ try {
   const colorfleRes = await fetch(`${apiUrl}/api/colorfle/today`);
   if (colorfleRes.ok) {
     colorfleData = await colorfleRes.json();
-    // Format date from API response
     const dateObj = new Date(colorfleData.date + 'T00:00:00Z');
     formattedDate = dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 
-    // Parse JSON arrays
     normalColors = JSON.parse(colorfleData.normal_answer || '[]');
     hardColors = JSON.parse(colorfleData.hard_answer || '[]');
     normalNames = JSON.parse(colorfleData.normal_names || '[]');
     hardNames = JSON.parse(colorfleData.hard_names || '[]');
 
-    // Compute blended colors
     normalBlended = blendColors(normalColors, NORMAL_WEIGHTS);
     hardBlended = blendColors(hardColors, HARD_WEIGHTS);
 
-    // Check if blended colors are light
     const normalBlendedHex = normalBlended.replace(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/, (_, r, g, b) =>
       '#' + [r, g, b].map(x => parseInt(x).toString(16).padStart(2, '0')).join('')
     );
@@ -97,10 +93,12 @@ const dayNumber = colorfleData?.day_number || '---';
 
       <h1 class="page-h1 animate-fade-in-up">Colorfle Answer Today <span class="h1-date">({formattedDate})</span></h1>
 
-      <!-- Hero Card with Gradient -->
+      <!-- CSS-only spoiler checkbox -->
+      <input type="checkbox" id="spoilerCheck" class="spoiler-check" aria-hidden="true" />
+
+      <!-- Hero Card -->
       <div class="hero-card animate-fade-in-up delay-1">
         {fetchError ? (
-          <!-- Error State -->
           <div class="error-state">
             <div class="error-icon">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
@@ -108,119 +106,111 @@ const dayNumber = colorfleData?.day_number || '---';
             <p>Could not load today's answer. Please try again later.</p>
           </div>
         ) : (
-          <div class="answer-state">
-            <div class="hero-gradient"></div>
+          <div class="hero-content">
+            <!-- Day Badge -->
+            <div class="day-badge">Day #{dayNumber}</div>
 
-            <div class="hero-content">
-              <!-- Day Badge -->
-              <div class="day-badge">Day #{dayNumber}</div>
+            <!-- Spoiler Overlay (label for CSS-only reveal) -->
+            <label for="spoilerCheck" class="spoiler-overlay">
+              <div class="spoiler-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </div>
+              <span class="spoiler-text">Click to Reveal Today's Answer</span>
+            </label>
 
-              <!-- Spoiler Overlay -->
-              <div class="spoiler-overlay" id="spoilerOverlay">
-                <div class="spoiler-icon">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                    <circle cx="12" cy="12" r="3"/>
-                  </svg>
-                </div>
-                <span class="spoiler-text">Click to Reveal Today's Answer</span>
+            <div class="answer-content blurred">
+              <!-- Mode Toggle -->
+              <div class="mode-toggle">
+                <button class="mode-btn active" id="normalBtn">Normal</button>
+                <button class="mode-btn" id="hardBtn">Hard</button>
               </div>
 
-              <div class="answer-content blurred" id="answerContent">
-                <!-- Mode Toggle -->
-                <div class="mode-toggle">
-                  <button class="mode-btn active" id="normalBtn">Normal</button>
-                  <button class="mode-btn" id="hardBtn">Hard</button>
+              <!-- Normal Mode -->
+              <div class="mode-section" id="normalSection">
+                <div class="section-label">Normal Mode — 3 Colors</div>
+                <div class="blocks-visual">
+                  {normalColors.map((color, i) => (
+                    <div class="color-block-item">
+                      <div class="color-block-swatch" style={`background: ${color};`}>
+                        <span class="block-swatch-name" style={`color: ${isLightColor(color) ? 'var(--text-primary)' : '#FFFFFF'}; text-shadow: ${isLightColor(color) ? 'none' : '0 2px 6px rgba(0,0,0,0.2)'};`}>{normalNames[i] || color}</span>
+                      </div>
+                      <span class="color-block-weight">{NORMAL_WEIGHTS[i]}%</span>
+                    </div>
+                  ))}
                 </div>
-
-                <!-- Normal Mode -->
-                <div class="mode-section" id="normalSection">
-                  <div class="section-label">Normal Mode — 3 Colors</div>
-                  <div class="blocks-visual">
+                <div class="blend-visual">
+                  <div class="blend-formula">
                     {normalColors.map((color, i) => (
-                      <div class="color-block-item" style={`animation-delay: ${i * 0.1}s;`}>
-                        <div class="color-block-swatch" style={`background: ${color};`}>
-                          <div class="block-reflection"></div>
-                          <span class="block-swatch-name" style={`color: ${isLightColor(color) ? 'var(--text-primary)' : '#FFFFFF'}; text-shadow: ${isLightColor(color) ? 'none' : '0 2px 6px rgba(0,0,0,0.2)'};`}>{normalNames[i] || color}</span>
+                      <>
+                        <div class="formula-part">
+                          <div class="formula-dot" style={`background: ${color};`}></div>
+                          <span class="formula-name">{normalNames[i] || color}</span>
+                          <span class="formula-pct">{NORMAL_WEIGHTS[i]}%</span>
                         </div>
-                        <span class="color-block-weight">{NORMAL_WEIGHTS[i]}%</span>
-                      </div>
+                        {i < normalColors.length - 1 && <span class="formula-plus">+</span>}
+                      </>
                     ))}
+                    <span class="formula-equals">=</span>
                   </div>
-                  <div class="blend-visual">
-                    <div class="blend-formula">
-                      {normalColors.map((color, i) => (
-                        <>
-                          <div class="formula-part">
-                            <div class="formula-dot" style={`background: ${color};`}></div>
-                            <span class="formula-name">{normalNames[i] || color}</span>
-                            <span class="formula-pct">{NORMAL_WEIGHTS[i]}%</span>
-                          </div>
-                          {i < normalColors.length - 1 && <span class="formula-plus">+</span>}
-                        </>
-                      ))}
-                      <span class="formula-equals">=</span>
+                  <div class="blend-result">
+                    <div class="blend-swatch" style={`background: ${normalBlended};`}>
+                      <span class="blend-swatch-label" style={`color: ${normalBlendedIsLight ? 'var(--text-primary)' : '#FFFFFF'}; text-shadow: ${normalBlendedIsLight ? 'none' : '0 2px 6px rgba(0,0,0,0.2)'};`}>Mixed</span>
                     </div>
-                    <div class="blend-result">
-                      <div class="blend-swatch" style={`background: ${normalBlended};`}>
-                        <div class="block-reflection"></div>
-                        <span class="blend-swatch-label" style={`color: ${normalBlendedIsLight ? 'var(--text-primary)' : '#FFFFFF'}; text-shadow: ${normalBlendedIsLight ? 'none' : '0 2px 6px rgba(0,0,0,0.2)'};`}>Mixed</span>
-                      </div>
-                      <span class="blend-label">Mixed Result</span>
-                    </div>
+                    <span class="blend-label">Mixed Result</span>
                   </div>
                 </div>
+              </div>
 
-                <!-- Hard Mode -->
-                <div class="mode-section hidden" id="hardSection">
-                  <div class="section-label">Hard Mode — 4 Colors</div>
-                  <div class="blocks-visual">
+              <!-- Hard Mode -->
+              <div class="mode-section hidden" id="hardSection">
+                <div class="section-label">Hard Mode — 4 Colors</div>
+                <div class="blocks-visual">
+                  {hardColors.map((color, i) => (
+                    <div class="color-block-item">
+                      <div class="color-block-swatch" style={`background: ${color};`}>
+                        <span class="block-swatch-name" style={`color: ${isLightColor(color) ? 'var(--text-primary)' : '#FFFFFF'}; text-shadow: ${isLightColor(color) ? 'none' : '0 2px 6px rgba(0,0,0,0.2)'};`}>{hardNames[i] || color}</span>
+                      </div>
+                      <span class="color-block-weight">{HARD_WEIGHTS[i]}%</span>
+                    </div>
+                  ))}
+                </div>
+                <div class="blend-visual">
+                  <div class="blend-formula">
                     {hardColors.map((color, i) => (
-                      <div class="color-block-item" style={`animation-delay: ${i * 0.1}s;`}>
-                        <div class="color-block-swatch" style={`background: ${color};`}>
-                          <div class="block-reflection"></div>
-                          <span class="block-swatch-name" style={`color: ${isLightColor(color) ? 'var(--text-primary)' : '#FFFFFF'}; text-shadow: ${isLightColor(color) ? 'none' : '0 2px 6px rgba(0,0,0,0.2)'};`}>{hardNames[i] || color}</span>
+                      <>
+                        <div class="formula-part">
+                          <div class="formula-dot" style={`background: ${color};`}></div>
+                          <span class="formula-name">{hardNames[i] || color}</span>
+                          <span class="formula-pct">{HARD_WEIGHTS[i]}%</span>
                         </div>
-                        <span class="color-block-weight">{HARD_WEIGHTS[i]}%</span>
-                      </div>
+                        {i < hardColors.length - 1 && <span class="formula-plus">+</span>}
+                      </>
                     ))}
+                    <span class="formula-equals">=</span>
                   </div>
-                  <div class="blend-visual">
-                    <div class="blend-formula">
-                      {hardColors.map((color, i) => (
-                        <>
-                          <div class="formula-part">
-                            <div class="formula-dot" style={`background: ${color};`}></div>
-                            <span class="formula-name">{hardNames[i] || color}</span>
-                            <span class="formula-pct">{HARD_WEIGHTS[i]}%</span>
-                          </div>
-                          {i < hardColors.length - 1 && <span class="formula-plus">+</span>}
-                        </>
-                      ))}
-                      <span class="formula-equals">=</span>
+                  <div class="blend-result">
+                    <div class="blend-swatch" style={`background: ${hardBlended};`}>
+                      <span class="blend-swatch-label" style={`color: ${hardBlendedIsLight ? 'var(--text-primary)' : '#FFFFFF'}; text-shadow: ${hardBlendedIsLight ? 'none' : '0 2px 6px rgba(0,0,0,0.2)'};`}>Mixed</span>
                     </div>
-                    <div class="blend-result">
-                      <div class="blend-swatch" style={`background: ${hardBlended};`}>
-                        <div class="block-reflection"></div>
-                        <span class="blend-swatch-label" style={`color: ${hardBlendedIsLight ? 'var(--text-primary)' : '#FFFFFF'}; text-shadow: ${hardBlendedIsLight ? 'none' : '0 2px 6px rgba(0,0,0,0.2)'};`}>Mixed</span>
-                      </div>
-                      <span class="blend-label">Mixed Result</span>
-                    </div>
+                    <span class="blend-label">Mixed Result</span>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <!-- Actions -->
-              <div class="answer-actions">
-                <a href="https://colorfle.com/" target="_blank" rel="noopener" class="btn-primary btn-colorfle">
-                  Play Colorfle
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
-                </a>
-                <a href="/colorfle-archive" class="btn-secondary">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                  View Archive
-                </a>
-              </div>
+            <!-- Actions -->
+            <div class="answer-actions">
+              <a href="https://colorfle.com/" target="_blank" rel="noopener" class="btn-primary btn-colorfle">
+                Play Colorfle
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+              <a href="/colorfle-archive" class="btn-secondary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                View Archive
+              </a>
             </div>
           </div>
         )}
@@ -236,9 +226,7 @@ const dayNumber = colorfleData?.day_number || '---';
         </a>
       </div>
 
-      <!-- ════════════════════════════════════════════════════════════ -->
-      <!-- MASSIVE SEO CONTENT — 1500+ WORDS                          -->
-      <!-- ════════════════════════════════════════════════════════════ -->
+      <!-- SEO CONTENT -->
       <div class="seo-content animate-fade-in-up delay-3">
 
         <h2>What Is Colorfle and How Does It Work?</h2>
@@ -276,65 +264,59 @@ const dayNumber = colorfleData?.day_number || '---';
         <h2>Frequently Asked Questions About Colorfle</h2>
 
         <div class="faq-list">
-          <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
+          <details class="faq-item">
+            <summary class="faq-question">
               <span>What time does Colorfle reset each day?</span>
-              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
+            </summary>
             <div class="faq-answer">
               <p>Colorfle resets at midnight in your local timezone, just like most daily browser games. Our answer page updates at three intervals throughout the day — midnight, 8 AM, and noon IST — to ensure our database stays current. If you're playing from a timezone that's significantly ahead or behind IST, you might see a brief window where yesterday's answer is still showing. In practice, though, the answers are almost always up to date within a few minutes of the daily reset. We recommend bookmarking this page and checking it each day after you've played.</p>
             </div>
-          </div>
+          </details>
 
-          <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
+          <details class="faq-item">
+            <summary class="faq-question">
               <span>How are the blending weights determined in Colorfle?</span>
-              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
+            </summary>
             <div class="faq-answer">
               <p>The blending weights in Colorfle are fixed and consistent across all puzzles. Normal mode always uses 50%, 34%, and 16% for its three colors, while hard mode always uses 40%, 30%, 20%, and 10% for its four colors. These weights aren't randomly generated — they're part of the game's design. The specific proportions were chosen to create a good balance between the dominant color's influence and the modifying effect of the secondary colors. The 50/34/16 split in normal mode means the first color has clear dominance, while the 40/30/20/10 split in hard mode creates a more democratic blend where no single color rules.</p>
             </div>
-          </div>
+          </details>
 
-          <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
+          <details class="faq-item">
+            <summary class="faq-question">
               <span>Can I see both normal and hard mode answers at the same time?</span>
-              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
+            </summary>
             <div class="faq-answer">
               <p>On this page, you can toggle between Normal and Hard mode using the buttons at the top of the answer card. We default to showing Normal mode since that's what most players use, but switching to Hard mode is just one click away. The toggle instantly swaps the color blocks, blending formula, and mixed result to show the hard mode solution. Both answers are loaded when the page first renders, so there's no loading delay when you switch. If you want to compare both side by side, you could open the page in two browser tabs and set one to each mode.</p>
             </div>
-          </div>
+          </details>
 
-          <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
+          <details class="faq-item">
+            <summary class="faq-question">
               <span>Why does the blended color look different than I expected?</span>
-              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
+            </summary>
             <div class="faq-answer">
               <p>This is one of the most common questions, and it comes down to the difference between additive and subtractive color mixing. When you mix paints in real life, you're doing subtractive mixing — the pigments absorb certain wavelengths and reflect others. But Colorfle uses additive mixing on a digital screen, where colors are created by combining red, green, and blue light. The results can be surprising: mixing Red and Green light gives Yellow, not Brown. Mixing Blue and Yellow light gives a grayish tone, not Green. Once you internalize this difference, the blending results start making much more sense and your gameplay will improve significantly.</p>
             </div>
-          </div>
+          </details>
 
-          <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
+          <details class="faq-item">
+            <summary class="faq-question">
               <span>Can I look up past Colorfle answers?</span>
-              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
+            </summary>
             <div class="faq-answer">
               <p>Absolutely! We maintain a complete Colorfle Archive that covers every puzzle from Day 1 onward. The archive uses an interactive calendar interface where you can click on any date to see that day's answer, including the component colors, blending weights, and the mixed result for both normal and hard mode. It's a great resource for studying how different color combinations blend over time, or simply for checking answers you might have missed on days you didn't play. Visit our <a href="/colorfle-archive">Colorfle Archive</a> page to start exploring.</p>
             </div>
-          </div>
+          </details>
 
-          <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
+          <details class="faq-item">
+            <summary class="faq-question">
               <span>Is this page affiliated with the official Colorfle game?</span>
-              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
+            </summary>
             <div class="faq-answer">
               <p>No, we are not affiliated with Colorfle or its creators. Color Answers Hub is an independent resource that computes answers using verified algorithms that match the original game's logic. We don't scrape the game's website or rely on user submissions — we calculate answers independently and cross-reference them for accuracy. Our goal is to provide a helpful, spoiler-protected reference for players who want to check their answers or look up past puzzles. We clearly label our spoiler protection so that players who haven't yet attempted the daily puzzle won't accidentally see the answer.</p>
             </div>
-          </div>
+          </details>
         </div>
 
       </div>
@@ -372,16 +354,15 @@ const dayNumber = colorfleData?.day_number || '---';
     font-size: 1.8rem;
     font-weight: 800;
     letter-spacing: -0.03em;
-    margin-bottom: 12px;
+    margin-bottom: 28px;
     color: var(--text-primary);
-    line-height: 1.15;
+    line-height: 1.3;
     text-align: center;
   }
 
   .page-h1 .h1-date {
-    font-size: 0.55em;
-    font-weight: 500;
-    color: var(--text-muted);
+    font-weight: 600;
+    color: var(--text-secondary);
     letter-spacing: 0;
   }
 
@@ -390,7 +371,16 @@ const dayNumber = colorfleData?.day_number || '---';
   }
 
   @media (max-width: 640px) {
-    .page-h1 { font-size: 1.45rem; margin-bottom: 10px; }
+    .page-h1 { font-size: 1.5rem; margin-bottom: 24px; }
+  }
+
+  /* ── CSS-only Spoiler Checkbox ── */
+  .spoiler-check {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
   }
 
   /* ── Hero Card ── */
@@ -400,29 +390,9 @@ const dayNumber = colorfleData?.day_number || '---';
     overflow: hidden;
     max-width: 700px;
     margin: 0 auto;
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-lg);
-    background: var(--bg-card);
-  }
-
-  .hero-gradient {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 200px;
-    background: linear-gradient(135deg, #F5A623 0%, #E68A00 30%, #E6572C 70%, #D4451A 100%);
-    z-index: 0;
-  }
-
-  .hero-gradient::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 80px;
-    background: linear-gradient(to top, var(--bg-card), transparent);
+    border: 2px solid #1a1a2e;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    background: #ffffff;
   }
 
   .hero-content {
@@ -440,20 +410,18 @@ const dayNumber = colorfleData?.day_number || '---';
     align-items: center;
     gap: 6px;
     font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 0.85rem;
-    color: #FFFFFF;
+    font-size: 0.82rem;
+    color: var(--colorfle-accent);
     font-weight: 700;
     margin-bottom: 24px;
-    padding: 7px 20px;
-    background: rgba(255, 255, 255, 0.18);
+    padding: 6px 18px;
+    background: var(--colorfle-gradient-subtle);
     border-radius: var(--radius-full);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(234, 88, 12, 0.15);
     letter-spacing: 0.03em;
   }
 
-  /* ── Spoiler ── */
+  /* ── Spoiler Overlay (label for CSS-only reveal) ── */
   .spoiler-overlay {
     position: absolute;
     inset: 12px;
@@ -462,28 +430,24 @@ const dayNumber = colorfleData?.day_number || '---';
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 16px;
-    background: rgba(255, 255, 255, 0.6);
-    border: 2px dashed rgba(230, 138, 0, 0.3);
+    gap: 14px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 2px dashed rgba(234, 88, 12, 0.25);
     border-radius: var(--radius-2xl);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     cursor: pointer;
-    transition:
-      background var(--duration-normal) ease,
-      border-color var(--duration-normal) ease,
-      transform var(--duration-normal) var(--ease-out-expo);
+    transition: background var(--duration-normal) ease, border-color var(--duration-normal) ease, opacity 0.3s ease, visibility 0.3s ease;
   }
 
   .spoiler-overlay:hover {
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.9);
     border-color: var(--colorfle-accent);
-    transform: scale(1.01);
   }
 
   .spoiler-icon {
-    width: 56px;
-    height: 56px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -491,14 +455,14 @@ const dayNumber = colorfleData?.day_number || '---';
     background: var(--colorfle-gradient);
     color: white;
     transition: transform var(--duration-normal) var(--ease-out-expo);
-    box-shadow: 0 4px 16px rgba(230, 138, 0, 0.3);
+    box-shadow: 0 4px 16px rgba(234, 88, 12, 0.25);
   }
 
-  .spoiler-overlay:hover .spoiler-icon { transform: scale(1.1); }
+  .spoiler-overlay:hover .spoiler-icon { transform: scale(1.08); }
 
   .spoiler-text {
     color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 600;
     font-family: 'DM Sans', sans-serif;
   }
@@ -507,6 +471,20 @@ const dayNumber = colorfleData?.day_number || '---';
     filter: blur(32px) saturate(0.1);
     user-select: none;
     pointer-events: none;
+    transition: filter 0.5s ease;
+  }
+
+  /* When checkbox is checked, hide overlay and reveal answer */
+  .spoiler-check:checked ~ .hero-card .spoiler-overlay {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .spoiler-check:checked ~ .hero-card .blurred {
+    filter: none;
+    user-select: auto;
+    pointer-events: auto;
   }
 
   /* ── Mode Toggle ── */
@@ -536,7 +514,7 @@ const dayNumber = colorfleData?.day_number || '---';
   .mode-btn.active {
     background: var(--colorfle-gradient);
     color: white;
-    box-shadow: 0 3px 12px rgba(230, 138, 0, 0.3);
+    box-shadow: 0 3px 12px rgba(234, 88, 12, 0.3);
   }
 
   .mode-btn:not(.active):hover {
@@ -570,19 +548,16 @@ const dayNumber = colorfleData?.day_number || '---';
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    animation: blockIn 0.4s var(--ease-out-expo) both;
   }
 
   .color-block-swatch {
-    width: 130px;
-    height: 130px;
+    width: 120px;
+    height: 120px;
     border-radius: 22px;
     position: relative;
     overflow: hidden;
     box-shadow: var(--shadow-md);
-    transition:
-      transform 0.3s var(--ease-out-expo),
-      box-shadow 0.3s ease;
+    transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s ease;
     cursor: default;
     display: flex;
     align-items: center;
@@ -590,16 +565,8 @@ const dayNumber = colorfleData?.day_number || '---';
   }
 
   .color-block-swatch:hover {
-    transform: scale(1.06) translateY(-4px);
+    transform: scale(1.05) translateY(-3px);
     box-shadow: var(--shadow-lg);
-  }
-
-  .block-reflection {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(170deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.06) 35%, transparent 50%);
-    pointer-events: none;
-    border-radius: inherit;
   }
 
   .block-swatch-name {
@@ -607,16 +574,8 @@ const dayNumber = colorfleData?.day_number || '---';
     z-index: 2;
     font-family: 'Outfit', 'DM Sans', sans-serif;
     font-weight: 700;
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     text-transform: capitalize;
-  }
-
-  .color-block-name {
-    font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-weight: 700;
-    font-size: 0.92rem;
-    text-transform: capitalize;
-    color: var(--text-primary);
   }
 
   .color-block-weight {
@@ -624,11 +583,6 @@ const dayNumber = colorfleData?.day_number || '---';
     font-size: 0.78rem;
     color: var(--text-muted);
     font-weight: 600;
-  }
-
-  @keyframes blockIn {
-    from { transform: scale(0.85) translateY(10px); opacity: 0; }
-    to { transform: scale(1) translateY(0); opacity: 1; }
   }
 
   /* ── Blend Visual ── */
@@ -696,8 +650,8 @@ const dayNumber = colorfleData?.day_number || '---';
   }
 
   .blend-swatch {
-    width: 120px;
-    height: 120px;
+    width: 110px;
+    height: 110px;
     border-radius: 24px;
     position: relative;
     overflow: hidden;
@@ -705,20 +659,12 @@ const dayNumber = colorfleData?.day_number || '---';
     display: flex;
     align-items: center;
     justify-content: center;
-    transition:
-      transform 0.3s var(--ease-out-expo),
-      box-shadow 0.3s ease;
+    transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s ease;
   }
 
   .blend-swatch:hover {
-    transform: scale(1.05) translateY(-4px);
+    transform: scale(1.05) translateY(-3px);
     box-shadow: var(--shadow-lg);
-  }
-
-  .blend-swatch .block-reflection {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(170deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.06) 35%, transparent 50%);
   }
 
   .blend-swatch-label {
@@ -773,10 +719,11 @@ const dayNumber = colorfleData?.day_number || '---';
   /* ── Archive CTA ── */
   .archive-cta {
     max-width: 700px;
-    margin: 24px auto 0;
+    margin: 28px auto 0;
     padding: 24px;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
+    background: #ffffff;
+    border: 2px solid #1a1a2e;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     border-radius: var(--radius-2xl);
     text-align: center;
   }
@@ -798,21 +745,22 @@ const dayNumber = colorfleData?.day_number || '---';
   }
 
   @media (max-width: 640px) {
-    .archive-cta { padding: 20px; margin: 28px auto 0; }
+    .archive-cta { padding: 20px; margin: 20px auto 0; }
   }
 
   /* ── SEO Content ── */
   .seo-content {
     max-width: 720px;
-    margin: 24px auto 0;
-    padding: 20px;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
+    margin: 28px auto 0;
+    padding: 24px;
+    background: #ffffff;
+    border: 2px solid #1a1a2e;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     border-radius: var(--radius-xl);
   }
 
   @media (max-width: 640px) {
-    .seo-content { padding: 14px; margin: 16px auto 0; }
+    .seo-content { padding: 16px; margin: 20px auto 0; }
     .archive-cta { padding: 16px; margin: 16px auto 0; }
   }
 
@@ -844,7 +792,7 @@ const dayNumber = colorfleData?.day_number || '---';
     color: var(--accent-light);
   }
 
-  /* ── FAQ ── */
+  /* ── FAQ with native <details> ── */
   .faq-list {
     margin-top: 8px;
   }
@@ -861,14 +809,17 @@ const dayNumber = colorfleData?.day_number || '---';
     border-color: var(--border-hover);
   }
 
+  .faq-item[open] {
+    border-color: var(--colorfle-accent);
+  }
+
   .faq-question {
-    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
     padding: 16px 20px;
-    background: var(--bg-secondary);
+    background: #ffffff;
     border: none;
     cursor: pointer;
     font-family: 'DM Sans', sans-serif;
@@ -877,30 +828,28 @@ const dayNumber = colorfleData?.day_number || '---';
     color: var(--text-primary);
     text-align: left;
     transition: background 0.2s ease;
+    list-style: none;
   }
+
+  .faq-question::-webkit-details-marker { display: none; }
+  .faq-question::marker { display: none; content: ''; }
 
   .faq-question:hover {
     background: var(--bg-tertiary);
   }
 
-  .faq-chevron {
-    flex-shrink: 0;
-    transition: transform 0.3s var(--ease-out-expo);
+  .faq-question::after {
+    content: '+';
+    font-size: 1.2rem;
+    font-weight: 300;
     color: var(--text-muted);
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
   }
 
-  .faq-question[aria-expanded="true"] .faq-chevron {
-    transform: rotate(180deg);
-  }
-
-  .faq-answer {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.35s var(--ease-out-expo);
-  }
-
-  .faq-answer.open {
-    max-height: 400px;
+  .faq-item[open] .faq-question::after {
+    content: '−';
+    color: var(--colorfle-accent);
   }
 
   .faq-answer p {
@@ -914,35 +863,21 @@ const dayNumber = colorfleData?.day_number || '---';
   /* ── Responsive ── */
   @media (max-width: 768px) {
     .hero-content { padding: 32px 20px 36px; }
-    .color-block-swatch { width: 100px; height: 100px; border-radius: 20px; }
-    .blend-swatch { width: 100px; height: 100px; }
-    .blocks-visual { gap: 12px; }
-    .hero-gradient { height: 170px; }
+    .color-block-swatch { width: 100px; height: 100px; }
+    .blend-swatch { width: 95px; height: 95px; }
   }
 
   @media (max-width: 640px) {
     .answer-page { padding: 20px 0 60px; }
     .hero-content { padding: 28px 16px 32px; }
-    .color-block-swatch { width: 82px; height: 82px; border-radius: 18px; }
-    .color-block-name { font-size: 0.82rem; }
-    .blend-swatch { width: 84px; height: 84px; border-radius: 20px; }
-    .day-badge { font-size: 0.78rem; padding: 6px 16px; }
-    .seo-content h2 { font-size: 1.3rem; }
+    .color-block-swatch { width: 90px; height: 90px; border-radius: 18px; }
+    .blend-swatch { width: 85px; height: 85px; }
+    .day-badge { font-size: 0.78rem; padding: 5px 14px; }
   }
 </style>
 
 <script>
-  // Spoiler reveal
-  const spoilerOverlay = document.getElementById('spoilerOverlay');
-  const answerContent = document.getElementById('answerContent');
-
-  spoilerOverlay?.addEventListener('click', () => {
-    spoilerOverlay.style.display = 'none';
-    answerContent.classList.remove('blurred');
-    answerContent.style.filter = 'none';
-  });
-
-  // Mode toggle
+  // Mode toggle (still needs JS)
   const normalBtn = document.getElementById('normalBtn');
   const hardBtn = document.getElementById('hardBtn');
   const normalSection = document.getElementById('normalSection');
@@ -951,24 +886,14 @@ const dayNumber = colorfleData?.day_number || '---';
   normalBtn?.addEventListener('click', () => {
     normalBtn.classList.add('active');
     hardBtn.classList.remove('active');
-    normalSection.classList.remove('hidden');
-    hardSection.classList.add('hidden');
+    normalSection?.classList.remove('hidden');
+    hardSection?.classList.add('hidden');
   });
 
   hardBtn?.addEventListener('click', () => {
     hardBtn.classList.add('active');
     normalBtn.classList.remove('active');
-    hardSection.classList.remove('hidden');
-    normalSection.classList.add('hidden');
-  });
-
-  // FAQ toggle
-  document.querySelectorAll('.faq-question').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const expanded = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', String(!expanded));
-      const answer = btn.nextElementSibling;
-      answer.classList.toggle('open');
-    });
+    hardSection?.classList.remove('hidden');
+    normalSection?.classList.add('hidden');
   });
 </script>

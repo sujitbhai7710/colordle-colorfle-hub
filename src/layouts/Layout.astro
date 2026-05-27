@@ -12,7 +12,7 @@ export interface Props {
 const { title, description = 'Get daily answers for Colordle and Colorfle color guessing games. Updated every day with verified solutions.', canonicalUrl, keywords, breadcrumbs } = Astro.props;
 
 const siteUrl = 'https://color-answers.pages.dev';
-const fullCanonical = canonicalUrl ? `${siteUrl}${canonicalUrl}` : siteUrl;
+const fullCanonical = canonicalUrl ? `${siteUrl}${canonicalUrl}/` : siteUrl;
 const formattedTitle = `${title} | Color Answers Hub`;
 ---
 
@@ -41,11 +41,7 @@ const formattedTitle = `${title} | Color Answers Hub`;
 
     <title>{formattedTitle}</title>
 
-    <!-- Fonts: Outfit for headings, DM Sans for body -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-
+    <!-- Fonts: Self-hosted via global.css @font-face -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <!-- Structured Data: WebSite -->
@@ -174,6 +170,7 @@ const formattedTitle = `${title} | Color Answers Hub`;
             </div>
           </div>
 
+          <a href="/blog" class="nav-link">Blog</a>
           <a href="/about" class="nav-link">About</a>
         </div>
 
@@ -220,6 +217,7 @@ const formattedTitle = `${title} | Color Answers Hub`;
           <div class="mobile-divider"></div>
           <div class="mobile-menu-section">
             <span class="mobile-section-label">More</span>
+            <a href="/blog" class="mobile-link">Blog</a>
             <a href="/about" class="mobile-link">About</a>
             <a href="/contact" class="mobile-link">Contact</a>
             <a href="/privacy-policy" class="mobile-link">Privacy Policy</a>
@@ -275,8 +273,8 @@ const formattedTitle = `${title} | Color Answers Hub`;
             <h4 class="footer-heading">Play Games</h4>
             <a href="https://colordle.ryantanen.com/" target="_blank" rel="noopener">Play Colordle</a>
             <a href="https://colorfle.com/" target="_blank" rel="noopener">Play Colorfle</a>
+            <a href="/blog">Blog</a>
             <a href="/about">About Us</a>
-            <a href="/contact">Contact</a>
           </div>
 
           <!-- Support & Legal -->
