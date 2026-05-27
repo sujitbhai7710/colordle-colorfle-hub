@@ -155,7 +155,7 @@ import Layout from '../layouts/Layout.astro';
               <span class="step-number">1</span>
               <div class="step-content">
                 <h3>Verify the Date</h3>
-                <p>Before reporting, double-check that you're looking at the correct date. Our answers update at midnight IST for Colordle and 5:00 PM IST for Colorfle. If you're in a different timezone, the new answer may not have appeared yet. We always display the date the answer applies to — if it shows yesterday's date, today's answer hasn't dropped yet.</p>
+                <p>Before reporting, double-check that you're looking at the correct date. Our answers update daily for both Colordle and Colorfle. If you're in a different timezone, the new answer may not have appeared yet. We always display the date the answer applies to — if it shows yesterday's date, today's answer hasn't dropped yet.</p>
               </div>
             </div>
           </div>
@@ -248,7 +248,7 @@ import Layout from '../layouts/Layout.astro';
             </summary>
             <div class="faq-answer prose">
               <p>First off, thank you for telling us — seriously. We want the site to be accurate, and the only way we catch problems is when people like you flag them. That said, before you report it, there are a couple of things worth checking.</p>
-              <p>Make sure you're looking at the correct date. It sounds obvious, but timezone confusion is the number one reason people think the answer is wrong. Our answers update at midnight IST (Indian Standard Time), which means if you're in the US, the new answer might not appear until the afternoon or evening of your previous day. We know this is confusing, and we're working on making the timezone display clearer on the site.</p>
+              <p>Make sure you're looking at the correct date. It sounds obvious, but timezone confusion is the number one reason people think the answer is wrong. Our answers update daily, and depending on your timezone, the new answer may appear at a different time of day. We know this can be confusing, and we're working on making the timezone display clearer on the site.</p>
               <p>If the date matches and the answer still looks wrong, then yes — please contact us using the form above or open a GitHub issue. Include the date, the game (Colordle or Colorfle), what answer we're showing, and what you think the correct answer should be. That helps us investigate quickly. We verify answers using the same algorithm the original games use, but sometimes edge cases or changes to the original game can throw things off. It's rare, but it happens, and when it does we fix it fast.</p>
             </div>
           </details>
@@ -256,12 +256,12 @@ import Layout from '../layouts/Layout.astro';
           <!-- FAQ 2 -->
           <details class="faq-item card">
             <summary class="faq-question">
-              <span>Why does the answer update at midnight IST?</span>
+              <span>When do the answers update?</span>
               <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
             </summary>
             <div class="faq-answer prose">
-              <p>The short answer: because that's when the original Colordle game updates. We compute our answers to match the official game exactly, and Colordle refreshes at midnight Indian Standard Time. Since our whole thing is being accurate, we follow the same schedule.</p>
-              <p>The slightly longer answer: we know this is annoying if you're not in India. If you're on the US West Coast, the new answer doesn't show up until around 11:30 AM your time. If you're in Europe, it's early morning. We've thought about adding timezone-based display or showing a "next update in" countdown, and that's on our roadmap. For now, though, IST is the source of truth because that's what the game itself uses.</p>
+              <p>Our answers update multiple times throughout the day. We compute our answers to match the official games exactly, so we follow their daily reset schedule.</p>
+              <p>We know timezone differences can be confusing — depending on where you are, the new answer might appear at a different time of day. We've thought about adding timezone-based display or showing a "next update in" countdown, and that's on our roadmap.</p>
               <p>One thing that helps: we always show the date the answer is for, right on the page. So if you see yesterday's date, you'll know the new one hasn't dropped yet. It's not a perfect solution, but it's honest.</p>
             </div>
           </details>

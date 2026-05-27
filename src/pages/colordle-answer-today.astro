@@ -117,8 +117,28 @@ const colorHex = colordleData?.color_hex || '';
         </a>
       </div>
 
-      <!-- SEO CONTENT -->
-      <div class="seo-content animate-fade-in-up delay-3">
+    </div>
+  </section>
+
+  <!-- ═══ SEO CONTENT WITH SIDEBAR LAYOUT ═══ -->
+  <section class="blog-post-body">
+    <div class="container">
+      <div class="blog-layout">
+        <!-- Sticky TOC Sidebar (desktop) -->
+        <nav class="blog-sidebar" aria-label="Table of Contents" id="toc-sidebar">
+          <p class="blog-sidebar-title">Table of Contents</p>
+          <ol id="toc-list"></ol>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="blog-main">
+          <!-- Mobile TOC -->
+          <div class="mobile-toc" id="mobile-toc">
+            <p class="mobile-toc-title">Table of Contents</p>
+            <ol id="mobile-toc-list"></ol>
+          </div>
+
+          <article class="blog-article">
 
         <h2>What Is Colordle and Why Do People Love It?</h2>
         <p>If you've spent any time in the world of daily browser games over the past couple years, you've probably stumbled across Colordle. It's one of those beautifully simple ideas that hooks you the moment you try it — each day, the game picks one mystery color from a curated palette of 20 distinct shades, and your job is to guess which one it is. That's it. No complicated rules, no learning curve, just pure color intuition served up in a bite-sized daily puzzle.</p>
@@ -128,7 +148,7 @@ const colorHex = colordleData?.color_hex || '';
         <h2>How Does the Colordle Algorithm Work?</h2>
         <p>Here's something most players don't think about: Colordle's answers aren't random. The game uses a deterministic algorithm that maps each calendar date to a specific color from the 20-color palette. The starting point is March 26, 2022 — that's Day 1 in Colordle terms. Every day after that gets an incrementing day number, and the algorithm uses that number to select the color for that day.</p>
         <p>Why does this matter? Because it means the answer is computable. If you know the algorithm and you know the date, you can figure out exactly what color the game will pick — no guesswork involved. That's exactly how our answer page works. We run the same algorithm locally, verify it against the official game, and display the result with a beautiful color swatch so you can see exactly what the answer looks like.</p>
-        <p>We also don't just compute it once and forget about it. Our system runs automated checks at midnight, 8 AM, and noon IST every single day to make sure our database is always current. If for some reason a day's answer hasn't been computed yet — say, the server had a brief hiccup — our API calculates it on the fly and stores it for future reference. Every answer you see on this page has been verified against the game's own logic, so you can trust that it's correct.</p>
+        <p>We also don't just compute it once and forget about it. Our system runs automated checks multiple times throughout the day to make sure our database is always current. If for some reason a day's answer hasn't been computed yet — say, the server had a brief hiccup — our API calculates it on the fly and stores it for future reference. Every answer you see on this page has been verified against the game's own logic, so you can trust that it's correct.</p>
 
         <h2>Today's Colordle Answer — How to Use This Page</h2>
         <p>We designed this page with spoiler protection in mind. When you first land here, you'll see a blurred-out area with a "Click to Reveal" overlay. This is intentional — if you haven't played today's game yet and you're just browsing, you won't accidentally see the answer. When you're ready, simply click the overlay and the answer will be revealed with the full color swatch, the color name, and the hex code.</p>
@@ -159,7 +179,7 @@ const colorHex = colordleData?.color_hex || '';
               <span>What time does the Colordle answer reset?</span>
             </summary>
             <div class="faq-answer">
-              <p>Colordle resets at midnight based on your local timezone, just like most daily browser games. However, our answer page updates slightly differently — we run automated refreshes at midnight IST, 8 AM IST, and noon IST to ensure our database is always current. If you're checking the page right around midnight in a different timezone, you might briefly see yesterday's answer before our system updates. In practice, though, the answer is almost always current within a few minutes of the new day starting. We recommend bookmarking this page and checking back each morning for the latest Colordle solution.</p>
+              <p>Colordle resets at midnight based on your local timezone, just like most daily browser games. However, our answer page updates slightly differently — we run automated refreshes multiple times throughout the day to ensure our database is always current. If you're checking the page right around midnight in a different timezone, you might briefly see yesterday's answer before our system updates. In practice, though, the answer is almost always current within a few minutes of the new day starting. We recommend bookmarking this page and checking back each morning for the latest Colordle solution.</p>
             </div>
           </details>
 
@@ -209,6 +229,8 @@ const colorHex = colordleData?.color_hex || '';
           </details>
         </div>
 
+          </article>
+        </div>
       </div>
     </div>
   </section>
@@ -523,43 +545,180 @@ const colorHex = colordleData?.color_hex || '';
     .archive-cta { padding: 20px; margin: 20px auto 0; }
   }
 
-  /* ── SEO Content ── */
-  .seo-content {
-    max-width: 720px;
-    margin: 28px auto 0;
-    padding: 24px;
-    background: #ffffff;
-    border: 2px solid #1a1a2e;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    border-radius: var(--radius-xl);
+  /* ═══ CONTENT LAYOUT: Sidebar + Main ═══ */
+  .blog-post-body {
+    padding: 48px 0 80px;
   }
 
-  .seo-content h2 {
+  .blog-layout {
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+  }
+
+  /* ── Sticky TOC Sidebar ── */
+  .blog-sidebar {
+    position: sticky;
+    top: 88px;
+    width: 260px;
+    flex-shrink: 0;
+    background: #f0f4ff;
+    border: 1px solid #d4ddef;
+    border-radius: var(--radius-lg);
+    padding: 24px;
+  }
+
+  .blog-sidebar-title {
     font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 1.5rem;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--brand-700);
+    margin-bottom: 16px;
+  }
+
+  .blog-sidebar ol {
+    list-style: decimal;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .blog-sidebar li {
+    font-size: 0.86rem;
+    line-height: 1.5;
+  }
+
+  .blog-sidebar a {
+    color: var(--brand-700);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color var(--duration-fast) ease, text-decoration var(--duration-fast) ease;
+  }
+
+  .blog-sidebar a:hover {
+    color: var(--brand-900);
+    text-decoration: underline;
+  }
+
+  /* Hide sidebar on tablet and below */
+  @media (max-width: 1024px) {
+    .blog-sidebar { display: none; }
+  }
+
+  /* ── Main Content ── */
+  .blog-main {
+    flex: 1;
+    min-width: 0;
+    max-width: 800px;
+  }
+
+  /* ── Article Card Wrapper ── */
+  .blog-article {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+    padding: 48px;
+  }
+
+  @media (max-width: 768px) {
+    .blog-article { padding: 24px; }
+  }
+
+  /* ═══ RICH CONTENT STYLES ═══ */
+  .blog-article h2 {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 1.65rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
+    margin-top: 3rem;
+    margin-bottom: 1.2rem;
     letter-spacing: -0.02em;
     line-height: 1.3;
+    scroll-margin-top: 80px;
   }
 
-  .seo-content p {
-    font-size: 0.95rem;
-    line-height: 1.8;
+  .blog-article h2:first-child {
+    margin-top: 0;
+  }
+
+  .blog-article p {
+    font-size: 1.08rem;
+    line-height: 1.9;
     color: var(--text-secondary);
-    margin-bottom: 1.1rem;
+    margin-bottom: 1.5rem;
   }
 
-  .seo-content a {
+  .blog-article strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .blog-article a {
     color: var(--accent-color);
     text-decoration: underline;
-    text-underline-offset: 2px;
+    text-underline-offset: 3px;
+    font-weight: 500;
   }
 
-  .seo-content a:hover {
-    color: var(--accent-light);
+  .blog-article a:hover { color: var(--accent-dark); }
+
+  /* ── Mobile TOC (shown only on small screens) ── */
+  .mobile-toc {
+    display: none;
+    background: #f0f4ff;
+    border: 1px solid #d4ddef;
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    margin-bottom: 24px;
+  }
+
+  .mobile-toc-title {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--brand-700);
+    margin-bottom: 10px;
+  }
+
+  .mobile-toc ol {
+    list-style: decimal;
+    padding-left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .mobile-toc li {
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  .mobile-toc a {
+    color: var(--brand-700);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .mobile-toc a:hover { text-decoration: underline; }
+
+  @media (max-width: 1024px) {
+    .mobile-toc { display: block; }
+  }
+
+  /* ── Full layout responsive ── */
+  @media (max-width: 1024px) {
+    .blog-layout {
+      flex-direction: column;
+    }
+    .blog-main {
+      max-width: 100%;
+    }
   }
 
   /* ── FAQ with native <details> ── */
@@ -645,14 +804,14 @@ const colorHex = colordleData?.color_hex || '';
     .color-name { font-size: 1.3rem; }
     .swatch-label { font-size: 1.15rem; }
     .day-badge { font-size: 0.78rem; padding: 5px 14px; }
-    .seo-content { padding: 16px; margin: 20px auto 0; }
-    .seo-content h2 { font-size: 1.2rem; }
+    .blog-article { padding: 20px; }
+    .blog-article h2 { font-size: 1.3rem; }
     .archive-cta { padding: 16px; margin: 16px auto 0; }
   }
 </style>
 
 <script>
-  // Copy hex code (only JS remaining on this page)
+  // Copy hex code
   const colorHex = document.getElementById('colorHex');
   colorHex?.addEventListener('click', () => {
     const hex = colorHex.textContent;
@@ -663,4 +822,41 @@ const colorHex = colordleData?.color_hex || '';
       setTimeout(() => { colorHex.textContent = original; }, 1200);
     }
   });
+</script>
+
+<!-- Auto-generate TOC from h2 headings -->
+<script>
+  function buildTOC() {
+    const article = document.querySelector('.blog-article');
+    const tocList = document.getElementById('toc-list');
+    const mobileTocList = document.getElementById('mobile-toc-list');
+    if (!article || !tocList || !mobileTocList) return;
+
+    const headings = article.querySelectorAll('h2');
+    if (headings.length === 0) {
+      const sidebar = document.getElementById('toc-sidebar');
+      const mobileToc = document.getElementById('mobile-toc');
+      if (sidebar) sidebar.style.display = 'none';
+      if (mobileToc) mobileToc.style.display = 'none';
+      return;
+    }
+
+    headings.forEach((heading, index) => {
+      const id = heading.id || `section-${index + 1}`;
+      heading.id = id;
+      heading.style.scrollMarginTop = '80px';
+
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = `#${id}`;
+      a.textContent = heading.textContent;
+      li.appendChild(a);
+
+      tocList.appendChild(li.cloneNode(true));
+      mobileTocList.appendChild(li);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', buildTOC);
+  document.addEventListener('astro:page-load', buildTOC);
 </script>

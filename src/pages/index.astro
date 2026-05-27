@@ -37,7 +37,7 @@ const faqData = [
   { question: "What is Colordle?", answer: "Colordle is a daily color guessing game where you try to identify a mystery color from a palette of 20 options. Each day brings a new color challenge, and you get six attempts to guess correctly. Think of it as Wordle, but for colors instead of words." },
   { question: "What is Colorfle?", answer: "Colorfle is a daily color mixing puzzle where you identify which three colors blend together to create a target shade. Normal mode uses 3 colors with specific weights, while hard mode adds a fourth color, making it significantly more challenging to decompose the blend." },
   { question: "How are the answers computed?", answer: "We use deterministic algorithms that exactly replicate the original game logic. This means our answers are mathematically verified solutions, not guesses or user submissions. We run automated verification multiple times per day to ensure accuracy." },
-  { question: "When do the answers update?", answer: "Answers update daily based on Japan Standard Time (JST, UTC+9). Our system runs automated scrapes at 1:30 AM JST, 8 AM IST, and 11 AM IST, then triggers a site rebuild so the latest answers are always available." },
+  { question: "When do the answers update?", answer: "Answers update multiple times throughout the day. Our system runs automated scrapes at regular intervals, then triggers a site rebuild so the latest answers are always available." },
   { question: "Can I look up past answers?", answer: "Yes! Our interactive archive covers every day since each game launched — March 2022 for Colordle and April 2022 for Colorfle. Use the calendar to navigate to any date and see the full answer details." },
   { question: "Is this site affiliated with Colordle or Colorfle?", answer: "No, we are an independent answer site. We are not affiliated with or endorsed by the creators of Colordle or Colorfle. We simply compute and display the daily answers using publicly available game algorithms." },
 ];
@@ -64,7 +64,7 @@ const faqData = [
           Colordle & Colorfle<br/><span class="gradient-text">Daily Answers</span>
         </h1>
         <p class="hero-subtitle animate-fade-in-up delay-2">
-          Get instant, verified answers for Colordle and Colorfle. Updated every day at midnight IST with 100% accurate solutions and full color swatches.
+          Get instant, verified answers for Colordle and Colorfle. Updated every day at midnight with 100% accurate solutions and full color swatches.
         </p>
         <div class="hero-actions animate-fade-in-up delay-3">
           <a href="/colordle-answer-today" class="btn-primary btn-colordle">
@@ -83,7 +83,7 @@ const faqData = [
             </div>
             <div>
               <span class="hero-stat-value">Daily Updates</span>
-              <span class="hero-stat-label">Midnight IST</span>
+              <span class="hero-stat-label">Daily</span>
             </div>
           </div>
           <div class="hero-stat">
@@ -170,7 +170,7 @@ const faqData = [
             <span class="game-card-badge">Daily Puzzle</span>
           </div>
           <h3 class="game-card-title">Colordle Answer Today</h3>
-          <p class="game-card-desc">Guess the mystery color name from a single swatch. We reveal today's answer with the actual color circle, name, and hex code. Updated at midnight IST.</p>
+          <p class="game-card-desc">Guess the mystery color name from a single swatch. We reveal today's answer with the actual color circle, name, and hex code. Updated daily.</p>
           <div class="game-card-cta">
             View Today's Answer
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -203,7 +203,7 @@ const faqData = [
         <div class="countdown-content">
           <div class="countdown-info">
             <h2 class="countdown-title">Next Puzzle <span class="gradient-text">Unlocks In</span></h2>
-            <p class="countdown-subtitle">Both Colordle and Colorfle reset at midnight IST (18:30 UTC)</p>
+            <p class="countdown-subtitle">Both Colordle and Colorfle reset daily at midnight</p>
           </div>
           <div class="countdown-timer" id="countdownTimer">
             <div class="countdown-unit">
@@ -282,7 +282,7 @@ const faqData = [
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </div>
           <h3 class="feature-title">Updated Daily</h3>
-          <p class="feature-desc">Cron jobs run at 12AM, 8AM, and 12PM IST daily to ensure answers are always current for every timezone. Never miss a day's puzzle solution again.</p>
+          <p class="feature-desc">Cron jobs run multiple times daily to ensure answers are always current for every timezone. Never miss a day's puzzle solution again.</p>
         </div>
         <div class="feature-card card">
           <div class="feature-icon" style="background: rgba(245,158,11,0.1); color: #f59e0b;">
@@ -349,7 +349,7 @@ const faqData = [
         <p>Welcome to Color Answers Hub, the most reliable and comprehensive source for daily Colordle and Colorfle puzzle solutions. Whether you are a casual player who wants to check your guess after a tough round or a dedicated solver looking for the exact color breakdown and blend weights, we have you covered with verified, algorithm-accurate answers updated every single day. Our site has been helping color puzzle enthusiasts since 2022, and we take pride in the accuracy and reliability of every answer we publish.</p>
 
         <h3>How Colordle Works</h3>
-        <p>Colordle is a daily color guessing game inspired by the Wordle format. Each day at midnight IST, the game generates a new mystery color, and your task is to guess the color's name. The game shows you a filled circle of the target color, and you type in your best guess for what the color is called. Colors range from common names like Red, Blue, and Green to more specific shades like Magenta, Olive, and Navy. The game uses a set of 20 distinct colors, each with a unique hex code, and the daily answer is determined by a seeded random number generator tied to the current date. Our Colordle answer page reveals the exact color name and hex code each day, complete with a real color swatch so you can see the answer visually. The swatch shows the actual filled color with the name overlaid, making it easy to verify at a glance.</p>
+        <p>Colordle is a daily color guessing game inspired by the Wordle format. Each day at midnight, the game generates a new mystery color, and your task is to guess the color's name. The game shows you a filled circle of the target color, and you type in your best guess for what the color is called. Colors range from common names like Red, Blue, and Green to more specific shades like Magenta, Olive, and Navy. The game uses a set of 20 distinct colors, each with a unique hex code, and the daily answer is determined by a seeded random number generator tied to the current date. Our Colordle answer page reveals the exact color name and hex code each day, complete with a real color swatch so you can see the answer visually. The swatch shows the actual filled color with the name overlaid, making it easy to verify at a glance.</p>
 
         <h3>How Colorfle Works</h3>
         <p>Colorfle takes the color guessing concept further by challenging you to identify a combination of three colors that blend together to form a target shade. In normal mode, the three component colors are mixed at weights of 50%, 34%, and 16%, creating the final blended result. Hard mode introduces different weight distributions, making the puzzle significantly more challenging because the blend is harder to visually decompose into its components. Our Colorfle answer page shows you all three component colors as actual filled swatches, their individual names, hex codes, blend weights, and the resulting mixed color. You can see exactly how the three colors combine to produce the target shade, which is especially helpful for understanding the blending mechanics and improving your future guesses.</p>
@@ -1018,7 +1018,7 @@ const faqData = [
     if (!hoursEl || !minutesEl || !secondsEl) return;
 
     const now = new Date();
-    // Next midnight IST (UTC+5:30)
+    // Next midnight (daily reset)
     const istOffset = 5.5 * 60 * 60 * 1000;
     const istNow = new Date(now.getTime() + istOffset + now.getTimezoneOffset() * 60000);
     const tomorrowIST = new Date(istNow);

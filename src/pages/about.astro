@@ -85,10 +85,10 @@ import Layout from '../layouts/Layout.astro';
             The Colorfle algorithm is particularly interesting because of how it handles the weighted blending. In normal mode, the three selected colors are assigned weights of 50%, 34%, and 16% respectively. The dominant color (50%) determines the overall hue you see, while the secondary (34%) and tertiary (16%) colors create subtle undertones. This means that even though you're only dealing with 20 possible colors, the visual difference between combinations can be quite nuanced. A blend dominated by Orange with hints of Red and Yellow looks very different from one dominated by Orange with hints of Brown and Olive, even though Orange is the primary contributor in both cases.
           </p>
           <p>
-            The key detail with Colorfle is the timezone. The game runs entirely in your browser using your local time, which means someone in New York and someone in Mumbai could technically see different puzzles on the same calendar day. Since we need to serve <em>one</em> answer to everyone, we use IST (Indian Standard Time, UTC+5:30) as our reference timezone. This matches the game's largest player base and the timezone where the original Colorfle game gained most of its traction. The Colorfle puzzle rolls over at 5:00 PM IST each day, and our system accounts for that.
+            The key detail with Colorfle is the timezone. The game runs entirely in your browser using your local time, which means someone in New York and someone in Tokyo could technically see different puzzles on the same calendar day. Since we need to serve <em>one</em> answer to everyone, we use a fixed reference timezone to determine which day's puzzle to display. Our system accounts for the daily puzzle rollover.
           </p>
           <p>
-            To make sure answers are always current, we run automated cron jobs three times a day — at 12:00 AM, 8:00 AM, and 12:00 PM IST. The midnight run catches the new day's puzzle right as it drops. The 8 AM and noon runs are safety nets in case anything went sideways with the first computation. Each cron job recomputes the day's answers, verifies them against our existing records, and updates the database if there's a new day to add. We also run a full historical recomputation periodically — more on that in the Accuracy section below.
+            To make sure answers are always current, we run automated cron jobs multiple times throughout the day. The first run catches the new day's puzzle right as it drops. The subsequent runs are safety nets in case anything went sideways with the first computation. Each cron job recomputes the day's answers, verifies them against our existing records, and updates the database if there's a new day to add. We also run a full historical recomputation periodically — more on that in the Accuracy section below.
           </p>
         </section>
 
@@ -230,7 +230,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
             <div class="tech-item">
               <span class="tech-label">Automation</span>
-              <span class="tech-value">Cron triggers on the Cloudflare Worker run three times daily (12 AM, 8 AM, and 12 PM IST) to compute new answers and update the database. The site rebuilds and redeploys automatically whenever the database changes.</span>
+              <span class="tech-value">Cron triggers on the Cloudflare Worker run multiple times daily to compute new answers and update the database. The site rebuilds and redeploys automatically whenever the database changes.</span>
             </div>
           </div>
           <p>
@@ -263,9 +263,9 @@ import Layout from '../layouts/Layout.astro';
           </details>
 
           <details class="faq-item">
-            <summary class="faq-question">Why do you use IST (Indian Standard Time) for answer updates?</summary>
+            <summary class="faq-question">When do the answers update each day?</summary>
             <div class="faq-answer">
-              <p>The original Colordle game updates at midnight IST, and Colorfle's puzzle rolls over at 5:00 PM IST. Since our goal is to match the official games exactly, we follow the same timezone. We know this can be confusing for players in other timezones, and we're working on making the timezone display clearer on the site. For now, we always show the date the answer applies to, so you can tell whether the new day's answer has appeared yet.</p>
+              <p>Answers update multiple times throughout the day. Our automated system runs at regular intervals to compute new answers, verify them, and publish them to the site. Since our goal is to match the official games exactly, we follow their daily reset schedule. We know timezone differences can be confusing, so we always show the date the answer applies to, making it easy to tell whether the new day's answer has appeared yet.</p>
             </div>
           </details>
 
