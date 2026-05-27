@@ -41,8 +41,18 @@ const formattedTitle = `${title} | Color Answers Hub`;
 
     <title>{formattedTitle}</title>
 
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://colordle.ryantanen.com" />
+    <link rel="preconnect" href="https://colorfle.com" />
+    <link rel="dns-prefetch" href="https://colordle.ryantanen.com" />
+    <link rel="dns-prefetch" href="https://colorfle.com" />
+
+    <!-- Preload critical above-fold fonts -->
+    <link rel="preload" href="/fonts/DMSans-Regular.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="/fonts/Outfit-ExtraBold.ttf" as="font" type="font/ttf" crossorigin />
+
     <!-- Fonts: Self-hosted via global.css @font-face -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" fetchpriority="high" />
 
     <!-- Structured Data: WebSite -->
     <script type="application/ld+json" set:html={JSON.stringify({
