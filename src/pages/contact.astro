@@ -5,1006 +5,936 @@ import Layout from '../layouts/Layout.astro';
 <Layout
   title="Contact Us"
   canonicalUrl="/contact"
-  description="Contact Color Answers Hub for questions, feedback, or reporting issues about Colordle and Colorfle daily answers."
-  keywords="contact color answers hub, colordle help, colorfle help, report colordle issue"
+  description="Get in touch with Color Answers Hub. Report wrong answers, suggest features, or ask questions about Colordle and Colorfle daily puzzle answers."
+  keywords="contact color answers hub, colordle help, colorfle help, report colordle issue, colorfle support"
   breadcrumbs={[{ name: "Home", url: "/" }, { name: "Contact Us", url: "/contact" }]}
 >
-  <section class="contact-page">
-    <div class="container">
-
-      <!-- Breadcrumb -->
-      <nav class="breadcrumb animate-fade-in-up" aria-label="Breadcrumb">
-        <a href="/" class="breadcrumb-link">Home</a>
-        <span class="breadcrumb-sep">/</span>
-        <span class="breadcrumb-current">Contact</span>
-      </nav>
-
-      <!-- Hero -->
-      <div class="hero animate-fade-in-up delay-1">
-        <h1 class="hero-title">Contact <span class="gradient-text">Us</span></h1>
-        <p class="hero-subtitle">Got a question, found a bug, or just want to tell us your favorite color? We're here. Honestly, we love hearing from people who use the site — it helps us make things better, and it's nice to know someone out there cares about color guessing games as much as we do.</p>
-      </div>
-
-      <!-- Two-column: Form + Sidebar -->
-      <div class="contact-grid animate-fade-in-up delay-2">
-
-        <!-- Contact Form Card -->
-        <div class="form-card card">
-          <h2 class="form-heading">Send Us a Message</h2>
-          <p class="form-intro">Fill out the form below and we'll get back to you. No chatbots, no ticket numbers to track — a real person reads every message. We can't promise we'll have an answer for everything, but we'll always respond.</p>
-
-          <form class="contact-form" id="contactForm">
-            <div class="form-group" id="formFields">
-              <div class="form-group">
-                <label for="name" class="form-label">Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  class="form-input"
-                  placeholder="Your name"
-                  required
-                />
-              </div>
-
-              <div class="form-group">
-                <label for="email" class="form-label">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  class="form-input"
-                  placeholder="you@example.com"
-                  required
-                />
-              </div>
-
-              <div class="form-group">
-                <label for="subject" class="form-label">Subject</label>
-                <select id="subject" name="subject" class="form-input form-select" required>
-                  <option value="" disabled selected>Choose a topic...</option>
-                  <option value="wrong-answer">Wrong answer on the site</option>
-                  <option value="timezone">Timezone / update timing issue</option>
-                  <option value="how-to-play">How to play question</option>
-                  <option value="data-accuracy">Data accuracy concern</option>
-                  <option value="feature-request">Feature request</option>
-                  <option value="bug-report">Bug report</option>
-                  <option value="general">General question</option>
-                  <option value="other">Something else</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="message" class="form-label">Message</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  class="form-input form-textarea"
-                  placeholder="Tell us what's on your mind..."
-                  rows="6"
-                  required
-                ></textarea>
-              </div>
-
-              <button type="submit" class="btn-primary form-submit">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                Send Message
-              </button>
-            </div>
-            <div id="formSuccess" style="display: none;">
-              <div style="text-align: center; padding: 32px 0;">
-                <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(16,185,129,0.1); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                </div>
-                <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 8px;">Thank you!</h3>
-                <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.6;">Your message has been received. We typically respond within 24-48 hours. You can also reach us directly at <a href="mailto:hello@color-answers.pages.dev" style="color: var(--accent-color); text-decoration: underline;">hello@color-answers.pages.dev</a>.</p>
-              </div>
-            </div>
-          </form>
-        </div>
-
-        <!-- Sidebar -->
-        <div class="contact-sidebar">
-          <!-- Response Time -->
-          <div class="sidebar-card card">
-            <div class="sidebar-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            </div>
-            <h3 class="sidebar-title">Response Time</h3>
-            <p class="sidebar-text">We usually reply within <strong>24 to 48 hours</strong>. Sometimes faster if we're at our desk, sometimes a bit longer on weekends. If you haven't heard back after 3 days, it probably got lost in the shuffle — send it again, no hard feelings.</p>
-          </div>
-
-          <!-- Other Ways -->
-          <div class="sidebar-card card">
-            <div class="sidebar-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            </div>
-            <h3 class="sidebar-title">Other Ways to Reach Us</h3>
-            <div class="contact-links">
-              <a href="mailto:hello@color-answers.pages.dev" class="contact-link">
-                <span class="contact-link-label">Email</span>
-                <span class="contact-link-value">hello@color-answers.pages.dev</span>
-              </a>
-              <a href="https://github.com/color-answers" target="_blank" rel="noopener noreferrer" class="contact-link">
-                <span class="contact-link-label">GitHub</span>
-                <span class="contact-link-value">github.com/color-answers</span>
-              </a>
-            </div>
-            <p class="sidebar-text" style="margin-top: 16px; margin-bottom: 0;">If you found a bug, opening a GitHub issue is honestly the fastest way to get it fixed. We check those daily. For anything else, email or the form above works great.</p>
-          </div>
-
-          <!-- Quick Note -->
-          <div class="sidebar-card card">
-            <div class="sidebar-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            </div>
-            <h3 class="sidebar-title">A Quick Note</h3>
-            <p class="sidebar-text">We're a small team — really just a couple of people who got a little too obsessed with color guessing games. We're not a big company with a support department. That means your message goes straight to the people who build and maintain the site. It also means we can't always drop everything to respond instantly, but we genuinely care about getting back to you.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Reporting Wrong Answers Section -->
-      <div class="report-section animate-fade-in-up delay-3">
-        <h2 class="section-title">Reporting Wrong Answers</h2>
-        <p class="section-subtitle">If you think an answer on our site is incorrect, here's exactly how to report it and what happens next.</p>
-
-        <div class="report-grid">
-          <div class="report-card card">
-            <div class="report-step">
-              <span class="step-number">1</span>
-              <div class="step-content">
-                <h3>Verify the Date</h3>
-                <p>Before reporting, double-check that you're looking at the correct date. Our answers update daily for both Colordle and Colorfle. If you're in a different timezone, the new answer may not have appeared yet. We always display the date the answer applies to — if it shows yesterday's date, today's answer hasn't dropped yet.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="report-card card">
-            <div class="report-step">
-              <span class="step-number">2</span>
-              <div class="step-content">
-                <h3>Cross-Reference the Game</h3>
-                <p>Open the original Colordle or Colorfle game and compare. Make sure you're checking the same day and the same mode (normal vs. hard for Colorfle). Sometimes the game itself can display differently depending on your local timezone settings, which can cause apparent but not actual discrepancies.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="report-card card">
-            <div class="report-step">
-              <span class="step-number">3</span>
-              <div class="step-content">
-                <h3>Gather the Details</h3>
-                <p>When you contact us, please include: (1) the date of the answer in question, (2) which game — Colordle or Colorfle, (3) which mode if applicable (normal or hard), (4) what answer our site currently shows, and (5) what you believe the correct answer should be. The more specific you are, the faster we can investigate.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="report-card card">
-            <div class="report-step">
-              <span class="step-number">4</span>
-              <div class="step-content">
-                <h3>Send It Our Way</h3>
-                <p>Use the contact form above and select "Wrong answer on the site" as the subject, or open a GitHub issue at our repository. Both methods work, but GitHub issues tend to get slightly faster responses since they integrate directly with our development workflow. We investigate every report within 24 hours and will update the site immediately if we confirm the error.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="report-note card">
-          <p><strong>Important distinction:</strong> A "wrong" answer means our site shows a different result than the official game. It does <em>not</em> mean "I would have called that color something else." Color naming is subjective, and the games use specific names from a predefined list. If our answer matches the game's accepted answer but you'd have used a different name, that's the game's naming convention — not an error on our part. We compute the exact answer the game will accept, not the answer that would win a color-naming debate.</p>
-        </div>
-      </div>
-
-      <!-- Common Questions About Our Site Section -->
-      <div class="common-questions-section animate-fade-in-up delay-3">
-        <h2 class="section-title">Common Questions About Our Site</h2>
-        <p class="section-subtitle">These are the things people ask us most often that aren't specifically about wrong answers or how to play the games. If your question isn't covered here or in the FAQ below, definitely reach out.</p>
-
-        <div class="common-grid">
-          <div class="common-card card">
-            <h3>Is this site free to use?</h3>
-            <p>Yes, completely free. No subscriptions, no premium tiers, no "unlock all answers for $4.99/month." Every answer — today's and the full historical archive — is available to everyone at no cost. We cover our minimal hosting costs through non-intrusive means, and the site is designed to be as lightweight and fast as possible, which also keeps our costs low.</p>
-          </div>
-
-          <div class="common-card card">
-            <h3>Do you have an app?</h3>
-            <p>Not currently. The website is fully responsive and works great on mobile browsers. You can add it to your phone's home screen for an app-like experience — on iOS, use the Share button and select "Add to Home Screen," and on Android, use the browser menu's "Add to Home Screen" option. It loads just as fast as a native app would, and you don't have to install anything.</p>
-          </div>
-
-          <div class="common-card card">
-            <h3>How do you decide what features to build?</h3>
-            <p>We prioritize features based on two things: how many people would benefit from them, and how well they align with our core mission of providing accurate, fast answers for color guessing games. User suggestions carry a lot of weight — some of our most popular features started as a single email from a visitor. If you have an idea, send it our way. We read every suggestion and we genuinely consider all of them.</p>
-          </div>
-
-          <div class="common-card card">
-            <h3>Why don't you cover other color games?</h3>
-            <p>We focus exclusively on Colordle and Colorfle because those are the games we know inside and out. Our accuracy depends on deeply understanding the algorithms behind each game, and spreading ourselves thin across more games would risk that accuracy. That said, if another color guessing game gains significant traction and has a deterministic algorithm we can verify, we'd consider adding it. Let us know if there's one you'd like to see covered.</p>
-          </div>
-
-          <div class="common-card card">
-            <h3>Is the site accessible with screen readers?</h3>
-            <p>We've made efforts to ensure the site is accessible, including proper heading hierarchy, alt text for color swatches, and semantic HTML structure. Color is inherently visual, which presents accessibility challenges we can't fully solve — describing a color swatch in words is inherently lossy. However, we provide color names and hex codes for every answer, which screen readers can read aloud. If you encounter accessibility issues, please let us know and we'll work to address them.</p>
-          </div>
-
-          <div class="common-card card">
-            <h3>Can I use your data or answers in my own project?</h3>
-            <p>The answers themselves are derived from the original games' algorithms and aren't our original creative work. However, the way we present them — the formatting, the visual design, the additional context we provide — is ours. If you want to reference our answers, we'd appreciate a link back to the site. If you're thinking about building something that uses our data at scale (like an API integration), please reach out first so we can discuss it. We're generally supportive of community projects but want to make sure our infrastructure can handle the load.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- FAQ Section -->
-      <div class="faq-section animate-fade-in-up delay-3">
-        <h2 class="section-title">Frequently Asked Questions</h2>
-        <p class="section-subtitle">Before you write to us, there's a decent chance your question is answered below. We compiled these from the messages we get most often. If your question isn't here, definitely reach out — it probably means we need to add it.</p>
-
-        <div class="faq-list">
-          <!-- FAQ 1 -->
-          <details class="faq-item card">
-            <summary class="faq-question">
-              <span>The answer on your site is wrong! What do I do?</span>
-              <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </summary>
-            <div class="faq-answer prose">
-              <p>First off, thank you for telling us — seriously. We want the site to be accurate, and the only way we catch problems is when people like you flag them. That said, before you report it, there are a couple of things worth checking.</p>
-              <p>Make sure you're looking at the correct date. It sounds obvious, but timezone confusion is the number one reason people think the answer is wrong. Our answers update daily, and depending on your timezone, the new answer may appear at a different time of day. We know this can be confusing, and we're working on making the timezone display clearer on the site.</p>
-              <p>If the date matches and the answer still looks wrong, then yes — please contact us using the form above or open a GitHub issue. Include the date, the game (Colordle or Colorfle), what answer we're showing, and what you think the correct answer should be. That helps us investigate quickly. We verify answers using the same algorithm the original games use, but sometimes edge cases or changes to the original game can throw things off. It's rare, but it happens, and when it does we fix it fast.</p>
-            </div>
-          </details>
-
-          <!-- FAQ 2 -->
-          <details class="faq-item card">
-            <summary class="faq-question">
-              <span>When do the answers update?</span>
-              <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </summary>
-            <div class="faq-answer prose">
-              <p>Our answers update multiple times throughout the day. We compute our answers to match the official games exactly, so we follow their daily reset schedule.</p>
-              <p>We know timezone differences can be confusing — depending on where you are, the new answer might appear at a different time of day. We've thought about adding timezone-based display or showing a "next update in" countdown, and that's on our roadmap.</p>
-              <p>One thing that helps: we always show the date the answer is for, right on the page. So if you see yesterday's date, you'll know the new one hasn't dropped yet. It's not a perfect solution, but it's honest.</p>
-            </div>
-          </details>
-
-          <!-- FAQ 3 -->
-          <details class="faq-item card">
-            <summary class="faq-question">
-              <span>Are you affiliated with Colordle or Colorfle?</span>
-              <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </summary>
-            <div class="faq-answer prose">
-              <p>No, we're not. We want to be totally upfront about this: Color Answers Hub is an independent, unofficial resource. We're not made by, endorsed by, or connected to the creators of Colordle (Ryan Tanen) or Colorfle in any official capacity. We're just fans who built a tool to help other fans.</p>
-              <p>What we do is reverse-engineer the answer algorithms so we can compute the daily answers reliably, and then we verify them against the actual games. It's a bit like making an unofficial dictionary for a word game — we're describing what the game does, but we don't own the game itself.</p>
-              <p>If you want to support the original game creators, the best thing you can do is play their games directly and share them with friends. We link to both Colordle and Colorfle on every page of our site because we genuinely think they're fun and deserve more players.</p>
-            </div>
-          </details>
-
-          <!-- FAQ 4 -->
-          <details class="faq-item card">
-            <summary class="faq-question">
-              <span>How do I actually play Colordle or Colorfle?</span>
-              <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </summary>
-            <div class="faq-answer prose">
-              <p>We get this question more than you'd expect, and we're happy to explain! Both games are browser-based — no app to download, no account to create. Just open the website and start guessing.</p>
-              <p><strong>Colordle</strong> gives you a grid of 20 color names (like Red, Blue, Mint, Lavender) and asks you to guess which one is today's color. You pick a color, and it tells you if you're right or wrong. That's the whole game — simple, quick, and surprisingly addictive once you start playing every day.</p>
-              <p><strong>Colorfle</strong> is a bit different. Instead of guessing a color name, you're trying to recreate a target color by adjusting red, green, and blue sliders. It's more hands-on and gives you a real appreciation for how colors are mixed. You get feedback on how close each guess is, which helps you zero in on the right combination.</p>
-              <p>Both games reset daily with a new challenge, which is why sites like ours exist — people want to check if they got it right, or they want a hint when they're stuck. No judgment either way. Sometimes you just need to know if today's color was actually Olive and you weren't going crazy.</p>
-            </div>
-          </details>
-
-          <!-- FAQ 5 -->
-          <details class="faq-item card">
-            <summary class="faq-question">
-              <span>How accurate are your answers?</span>
-              <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </summary>
-            <div class="faq-answer prose">
-              <p>We aim for 100% accuracy, and we get very close. Our system computes answers using the same deterministic algorithm that powers the original games. For Colordle, this means taking the date, converting it to a day number (counting from the game's launch on March 26, 2022), and selecting the color using the same formula. For Colorfle, we use an equivalent computation based on its launch date and algorithm.</p>
-              <p>That said, "very close" isn't "perfect." There have been a handful of times — maybe three or four in the entire history of the site — where something was off. Usually it's because the original game made a behind-the-scenes change that we didn't catch immediately, or because of a timezone edge case that our code didn't handle the same way as the game.</p>
-              <p>When we do get something wrong, we fix it as quickly as we can and we're transparent about it. We also run automated checks throughout the day to catch discrepancies. If accuracy is important to you (and it should be — you came here for answers, after all), you can always cross-reference with the original game. And if you ever spot a mismatch, please let us know. That's how we keep improving.</p>
-            </div>
-          </details>
-
-          <!-- FAQ 6 -->
-          <details class="faq-item card">
-            <summary class="faq-question">
-              <span>Can I request a new feature?</span>
-              <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </summary>
-            <div class="faq-answer prose">
-              <p>Absolutely, and please do. Some of the best features on the site came from user suggestions. The color swatch with the hex code? Someone asked for that. The archive calendar? Same thing. We're building this for people who use it, so your ideas genuinely matter.</p>
-              <p>A few things to keep in mind, just to set expectations. We're a small project, so we can't build everything right away. We prioritize features that benefit the most people and that align with what the site is about — helping you find accurate, up-to-date answers for color guessing games. If you're hoping for a full social platform with leaderboards and friend lists, that's probably not in the cards. But if you want better search in the archive, or a way to export your history, or support for another color game — those are exactly the kinds of things we love hearing about.</p>
-              <p>The best way to submit a feature request is through the contact form above (choose "Feature request" as the subject) or by opening a GitHub issue. GitHub is nice because other people can chime in and upvote ideas, which helps us figure out what to prioritize. Either way, describe what you want and why it would be useful. The more specific you are, the easier it is for us to understand and potentially build.</p>
-            </div>
-          </details>
-
-          <!-- FAQ 7 -->
-          <details class="faq-item card">
-            <summary class="faq-question">
-              <span>Do you have a mobile app?</span>
-              <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </summary>
-            <div class="faq-answer prose">
-              <p>Not right now, and honestly, we're not sure if we will. The website works well on mobile browsers — we designed it to be responsive from day one, so you can pull it up on your phone and get the answer in a couple of seconds without installing anything.</p>
-              <p>Building and maintaining a native app is a significant amount of extra work, and for a site like ours, the web experience covers most of what people need. You can even add the site to your home screen on iOS or Android, and it basically behaves like an app — same fast load, same clean interface, no App Store required.</p>
-              <p>That said, if enough people ask for an app (and we mean really ask, not just "would be nice"), we'd consider it. Let us know through the form if that's something you'd use. If there's genuine demand, we're open to it. We just don't want to build something nobody downloads.</p>
-            </div>
-          </details>
-
-          <!-- FAQ 8 -->
-          <details class="faq-item card">
-            <summary class="faq-question">
-              <span>How far back does your answer archive go?</span>
-              <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </summary>
-            <div class="faq-answer prose">
-              <p>All the way to the beginning. For Colordle, our archive starts at Day 1 — March 26, 2022, the day the game launched. For Colorfle, it starts at April 25, 2022. We computed every historical answer retroactively using the game algorithms, so the archive is complete and consistent from day one. You can look up any date in either game's history and find the exact answer.</p>
-              <p>The archive is useful for more than just curiosity. Some players like to review past answers to identify patterns or improve their guessing strategy. Others use it to settle debates with friends about what a particular day's answer was. Whatever your reason, the full archive is always available and always free.</p>
-            </div>
-          </details>
-
-          <!-- FAQ 9 -->
-          <details class="faq-item card">
-            <summary class="faq-question">
-              <span>Why do you show spoiler warnings before the answers?</span>
-              <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </summary>
-            <div class="faq-answer prose">
-              <p>Because not everyone wants to see the answer immediately. Some people come to our site intending to just check their work after they've played, and if the answer is right there on the screen when the page loads, it ruins the experience. The spoiler reveal button gives you a choice — you only see the answer when you're ready for it.</p>
-              <p>We know it adds one extra click, but we think it's worth it. The whole point of a daily puzzle game is the challenge of solving it, and we don't want to accidentally spoil that for anyone. If you're someone who just wants the answer as fast as possible, the extra click takes less than a second. For everyone else, it's a small courtesy that we think makes the site more respectful of how people actually use it.</p>
-            </div>
-          </details>
-
-          <!-- FAQ 10 -->
-          <details class="faq-item card">
-            <summary class="faq-question">
-              <span>What happens if the original game changes its algorithm?</span>
-              <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </summary>
-            <div class="faq-answer prose">
-              <p>This is something we actively monitor for. If the creators of Colordle or Colorfle update their algorithms, change their color pools, or modify how the daily selection works, our answers would diverge from the official game until we catch and fix the discrepancy. That's one of the reasons we run automated verification checks throughout the day.</p>
-              <p>When we detect a divergence — usually because someone reports it or our automated checks flag it — we investigate immediately. We compare the game's current behavior with our implementation, identify what changed, and update our code to match. Then we recompute any affected answers and update the archive. The turnaround time is typically within 24 hours, and we're transparent about any corrections we make.</p>
-              <p>Historically, algorithm changes have been very rare. Both games have been running for years with relatively stable codebases. But we stay vigilant because accuracy is our core promise to you.</p>
-            </div>
-          </details>
-        </div>
-      </div>
-
-      <!-- Closing CTA -->
-      <div class="closing-section animate-fade-in-up delay-4">
-        <div class="closing-card card">
-          <h2 class="closing-title">Still Have Questions?</h2>
-          <div class="prose">
-            <p>That's totally fine — we'd rather you ask than wonder. Whether it's a quick clarification about how something works, a concern about an answer, or just a friendly "hey, love the site" (we genuinely appreciate those), don't hesitate to reach out. The form above goes straight to our inbox, and we read every single message. No auto-replies, no form letters — just a real response from a real person who cares about color guessing games probably a little too much.</p>
-            <p>And hey, if you haven't already, check out our <a href="/about">About page</a> for more on why we built this thing and how it all works behind the scenes. Sometimes understanding the "why" answers the "what" before you even have to ask.</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-</Layout>
-
-<style>
-  .contact-page {
-    padding: 32px 0 80px;
-  }
-
-  /* ── Breadcrumb ── */
-  .breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 20px;
-    font-size: 0.85rem;
-  }
-
-  .breadcrumb-link {
-    color: var(--text-muted);
-    transition: color var(--duration-fast) ease;
-  }
-
-  .breadcrumb-link:hover {
-    color: var(--accent-color);
-  }
-
-  .breadcrumb-sep {
-    color: var(--text-muted);
-    opacity: 0.4;
-  }
-
-  .breadcrumb-current {
-    color: var(--text-secondary);
-    font-weight: 500;
-  }
-
-  /* ── Hero ── */
-  .hero {
-    margin-bottom: 48px;
-  }
-
-  .hero-title {
-    font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 2.8rem;
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    margin-bottom: 16px;
-  }
-
-  .hero-subtitle {
-    font-size: 1.08rem;
-    line-height: 1.75;
-    color: var(--text-secondary);
-    max-width: 640px;
-  }
-
-  /* ── Contact Grid ── */
-  .contact-grid {
-    display: grid;
-    grid-template-columns: 1.3fr 0.7fr;
-    gap: 28px;
-    align-items: start;
-  }
-
-  /* ── Form Card ── */
-  .form-card {
-    padding: 40px;
-  }
-
-  .form-heading {
-    font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 1.45rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 8px;
-    letter-spacing: -0.02em;
-  }
-
-  .form-intro {
-    font-size: 0.94rem;
-    line-height: 1.7;
-    color: var(--text-secondary);
-    margin-bottom: 32px;
-  }
-
-  /* ── Form Elements ── */
-  .contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .form-label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    letter-spacing: -0.01em;
-  }
-
-  .form-input {
-    width: 100%;
-    padding: 12px 16px;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.92rem;
-    transition:
-      border-color var(--duration-fast) ease,
-      box-shadow var(--duration-fast) ease,
-      background var(--duration-fast) ease;
-    outline: none;
-  }
-
-  .form-input::placeholder {
-    color: var(--text-muted);
-  }
-
-  .form-input:hover {
-    border-color: var(--border-hover);
-  }
-
-  .form-input:focus {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    background: var(--bg-secondary);
-  }
-
-  .form-select {
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238B8FA3' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 16px center;
-    padding-right: 40px;
-    cursor: pointer;
-  }
-
-  .form-select:focus {
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%232563eb' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  }
-
-  .form-textarea {
-    resize: vertical;
-    min-height: 130px;
-    line-height: 1.6;
-  }
-
-  .form-submit {
-    align-self: flex-start;
-    margin-top: 4px;
-  }
-
-  /* ── Sidebar ── */
-  .contact-sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .sidebar-card {
-    padding: 28px;
-  }
-
-  .sidebar-card:hover {
-    transform: none;
-  }
-
-  .sidebar-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-md);
-    background: var(--accent-gradient-subtle);
-    border: 1px solid rgba(37, 99, 235, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent-color);
-    margin-bottom: 16px;
-  }
-
-  .sidebar-title {
-    font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 8px;
-    letter-spacing: -0.01em;
-  }
-
-  .sidebar-text {
-    font-size: 0.88rem;
-    line-height: 1.7;
-    color: var(--text-secondary);
-    margin-bottom: 0;
-  }
-
-  .sidebar-text strong {
-    color: var(--text-primary);
-    font-weight: 600;
-  }
-
-  /* ── Contact Links ── */
-  .contact-links {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 12px;
-  }
-
-  .contact-link {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 12px 14px;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    background: var(--bg-primary);
-    text-decoration: none;
-    transition:
-      border-color var(--duration-fast) ease,
-      background var(--duration-fast) ease;
-  }
-
-  .contact-link:hover {
-    border-color: var(--accent-color);
-    background: rgba(37, 99, 235, 0.03);
-  }
-
-  .contact-link-label {
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-
-  .contact-link-value {
-    font-size: 0.88rem;
-    font-weight: 500;
-    color: var(--accent-color);
-  }
-
-  /* ── Reporting Section ── */
-  .report-section {
-    margin-top: 72px;
-  }
-
-  .report-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-top: 28px;
-  }
-
-  .report-card {
-    padding: 0;
-  }
-
-  .report-card:hover {
-    transform: none;
-  }
-
-  .report-step {
-    display: flex;
-    gap: 18px;
-    padding: 24px;
-    align-items: flex-start;
-  }
-
-  .step-number {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--accent-gradient-subtle);
-    color: var(--accent-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  .step-content h3 {
-    font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 1.05rem;
-    font-weight: 700;
-    margin-bottom: 6px;
-    letter-spacing: -0.01em;
-  }
-
-  .step-content p {
-    font-size: 0.9rem;
-    line-height: 1.7;
-    color: var(--text-secondary);
-    margin-bottom: 0;
-  }
-
-  .report-note {
-    margin-top: 16px;
-    padding: 24px 28px;
-    background: var(--bg-secondary);
-    border-color: var(--border-hover);
-  }
-
-  .report-note:hover {
-    transform: none;
-  }
-
-  .report-note p {
-    font-size: 0.9rem;
-    line-height: 1.7;
-    color: var(--text-secondary);
-    margin-bottom: 0;
-  }
-
-  .report-note strong {
-    color: var(--text-primary);
-  }
-
-  /* ── Common Questions Section ── */
-  .common-questions-section {
-    margin-top: 72px;
-  }
-
-  .common-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-top: 28px;
-  }
-
-  .common-card {
-    padding: 24px;
-  }
-
-  .common-card:hover {
-    transform: none;
-  }
-
-  .common-card h3 {
-    font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 8px;
-    letter-spacing: -0.01em;
-  }
-
-  .common-card p {
-    font-size: 0.9rem;
-    line-height: 1.7;
-    color: var(--text-secondary);
-    margin-bottom: 0;
-  }
-
-  /* ── Section Titles ── */
-  .section-title {
-    font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 1.8rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    color: var(--text-primary);
-    margin-bottom: 8px;
-  }
-
-  .section-subtitle {
-    font-size: 1rem;
-    line-height: 1.7;
-    color: var(--text-secondary);
-    max-width: 640px;
-    margin-bottom: 0;
-  }
-
-  /* ── FAQ Section ── */
-  .faq-section {
-    margin-top: 72px;
-  }
-
-  .faq-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 28px;
-  }
-
-  .faq-item {
-    padding: 0;
-    overflow: hidden;
-  }
-
-  .faq-item:hover {
-    transform: none;
-  }
-
-  .faq-question {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 22px 28px;
-    font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 1.02rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    cursor: pointer;
-    list-style: none;
-    transition: color var(--duration-fast) ease;
-    user-select: none;
-  }
-
-  .faq-question::-webkit-details-marker {
-    display: none;
-  }
-
-  .faq-question::marker {
-    display: none;
-    content: '';
-  }
-
-  .faq-question:hover {
-    color: var(--accent-color);
-  }
-
-  .faq-chevron {
-    flex-shrink: 0;
-    transition: transform var(--duration-normal) var(--ease-out-expo);
-    color: var(--text-muted);
-  }
-
-  .faq-item[open] .faq-chevron {
-    transform: rotate(180deg);
-    color: var(--accent-color);
-  }
-
-  .faq-item[open] .faq-question {
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  .faq-answer {
-    padding: 24px 28px 28px;
-  }
-
-  .faq-answer p:last-child {
-    margin-bottom: 0;
-  }
-
-  /* ── Closing Section ── */
-  .closing-section {
-    margin-top: 72px;
-  }
-
-  .closing-card {
-    padding: 40px 44px;
-    text-align: center;
-    background: var(--accent-gradient-subtle);
-    border-color: rgba(37, 99, 235, 0.1);
-  }
-
-  .closing-card:hover {
-    transform: none;
-  }
-
-  .closing-title {
-    font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 16px;
-    letter-spacing: -0.02em;
-  }
-
-  .closing-card .prose {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .closing-card .prose p:last-child {
-    margin-bottom: 0;
-  }
-
-  /* ── Responsive ── */
-  @media (max-width: 1024px) {
-    .contact-grid {
+  <style is:global>
+    /* ═══ HERO ═══ */
+    .blog-post-hero {
+      padding: 64px 0 40px;
+      background: var(--bg-hero);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .blog-post-hero-inner {
+      max-width: 800px;
+    }
+
+    .blog-post-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: color var(--duration-fast) ease;
+    }
+
+    .blog-post-back:hover { color: var(--accent-color); }
+
+    .blog-post-back svg { transition: transform var(--duration-fast) ease; }
+    .blog-post-back:hover svg { transform: translateX(-3px); }
+
+    .blog-post-hero h1 {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    .hero-description {
+      font-size: 1.08rem;
+      line-height: 1.75;
+      color: var(--text-secondary);
+      margin-top: 12px;
+      max-width: 600px;
+    }
+
+    @media (max-width: 768px) {
+      .blog-post-hero { padding: 40px 0 24px; }
+      .blog-post-hero h1 { font-size: 1.7rem; }
+    }
+
+    /* ═══ CONTENT LAYOUT: Sidebar + Main ═══ */
+    .blog-post-body {
+      padding: 48px 0 80px;
+    }
+
+    .blog-layout {
+      display: flex;
+      gap: 48px;
+      align-items: flex-start;
+    }
+
+    /* ── Sticky TOC Sidebar ── */
+    .blog-sidebar {
+      position: sticky;
+      top: 88px;
+      width: 260px;
+      flex-shrink: 0;
+      background: #f0f4ff;
+      border: 1px solid #d4ddef;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+    }
+
+    .blog-sidebar-title {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--brand-700);
+      margin-bottom: 16px;
+    }
+
+    .blog-sidebar ol {
+      list-style: decimal;
+      padding-left: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .blog-sidebar li {
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+
+    .blog-sidebar a {
+      color: var(--brand-700);
+      font-weight: 500;
+      text-decoration: none;
+      transition: color var(--duration-fast) ease, text-decoration var(--duration-fast) ease;
+    }
+
+    .blog-sidebar a:hover {
+      color: var(--brand-900);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 1024px) {
+      .blog-sidebar { display: none; }
+    }
+
+    /* ── Main Content ── */
+    .blog-main {
+      flex: 1;
+      min-width: 0;
+      max-width: 800px;
+    }
+
+    /* ── Article Card Wrapper ── */
+    .blog-article {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sm);
+      padding: 48px;
+    }
+
+    @media (max-width: 768px) {
+      .blog-article { padding: 24px; }
+    }
+
+    /* ═══ RICH CONTENT STYLES ═══ */
+    .blog-article h2 {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 3rem;
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      scroll-margin-top: 80px;
+    }
+
+    .blog-article h2:first-child {
+      margin-top: 0;
+    }
+
+    .blog-article h3 {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      letter-spacing: -0.015em;
+      line-height: 1.35;
+    }
+
+    .blog-article p {
+      font-size: 1.08rem;
+      line-height: 1.9;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    .blog-article strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .blog-article a {
+      color: var(--accent-color);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-weight: 500;
+    }
+
+    .blog-article a:hover { color: var(--accent-dark); }
+
+    .blog-article ul,
+    .blog-article ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+
+    .blog-article li {
+      font-size: 1.08rem;
+      line-height: 1.9;
+      color: var(--text-secondary);
+      margin-bottom: 0.6rem;
+    }
+
+    .blog-article blockquote {
+      border-left: 4px solid var(--accent-color);
+      padding: 16px 24px;
+      margin: 2rem 0;
+      background: var(--brand-50);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      font-style: italic;
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+
+    .blog-article hr {
+      border: none;
+      border-top: 1px solid var(--border-color);
+      margin: 3rem 0;
+    }
+
+    /* ── Info Cards ── */
+    .blog-article .info-grid {
+      display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 24px;
+      gap: 16px;
+      margin: 1.5rem 0;
     }
 
-    .report-grid {
-      grid-template-columns: 1fr;
+    @media (max-width: 640px) {
+      .blog-article .info-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
-    .common-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .hero-title {
-      font-size: 2.2rem;
+    .blog-article .info-card {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-xs);
     }
 
-    .hero-subtitle {
+    .blog-article .info-card h4 {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-weight: 700;
       font-size: 1rem;
+      color: var(--text-primary);
+      margin-bottom: 6px;
     }
 
-    .contact-grid {
-      grid-template-columns: 1fr;
-      gap: 24px;
+    .blog-article .info-card p {
+      font-size: 0.92rem;
+      line-height: 1.65;
+      margin-bottom: 0;
+      color: var(--text-secondary);
     }
 
-    .form-card {
-      padding: 28px 20px;
+    .blog-article .info-card .info-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      background: var(--accent-gradient-subtle);
+      border: 1px solid rgba(37, 99, 235, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-color);
+      margin-bottom: 12px;
     }
 
-    .sidebar-card {
-      padding: 22px 20px;
+    /* ── Callout Box ── */
+    .blog-article .callout {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      margin: 2rem 0;
     }
 
-    .report-grid {
-      grid-template-columns: 1fr;
+    .blog-article .callout-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #92400e;
+      margin-bottom: 6px;
     }
 
-    .common-grid {
-      grid-template-columns: 1fr;
+    .blog-article .callout p {
+      font-size: 0.95rem;
+      color: #78350f;
+      margin-bottom: 0;
     }
 
-    .section-title {
-      font-size: 1.5rem;
+    /* ── Key Takeaway Box ── */
+    .blog-article .key-takeaway {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      margin: 2rem 0;
     }
 
-    .faq-question {
-      padding: 18px 20px;
+    .blog-article .key-takeaway-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #166534;
+      margin-bottom: 8px;
+    }
+
+    .blog-article .key-takeaway ul {
+      margin-bottom: 0;
+    }
+
+    .blog-article .key-takeaway li {
+      color: #15803d;
       font-size: 0.95rem;
     }
 
-    .faq-answer {
-      padding: 20px 20px 24px;
+    /* ═══ CONTACT FORM STYLES ═══ */
+    .contact-form {
+      margin: 1.5rem 0 0;
     }
 
-    .closing-card {
-      padding: 28px 20px;
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
     }
 
-    .closing-title {
-      font-size: 1.35rem;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .contact-page {
-      padding: 24px 0 56px;
+    @media (max-width: 640px) {
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
     }
 
-    .hero-title {
-      font-size: 1.85rem;
-    }
-
-    .form-card {
-      padding: 24px 16px;
-    }
-
-    .sidebar-card {
-      padding: 20px 16px;
-    }
-
-    .report-step {
-      padding: 20px;
+    .form-group {
+      display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 6px;
+      margin-bottom: 20px;
     }
 
-    .common-card {
-      padding: 20px;
+    .form-group:last-child {
+      margin-bottom: 0;
     }
 
-    .report-note {
-      padding: 20px;
+    .form-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: block;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      transition:
+        border-color var(--duration-fast) ease,
+        box-shadow var(--duration-fast) ease,
+        background var(--duration-fast) ease;
+      outline: none;
+    }
+
+    .form-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .form-input:hover {
+      border-color: var(--border-hover);
+    }
+
+    .form-input:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      background: var(--bg-secondary);
+    }
+
+    .form-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238B8FA3' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+      cursor: pointer;
+    }
+
+    .form-select:focus {
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%232563eb' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 140px;
+      line-height: 1.6;
+    }
+
+    .form-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 28px;
+      background: var(--colordle-gradient);
+      color: white;
+      border: none;
+      border-radius: var(--radius-full);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition:
+        transform var(--duration-normal) var(--ease-out-expo),
+        box-shadow var(--duration-normal) ease;
+      margin-top: 4px;
+    }
+
+    .form-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+      color: white;
+    }
+
+    .form-submit:active {
+      transform: translateY(0);
+    }
+
+    /* ── Form Success State ── */
+    .form-success {
+      text-align: center;
+      padding: 40px 0;
+    }
+
+    .form-success-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(16, 185, 129, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+
+    .form-success h3 {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .form-success p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .form-success a {
+      color: var(--accent-color);
+      text-decoration: underline;
+    }
+
+    /* ═══ FAQ STYLES ═══ */
+    .faq-item {
+      padding: 0;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      margin-bottom: 10px;
+      background: var(--bg-primary);
     }
 
     .faq-question {
-      padding: 16px;
-      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 24px;
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      cursor: pointer;
+      list-style: none;
+      transition: color var(--duration-fast) ease;
+      user-select: none;
+    }
+
+    .faq-question::-webkit-details-marker { display: none; }
+    .faq-question::marker { display: none; content: ''; }
+
+    .faq-question:hover { color: var(--accent-color); }
+
+    .faq-item[open] .faq-question {
+      border-bottom: 1px solid var(--border-color);
     }
 
     .faq-answer {
-      padding: 16px 16px 20px;
+      padding: 20px 24px 24px;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
     }
 
-    .faq-section {
+    .faq-answer p:last-child { margin-bottom: 0; }
+
+    /* ── Navigation Footer ── */
+    .blog-post-nav {
+      padding-top: 32px;
+      border-top: 1px solid var(--border-color);
       margin-top: 48px;
     }
 
-    .closing-section {
-      margin-top: 48px;
+    .blog-post-nav a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--accent-color);
+      text-decoration: none;
     }
 
-    .closing-card {
-      padding: 24px 16px;
-    }
-  }
-</style>
+    .blog-post-nav a:hover { text-decoration: underline; }
 
-<script>
-  const form = document.getElementById('contactForm');
-  form?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const fields = document.getElementById('formFields');
-    const success = document.getElementById('formSuccess');
-    if (fields && success) {
-      fields.style.display = 'none';
-      success.style.display = 'block';
+    /* ── Mobile TOC ── */
+    .mobile-toc {
+      display: none;
+      background: #f0f4ff;
+      border: 1px solid #d4ddef;
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin-bottom: 24px;
     }
-  });
-</script>
+
+    .mobile-toc-title {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--brand-700);
+      margin-bottom: 10px;
+    }
+
+    .mobile-toc ol {
+      list-style: decimal;
+      padding-left: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .mobile-toc li {
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    .mobile-toc a {
+      color: var(--brand-700);
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .mobile-toc a:hover { text-decoration: underline; }
+
+    @media (max-width: 1024px) {
+      .mobile-toc { display: block; }
+    }
+
+    /* ── Full layout responsive ── */
+    @media (max-width: 1024px) {
+      .blog-layout { flex-direction: column; }
+      .blog-main { max-width: 100%; }
+    }
+  </style>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="blog-post-hero">
+    <div class="container">
+      <div class="blog-post-hero-inner">
+        <a href="/" class="blog-post-back">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to Home
+        </a>
+        <h1>Contact Us</h1>
+        <p class="hero-description">Got a question, found a wrong answer, or want to suggest something? We'd love to hear from you. A real person reads every message — no chatbots, no ticket numbers.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CONTENT ═══ -->
+  <section class="blog-post-body">
+    <div class="container">
+      <div class="blog-layout">
+        <!-- Sticky TOC Sidebar (desktop) -->
+        <nav class="blog-sidebar" aria-label="Table of Contents" id="toc-sidebar">
+          <p class="blog-sidebar-title">On This Page</p>
+          <ol id="toc-list">
+            <!-- Populated by JS below -->
+          </ol>
+        </nav>
+
+        <!-- Main Article -->
+        <div class="blog-main">
+          <!-- Mobile TOC -->
+          <div class="mobile-toc" id="mobile-toc">
+            <p class="mobile-toc-title">On This Page</p>
+            <ol id="mobile-toc-list">
+              <!-- Populated by JS below -->
+            </ol>
+          </div>
+
+          <article class="blog-article">
+
+            <!-- ═══ INFO CARDS ═══ -->
+            <div class="info-grid">
+              <div class="info-card">
+                <div class="info-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <h4>Response Time</h4>
+                <p>We typically respond within <strong>24–48 hours</strong>. Weekends may take a bit longer. If you haven't heard back after 3 days, please resend — no hard feelings.</p>
+              </div>
+              <div class="info-card">
+                <div class="info-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                </div>
+                <h4>Common Reasons to Contact</h4>
+                <p>Report a wrong answer, suggest a feature, ask how something works, flag a bug, or just say hi. We genuinely appreciate all feedback.</p>
+              </div>
+              <div class="info-card">
+                <div class="info-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </div>
+                <h4>What to Include</h4>
+                <p>For answer reports: the date, game name, and what you expected vs. what we showed. For bugs: your browser/device and steps to reproduce.</p>
+              </div>
+              <div class="info-card">
+                <div class="info-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </div>
+                <h4>Email Us Directly</h4>
+                <p>Prefer email? Reach us at <a href="mailto:coloranswershub@gmail.com">coloranswershub@gmail.com</a>. We check it daily and respond to every message.</p>
+              </div>
+            </div>
+
+            <!-- ═══ CONTACT FORM ═══ -->
+            <h2 id="send-a-message">Send Us a Message</h2>
+            <p>Fill out the form below and we'll get back to you. No chatbots, no ticket numbers to track — a real person reads every single message.</p>
+
+            <form class="contact-form" id="contactForm" action="mailto:coloranswershub@gmail.com" method="post" enctype="text/plain">
+              <div id="formFields">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="name" class="form-label">Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="Name"
+                      class="form-input"
+                      placeholder="Your name"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="Email"
+                      class="form-input"
+                      placeholder="you@example.com"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="subject" class="form-label">Subject</label>
+                  <select id="subject" name="Subject" class="form-input form-select" required>
+                    <option value="" disabled selected>Choose a topic…</option>
+                    <option value="General Inquiry">General Inquiry</option>
+                    <option value="Report Wrong Answer">Report Wrong Answer</option>
+                    <option value="Suggestion">Suggestion</option>
+                    <option value="Bug Report">Bug Report</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="message" class="form-label">Message</label>
+                  <textarea
+                    id="message"
+                    name="Message"
+                    class="form-input form-textarea"
+                    placeholder="Tell us what's on your mind…"
+                    rows="6"
+                    required
+                  ></textarea>
+                </div>
+
+                <button type="submit" class="form-submit">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                  Send Message
+                </button>
+              </div>
+              <div id="formSuccess" style="display: none;">
+                <div class="form-success">
+                  <div class="form-success-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  </div>
+                  <h3>Thank you!</h3>
+                  <p>Your message has been received. We typically respond within 24–48 hours. You can also reach us directly at <a href="mailto:coloranswershub@gmail.com">coloranswershub@gmail.com</a>.</p>
+                </div>
+              </div>
+            </form>
+
+            <hr />
+
+            <!-- ═══ FAQ SECTION ═══ -->
+            <h2 id="frequently-asked-questions">Frequently Asked Questions</h2>
+            <p>Before you write to us, there's a good chance your question is answered below. We compiled these from the messages we receive most often.</p>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>How quickly do you respond to messages?</span>
+                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <div class="faq-answer">
+                <p>We typically respond within <strong>24 to 48 hours</strong> on business days. Weekends and holidays may take a little longer. We're a small team — really just a couple of people who built this site — so we can't always respond instantly, but we genuinely read and reply to every message. If you haven't heard back after 3 days, please resend. No hard feelings, sometimes things get lost.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>I think an answer on your site is wrong. What should I do?</span>
+                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <div class="faq-answer">
+                <p>First, double-check that you're looking at the correct date — timezone confusion is the #1 reason people think an answer is wrong. Then cross-reference with the original game. If the answer still looks incorrect, please contact us with: (1) the date, (2) which game (Colordle or Colorfle), (3) which mode if applicable, (4) what our site shows, and (5) what you believe the correct answer should be. We investigate all reports within 24 hours.</p>
+                <p>Important distinction: a "wrong" answer means our site shows a different result than the official game. If our answer matches the game but you would have called the color something else, that's the game's naming convention — not an error on our part.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>Can I suggest a new feature?</span>
+                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <div class="faq-answer">
+                <p>Absolutely, and please do! Some of the best features on the site came from user suggestions. The color swatch with the hex code? Someone asked for that. The archive calendar? Same thing. We prioritize features that benefit the most people and align with our mission of providing accurate, fast answers. Use the form above and select "Suggestion" as the subject, or email us directly.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>Are you affiliated with Colordle or Colorfle?</span>
+                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <div class="faq-answer">
+                <p>No, we're not. Color Answers Hub is an independent, unofficial resource. We're not endorsed by or connected to the creators of Colordle (Ryan Tanen) or Colorfle. We're fans who built a tool for other fans. If you want to support the original creators, play their games directly and share them with friends.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>What's the best way to report a bug?</span>
+                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <div class="faq-answer">
+                <p>Use the contact form above and select "Bug Report" as the subject. Please include: what browser and device you're using, what you expected to happen, what actually happened, and any steps to reproduce the issue. Screenshots help a lot if you can include them. The more detail you provide, the faster we can fix it.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>When do the daily answers update?</span>
+                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <div class="faq-answer">
+                <p>Our answers update multiple times throughout the day, following the official games' daily reset schedule. We always show the date the answer applies to on the page. If you see yesterday's date, the new answer hasn't dropped yet for your timezone. Timezone differences can be confusing, but the date display should always tell you which day's answer you're looking at.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>Is this site free to use?</span>
+                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <div class="faq-answer">
+                <p>Yes, completely free. No subscriptions, no premium tiers, no "unlock all answers for $4.99/month." Every answer — today's and the full historical archive — is available to everyone at no cost. We cover our minimal hosting costs through non-intrusive means.</p>
+              </div>
+            </details>
+
+            <div class="callout" style="margin-top: 2rem;">
+              <p class="callout-title">💡 Tip</p>
+              <p>For the fastest response on wrong answer reports, include the specific date and game in your message subject line. Example: "Wrong Colorfle answer — March 4, 2025". This helps us investigate immediately without back-and-forth.</p>
+            </div>
+
+            <hr />
+
+            <!-- ═══ CLOSING ═══ -->
+            <h2 id="still-have-questions">Still Have Questions?</h2>
+            <p>We'd rather you ask than wonder. Whether it's a quick clarification, a concern about an answer, or just a friendly "hey, love the site" — we genuinely appreciate those — don't hesitate to reach out. You can use the form above or email us directly at <a href="mailto:coloranswershub@gmail.com">coloranswershub@gmail.com</a>.</p>
+            <p>And if you haven't already, check out our <a href="/about">About page</a> for more on why we built this thing and how it all works behind the scenes. Sometimes understanding the "why" answers the "what" before you even have to ask.</p>
+
+            <div class="key-takeaway" style="margin-top: 2rem;">
+              <p class="key-takeaway-title">📬 Quick Contact Summary</p>
+              <ul>
+                <li><strong>Email:</strong> <a href="mailto:coloranswershub@gmail.com">coloranswershub@gmail.com</a></li>
+                <li><strong>Response time:</strong> 24–48 hours (longer on weekends)</li>
+                <li><strong>Wrong answer?</strong> Include the date, game name, and expected vs. actual answer</li>
+                <li><strong>Bug report?</strong> Include your browser, device, and steps to reproduce</li>
+                <li><strong>Feature idea?</strong> We love hearing those — the more specific, the better</li>
+              </ul>
+            </div>
+
+          </article>
+
+          <div class="blog-post-nav">
+            <a href="/">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              Back to Home
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Auto-generate TOC from h2 headings -->
+  <script>
+    function buildTOC() {
+      const article = document.querySelector('.blog-article');
+      const tocList = document.getElementById('toc-list');
+      const mobileTocList = document.getElementById('mobile-toc-list');
+      if (!article || !tocList || !mobileTocList) return;
+
+      const headings = article.querySelectorAll('h2');
+      if (headings.length === 0) {
+        const sidebar = document.getElementById('toc-sidebar');
+        const mobileToc = document.getElementById('mobile-toc');
+        if (sidebar) sidebar.style.display = 'none';
+        if (mobileToc) mobileToc.style.display = 'none';
+        return;
+      }
+
+      headings.forEach((heading, index) => {
+        const id = heading.id || `section-${index + 1}`;
+        heading.id = id;
+        heading.style.scrollMarginTop = '80px';
+
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = `#${id}`;
+        a.textContent = heading.textContent;
+        li.appendChild(a);
+
+        // Desktop TOC
+        tocList.appendChild(li.cloneNode(true));
+        // Mobile TOC
+        mobileTocList.appendChild(li);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', buildTOC);
+    document.addEventListener('astro:page-load', buildTOC);
+  </script>
+
+  <!-- Contact Form Handler -->
+  <script>
+    const form = document.getElementById('contactForm') as HTMLFormElement | null;
+    const formFields = document.getElementById('formFields');
+    const formSuccess = document.getElementById('formSuccess');
+
+    form?.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Build mailto link from form data
+      const name = (document.getElementById('name') as HTMLInputElement)?.value || '';
+      const email = (document.getElementById('email') as HTMLInputElement)?.value || '';
+      const subject = (document.getElementById('subject') as HTMLSelectElement)?.value || '';
+      const message = (document.getElementById('message') as HTMLTextAreaElement)?.value || '';
+
+      const mailSubject = encodeURIComponent(`[Color Answers Hub] ${subject}`);
+      const mailBody = encodeURIComponent(
+        `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\n${message}`
+      );
+      const mailtoLink = `mailto:coloranswershub@gmail.com?subject=${mailSubject}&body=${mailBody}`;
+
+      // Open mailto link
+      window.location.href = mailtoLink;
+
+      // Show success state
+      if (formFields && formSuccess) {
+        formFields.style.display = 'none';
+        formSuccess.style.display = 'block';
+      }
+    });
+  </script>
+
+  <!-- ContactPage Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Contact Us - Color Answers Hub",
+    "description": "Get in touch with Color Answers Hub. Report wrong answers, suggest features, or ask questions about Colordle and Colorfle daily puzzle answers.",
+    "url": "https://color-answers.pages.dev/contact/",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Color Answers Hub",
+      "url": "https://color-answers.pages.dev",
+      "email": "coloranswershub@gmail.com",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "coloranswershub@gmail.com",
+        "availableLanguage": "English",
+        "responseTime": "PT48H"
+      }
+    }
+  })} />
+</Layout>

@@ -35,23 +35,41 @@ const colorHex = colordleData?.color_hex || '';
 ---
 
 <Layout title={`Colordle Answer Today (${formattedDate})`} canonicalUrl="/colordle-answer-today" description={`Today's Colordle answer for ${formattedDate}. See the exact color swatch, hex code, and color name. Updated daily with verified algorithm-accurate solutions.`} keywords="colordle answer today, colordle daily answer, colordle color today, colordle solution, colordle answer may 2026" breadcrumbs={[{ name: "Home", url: "/" }, { name: "Colordle Answer Today", url: "/colordle-answer-today" }]}>
-  <section class="answer-page">
-    <div class="container">
 
+  <!-- ═══ HERO SECTION ═══ -->
+  <section class="answer-hero colordle-hero">
+    <div class="container">
       <!-- Breadcrumb -->
-      <nav class="breadcrumb animate-fade-in-up" aria-label="Breadcrumb">
-        <a href="/" class="breadcrumb-link">Home</a>
-        <span class="breadcrumb-sep">/</span>
-        <span class="breadcrumb-current">Colordle Today</span>
+      <nav class="answer-breadcrumb animate-fade-in-up" aria-label="Breadcrumb">
+        <a href="/" class="answer-breadcrumb-link">Home</a>
+        <span class="answer-breadcrumb-sep">/</span>
+        <span class="answer-breadcrumb-current">Colordle Today</span>
       </nav>
 
-      <h1 class="page-h1 animate-fade-in-up">Colordle Answer Today <span class="h1-date">({formattedDate})</span></h1>
+      <h1 class="answer-hero-h1 animate-fade-in-up delay-1">
+        <span class="game-name">Colordle</span> Answer Today
+      </h1>
+
+      <div class="answer-hero-date animate-fade-in-up delay-1">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        {formattedDate}
+      </div>
+
+      <p class="answer-hero-subtitle animate-fade-in-up delay-2">
+        Today's verified Colordle solution — reveal the mystery color, hex code, and name
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ ANSWER CARD SECTION ═══ -->
+  <section class="answer-content-section">
+    <div class="container">
 
       <!-- CSS-only spoiler checkbox -->
       <input type="checkbox" id="spoilerCheck" class="spoiler-check" aria-hidden="true" />
 
-      <!-- Hero Card -->
-      <div class="hero-card animate-fade-in-up delay-1">
+      <!-- Premium Hero Card -->
+      <div class="answer-card animate-fade-in-up delay-2">
         {fetchError ? (
           <div class="error-state">
             <div class="error-icon">
@@ -60,20 +78,24 @@ const colorHex = colordleData?.color_hex || '';
             <p>Could not load today's answer. Please try again later.</p>
           </div>
         ) : (
-          <div class="hero-content">
-            <!-- Day Badge -->
-            <div class="day-badge">Day #{dayNumber}</div>
+          <div class="answer-card-inner">
+            <!-- Day Badge (floating chip) -->
+            <div class="answer-card-day-chip">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              Day #{dayNumber}
+            </div>
 
             <!-- Spoiler-protected swatch -->
             <div class="swatch-container">
               <label for="spoilerCheck" class="spoiler-overlay">
                 <div class="spoiler-icon">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                     <circle cx="12" cy="12" r="3"/>
                   </svg>
                 </div>
                 <span class="spoiler-text">Click to Reveal Today's Answer</span>
+                <span class="spoiler-hint">Spoiler-protected</span>
               </label>
               <div class="swatch-content blurred">
                 <div class="color-swatch" style={`background: ${colorHex || '#888'};`}>
@@ -107,14 +129,31 @@ const colorHex = colordleData?.color_hex || '';
         )}
       </div>
 
-      <!-- Archive Link -->
-      <div class="archive-cta animate-fade-in-up delay-2">
-        <h2 class="archive-cta-title">Recent Colordle Answers</h2>
-        <p class="archive-cta-subtitle">Want to see recent and past Colordle answers? Visit our interactive archive to browse all answers with color swatches and hex codes.</p>
-        <a href="/colordle-archive" class="btn-primary btn-colordle">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Visit Colordle Archive
-        </a>
+      <!-- Archive CTA Card -->
+      <div class="archive-cta animate-fade-in-up delay-3">
+        <div class="archive-cta-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div class="archive-cta-body">
+          <h2 class="archive-cta-title">Recent Colordle Answers</h2>
+          <p class="archive-cta-subtitle">Want to see recent and past Colordle answers? Visit our interactive archive to browse all answers with color swatches and hex codes.</p>
+          <a href="/colordle-archive" class="btn-primary btn-colordle">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Visit Colordle Archive
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Link to Colorfle -->
+      <div class="quick-link-card animate-fade-in-up delay-4">
+        <div class="quick-link-dot" style="background: #ea580c;"></div>
+        <div class="quick-link-body">
+          <span class="quick-link-label">Also looking for Colorfle?</span>
+          <a href="/colorfle-answer-today" class="quick-link-cta">
+            See today's Colorfle answer
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
       </div>
 
     </div>
@@ -237,54 +276,94 @@ const colorHex = colordleData?.color_hex || '';
 </Layout>
 
 <style is:global>
-  .answer-page {
-    padding: 20px 0 80px;
-  }
-
-  /* ── Page H1 ── */
-  .page-h1 {
-    font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 1.8rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    margin-bottom: 28px;
-    color: var(--text-primary);
-    line-height: 1.3;
+  /* ═══ HERO SECTION ═══ */
+  .answer-hero {
+    padding: 48px 0 32px;
+    border-bottom: 1px solid var(--border-color);
     text-align: center;
   }
 
-  .page-h1 .h1-date {
-    font-weight: 600;
-    color: var(--text-secondary);
-    letter-spacing: 0;
-  }
-
-  @media (min-width: 768px) {
-    .page-h1 { font-size: 2.2rem; }
-  }
-
-  @media (max-width: 640px) {
-    .page-h1 { font-size: 1.5rem; margin-bottom: 24px; }
+  .answer-hero.colordle-hero {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 40%, #e0e7ff 100%);
   }
 
   /* ── Breadcrumb ── */
-  .breadcrumb {
+  .answer-breadcrumb {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 20px;
     font-size: 0.85rem;
   }
 
-  .breadcrumb-link {
+  .answer-breadcrumb-link {
     color: var(--text-muted);
     transition: color var(--duration-fast) ease;
     text-decoration: none;
   }
 
-  .breadcrumb-link:hover { color: var(--accent-color); }
-  .breadcrumb-sep { color: var(--text-muted); opacity: 0.4; }
-  .breadcrumb-current { color: var(--text-secondary); font-weight: 500; }
+  .answer-breadcrumb-link:hover { color: var(--accent-color); }
+  .answer-breadcrumb-sep { color: var(--text-muted); opacity: 0.4; }
+  .answer-breadcrumb-current { color: var(--text-secondary); font-weight: 500; }
+
+  /* ── H1 ── */
+  .answer-hero-h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+  }
+
+  .answer-hero-h1 .game-name {
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── Date Badge ── */
+  .answer-hero-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--colordle-accent);
+    background: rgba(37, 99, 235, 0.08);
+    border: 1px solid rgba(37, 99, 235, 0.15);
+    padding: 6px 16px;
+    border-radius: var(--radius-full);
+    margin-bottom: 12px;
+  }
+
+  .answer-hero-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 768px) {
+    .answer-hero { padding: 64px 0 40px; }
+    .answer-hero-h1 { font-size: 3.2rem; }
+  }
+
+  @media (max-width: 640px) {
+    .answer-hero { padding: 36px 0 28px; }
+    .answer-hero-h1 { font-size: 2rem; }
+    .answer-hero-subtitle { font-size: 0.95rem; }
+  }
+
+  /* ═══ ANSWER CONTENT SECTION ═══ */
+  .answer-content-section {
+    padding: 40px 0 80px;
+  }
 
   /* ── CSS-only Spoiler Checkbox ── */
   .spoiler-check {
@@ -295,62 +374,83 @@ const colorHex = colordleData?.color_hex || '';
     pointer-events: none;
   }
 
-  /* ── Hero Card ── */
-  .hero-card {
+  /* ═══ PREMIUM ANSWER CARD ═══ */
+  .answer-card {
     position: relative;
-    border-radius: var(--radius-2xl);
+    border-radius: 24px;
     overflow: hidden;
-    max-width: 600px;
+    max-width: 640px;
     margin: 0 auto;
-    border: 2px solid #1a1a2e;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     background: #ffffff;
+    border: 1px solid rgba(37, 99, 235, 0.1);
+    box-shadow:
+      0 1px 2px rgba(0,0,0,0.04),
+      0 4px 12px rgba(37,99,235,0.06),
+      0 16px 40px rgba(37,99,235,0.08);
   }
 
-  .hero-content {
-    padding: 40px 40px 44px;
+  /* Gradient border effect */
+  .answer-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(37,99,235,0.2), rgba(124,58,237,0.1), rgba(37,99,235,0.05));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .answer-card-inner {
+    position: relative;
+    z-index: 1;
+    padding: 44px 44px 48px;
     text-align: center;
   }
 
-  /* ── Day Badge ── */
-  .day-badge {
+  /* ── Day Chip (floating) ── */
+  .answer-card-day-chip {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 0.82rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
     color: var(--colordle-accent);
     font-weight: 700;
-    margin-bottom: 28px;
+    margin-bottom: 32px;
     padding: 6px 18px;
-    background: var(--colordle-gradient-subtle);
+    background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(124,58,237,0.06));
     border-radius: var(--radius-full);
-    border: 1px solid rgba(37, 99, 235, 0.15);
+    border: 1px solid rgba(37, 99, 235, 0.12);
     letter-spacing: 0.03em;
   }
 
-  /* ── Spoiler Overlay (label acting as click target) ── */
+  /* ── Swatch Container ── */
   .swatch-container {
     position: relative;
     display: flex;
     justify-content: center;
-    margin-bottom: 28px;
+    margin-bottom: 32px;
   }
 
+  /* ── Spoiler Overlay (glassmorphism) ── */
   .spoiler-overlay {
     position: absolute;
-    inset: -12px;
+    inset: -16px;
     z-index: 10;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 14px;
-    background: rgba(255, 255, 255, 0.7);
-    border: 2px dashed rgba(37, 99, 235, 0.25);
-    border-radius: var(--radius-2xl);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    gap: 16px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 2px dashed rgba(37, 99, 235, 0.2);
+    border-radius: 24px;
     cursor: pointer;
     transition: background var(--duration-normal) ease, border-color var(--duration-normal) ease, opacity 0.3s ease, visibility 0.3s ease;
   }
@@ -361,35 +461,41 @@ const colorHex = colordleData?.color_hex || '';
   }
 
   .spoiler-icon {
-    width: 52px;
-    height: 52px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--colordle-gradient);
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
     color: white;
     transition: transform var(--duration-normal) var(--ease-out-expo);
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
   }
 
   .spoiler-overlay:hover .spoiler-icon { transform: scale(1.08); }
 
   .spoiler-text {
-    color: var(--text-secondary);
-    font-size: 0.88rem;
-    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 700;
     font-family: 'DM Sans', sans-serif;
   }
 
+  .spoiler-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
   /* When checkbox is checked, hide overlay and reveal answer */
-  .spoiler-check:checked ~ .hero-card .spoiler-overlay {
+  .spoiler-check:checked ~ .answer-card .spoiler-overlay {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
   }
 
-  .spoiler-check:checked ~ .hero-card .blurred {
+  .spoiler-check:checked ~ .answer-card .blurred {
     filter: none;
     user-select: auto;
     pointer-events: auto;
@@ -409,31 +515,43 @@ const colorHex = colordleData?.color_hex || '';
     transition: filter 0.5s ease;
   }
 
-  /* ── Color Swatch ── */
+  /* ── Color Swatch (larger + glow) ── */
   .color-swatch {
-    width: 200px;
-    height: 200px;
+    width: 220px;
+    height: 220px;
     border-radius: 50%;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 8px 30px rgba(26, 29, 46, 0.15), inset 0 -4px 12px rgba(0,0,0,0.08);
+    box-shadow:
+      0 0 0 6px rgba(37, 99, 235, 0.08),
+      0 8px 32px rgba(0,0,0,0.12),
+      inset 0 -4px 12px rgba(0,0,0,0.08);
     transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    animation: swatchPulse 3s ease-in-out infinite;
+  }
+
+  @keyframes swatchPulse {
+    0%, 100% { box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.08), 0 8px 32px rgba(0,0,0,0.12), inset 0 -4px 12px rgba(0,0,0,0.08); }
+    50% { box-shadow: 0 0 0 10px rgba(37, 99, 235, 0.12), 0 12px 40px rgba(0,0,0,0.15), inset 0 -4px 12px rgba(0,0,0,0.08); }
   }
 
   .color-swatch:hover {
     transform: scale(1.05) translateY(-4px);
-    box-shadow: 0 16px 50px rgba(26, 29, 46, 0.2), inset 0 -4px 12px rgba(0,0,0,0.08);
+    box-shadow:
+      0 0 0 8px rgba(37, 99, 235, 0.12),
+      0 16px 50px rgba(0,0,0,0.18),
+      inset 0 -4px 12px rgba(0,0,0,0.08);
   }
 
   .swatch-label {
     position: relative;
     z-index: 2;
-    font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 1.6rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.8rem;
     font-weight: 800;
     text-transform: capitalize;
     letter-spacing: -0.02em;
@@ -441,37 +559,38 @@ const colorHex = colordleData?.color_hex || '';
 
   /* ── Answer Info ── */
   .answer-info {
-    margin-bottom: 28px;
+    margin-bottom: 32px;
   }
 
   .color-name {
-    font-family: 'Outfit', 'DM Sans', sans-serif;
-    font-size: 1.8rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 2rem;
     font-weight: 800;
     text-transform: capitalize;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     letter-spacing: -0.02em;
     color: var(--text-primary);
   }
 
   .color-hex {
     font-family: 'JetBrains Mono', 'SF Mono', monospace;
-    font-size: 1rem;
+    font-size: 1.05rem;
     color: var(--colordle-accent);
     font-weight: 600;
     letter-spacing: 0.03em;
     cursor: pointer;
-    padding: 6px 16px;
-    border-radius: 8px;
-    transition: background 0.2s ease, color 0.2s ease;
+    padding: 8px 20px;
+    border-radius: 12px;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
     display: inline-block;
-    background: var(--colordle-gradient-subtle);
+    background: linear-gradient(135deg, rgba(37,99,235,0.06), rgba(124,58,237,0.04));
     border: 1px solid rgba(37, 99, 235, 0.12);
   }
 
   .color-hex:hover {
     background: rgba(37, 99, 235, 0.12);
     color: var(--text-primary);
+    transform: translateY(-1px);
   }
 
   .copy-hint {
@@ -513,36 +632,115 @@ const colorHex = colordleData?.color_hex || '';
     color: var(--error);
   }
 
-  /* ── Archive CTA ── */
+  /* ═══ ARCHIVE CTA CARD ═══ */
   .archive-cta {
-    max-width: 600px;
-    margin: 28px auto 0;
-    padding: 24px;
-    background: #ffffff;
-    border: 2px solid #1a1a2e;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    border-radius: var(--radius-2xl);
+    max-width: 640px;
+    margin: 32px auto 0;
+    padding: 28px 32px;
+    background: linear-gradient(135deg, rgba(37,99,235,0.04), rgba(124,58,237,0.04));
+    border: 1px solid rgba(37, 99, 235, 0.12);
+    border-radius: 20px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    box-shadow:
+      0 1px 2px rgba(0,0,0,0.03),
+      0 4px 12px rgba(37,99,235,0.04);
+  }
+
+  .archive-cta-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .archive-cta-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
   }
 
   .archive-cta-title {
-    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-family: 'Outfit', sans-serif;
     font-size: 1.3rem;
     font-weight: 700;
     color: var(--text-primary);
     letter-spacing: -0.02em;
-    margin-bottom: 8px;
   }
 
   .archive-cta-subtitle {
     font-size: 0.9rem;
     color: var(--text-secondary);
-    margin-bottom: 20px;
+    margin-bottom: 8px;
     line-height: 1.6;
   }
 
+  /* ═══ QUICK LINK CARD ═══ */
+  .quick-link-card {
+    max-width: 640px;
+    margin: 20px auto 0;
+    padding: 20px 24px;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .quick-link-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .quick-link-body {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .quick-link-label {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .quick-link-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #ea580c;
+    text-decoration: none;
+    transition: gap 0.2s ease;
+  }
+
+  .quick-link-cta:hover {
+    gap: 8px;
+  }
+
   @media (max-width: 640px) {
-    .archive-cta { padding: 20px; margin: 20px auto 0; }
+    .answer-card-inner { padding: 32px 20px 36px; }
+    .color-swatch { width: 170px; height: 170px; }
+    .swatch-label { font-size: 1.4rem; }
+    .color-name { font-size: 1.6rem; }
+    .archive-cta { padding: 24px 20px; margin: 24px auto 0; }
+    .quick-link-card { padding: 16px 20px; }
+    .answer-content-section { padding: 28px 0 60px; }
   }
 
   /* ═══ CONTENT LAYOUT: Sidebar + Main ═══ */
@@ -777,7 +975,7 @@ const colorHex = colordleData?.color_hex || '';
   }
 
   .faq-item[open] .faq-question::after {
-    content: '−';
+    content: '\2212';
     color: var(--colordle-accent);
   }
 
@@ -790,23 +988,9 @@ const colorHex = colordleData?.color_hex || '';
   }
 
   /* ── Responsive ── */
-  @media (max-width: 768px) {
-    .hero-content { padding: 32px 20px 36px; }
-    .color-swatch { width: 170px; height: 170px; }
-    .color-name { font-size: 1.5rem; }
-    .swatch-label { font-size: 1.3rem; }
-  }
-
   @media (max-width: 640px) {
-    .answer-page { padding: 20px 0 60px; }
-    .hero-content { padding: 28px 16px 32px; }
-    .color-swatch { width: 150px; height: 150px; }
-    .color-name { font-size: 1.3rem; }
-    .swatch-label { font-size: 1.15rem; }
-    .day-badge { font-size: 0.78rem; padding: 5px 14px; }
     .blog-article { padding: 20px; }
     .blog-article h2 { font-size: 1.3rem; }
-    .archive-cta { padding: 16px; margin: 16px auto 0; }
   }
 </style>
 

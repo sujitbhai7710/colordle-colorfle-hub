@@ -203,7 +203,7 @@ const faqData = [
         <div class="countdown-content">
           <div class="countdown-info">
             <h2 class="countdown-title">Next Puzzle <span class="gradient-text">Unlocks In</span></h2>
-            <p class="countdown-subtitle">Both Colordle and Colorfle reset daily at midnight</p>
+            <p class="countdown-subtitle">Both games reset daily at midnight local time</p>
           </div>
           <div class="countdown-timer" id="countdownTimer">
             <div class="countdown-unit">
@@ -341,27 +341,85 @@ const faqData = [
     </div>
   </section>
 
-  <!-- ═══ SEO CONTENT SECTION ═══ -->
-  <section class="section">
+  <!-- ═══ SEO CONTENT WITH SIDEBAR LAYOUT ═══ -->
+  <section class="seo-section">
     <div class="container">
-      <div class="seo-content prose">
+      <div class="seo-layout">
+        <!-- Sticky TOC Sidebar (desktop) -->
+        <nav class="seo-sidebar" aria-label="Table of Contents" id="seo-toc-sidebar">
+          <p class="seo-sidebar-title">Table of Contents</p>
+          <ol id="seo-toc-list"></ol>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="seo-main">
+          <!-- Mobile TOC -->
+          <div class="seo-mobile-toc" id="seo-mobile-toc">
+            <p class="seo-mobile-toc-title">Table of Contents</p>
+            <ol id="seo-mobile-toc-list"></ol>
+          </div>
+
+          <article class="seo-article">
         <h2>Your Complete Guide to Colordle and Colorfle Daily Answers</h2>
         <p>Welcome to Color Answers Hub, the most reliable and comprehensive source for daily Colordle and Colorfle puzzle solutions. Whether you are a casual player who wants to check your guess after a tough round or a dedicated solver looking for the exact color breakdown and blend weights, we have you covered with verified, algorithm-accurate answers updated every single day. Our site has been helping color puzzle enthusiasts since 2022, and we take pride in the accuracy and reliability of every answer we publish.</p>
 
-        <h3>How Colordle Works</h3>
-        <p>Colordle is a daily color guessing game inspired by the Wordle format. Each day at midnight, the game generates a new mystery color, and your task is to guess the color's name. The game shows you a filled circle of the target color, and you type in your best guess for what the color is called. Colors range from common names like Red, Blue, and Green to more specific shades like Magenta, Olive, and Navy. The game uses a set of 20 distinct colors, each with a unique hex code, and the daily answer is determined by a seeded random number generator tied to the current date. Our Colordle answer page reveals the exact color name and hex code each day, complete with a real color swatch so you can see the answer visually. The swatch shows the actual filled color with the name overlaid, making it easy to verify at a glance.</p>
+        <div class="info-grid">
+          <div class="info-card">
+            <h4>Colordle Answers</h4>
+            <p>Get the daily color name, hex code, and visual swatch for every Colordle puzzle. Updated at midnight with 100% algorithm-verified accuracy.</p>
+          </div>
+          <div class="info-card">
+            <h4>Colorfle Answers</h4>
+            <p>See the complete color combination breakdown with individual component weights, blend formulas, and the resulting mixed color for both modes.</p>
+          </div>
+        </div>
 
-        <h3>How Colorfle Works</h3>
-        <p>Colorfle takes the color guessing concept further by challenging you to identify a combination of three colors that blend together to form a target shade. In normal mode, the three component colors are mixed at weights of 50%, 34%, and 16%, creating the final blended result. Hard mode introduces different weight distributions, making the puzzle significantly more challenging because the blend is harder to visually decompose into its components. Our Colorfle answer page shows you all three component colors as actual filled swatches, their individual names, hex codes, blend weights, and the resulting mixed color. You can see exactly how the three colors combine to produce the target shade, which is especially helpful for understanding the blending mechanics and improving your future guesses.</p>
+        <h2>How Colordle Works</h2>
+        <p>Colordle is a daily color guessing game inspired by the Wordle format. Each day at midnight, the game generates a new mystery color, and your task is to guess the color's name. The game shows you a filled circle of the target color, and you type in your best guess for what the color is called. Colors range from common names like Red, Blue, and Green to more specific shades like Magenta, Olive, and Navy. The game uses a set of 20 distinct colors, each with a unique hex code, and the daily answer is determined by a seeded random number generator tied to the current date. Our <a href="/colordle-answer-today">Colordle answer page</a> reveals the exact color name and hex code each day, complete with a real color swatch so you can see the answer visually. The swatch shows the actual filled color with the name overlaid, making it easy to verify at a glance.</p>
 
-        <h3>Why Trust Our Answers</h3>
+        <div class="stat-row">
+          <div class="stat-item">
+            <span class="stat-number">20</span>
+            <span class="stat-label">Colors in Palette</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">6</span>
+            <span class="stat-label">Max Guesses</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">1,400+</span>
+            <span class="stat-label">Historical Answers</span>
+          </div>
+        </div>
+
+        <h2>How Colorfle Works</h2>
+        <p>Colorfle takes the color guessing concept further by challenging you to identify a combination of three colors that blend together to form a target shade. In normal mode, the three component colors are mixed at weights of 50%, 34%, and 16%, creating the final blended result. Hard mode introduces different weight distributions with four colors at 40%, 30%, 20%, and 10%, making the puzzle significantly more challenging because the blend is harder to visually decompose into its components. Our <a href="/colorfle-answer-today">Colorfle answer page</a> shows you all component colors as actual filled swatches, their individual names, hex codes, blend weights, and the resulting mixed color. You can see exactly how the colors combine to produce the target shade, which is especially helpful for understanding the blending mechanics and improving your future guesses.</p>
+
+        <h2>Why Trust Our Answers</h2>
         <p>Unlike sites that rely on manual input or user submissions, we compute every answer using deterministic algorithms that exactly replicate the original game logic. This means our answers are not just informed guesses — they are mathematically verified solutions produced by the same computation the games themselves use. We run automated verification multiple times per day across different timezones to ensure accuracy. Every answer in our archive has been computed using the same algorithm, so you can trust the historical data going all the way back to Day 1 of each game. Our methodology is transparent and reproducible, and we welcome anyone to verify our results independently.</p>
 
-        <h3>Browse the Full Archive</h3>
-        <p>Need to look up a past answer? Our interactive archive lets you navigate to any date in the history of both games. The Colordle archive contains every answer since March 26, 2022, and the Colorfle archive goes back to April 25, 2022. Each archive entry includes the full answer details — color name, hex code, and for Colorfle, the complete color combination breakdown with individual component weights. The calendar interface makes it easy to jump to any specific date you are interested in. Whether you want to revisit a memorable puzzle or check an answer from weeks ago, our archive provides instant access to the complete history of both games.</p>
+        <div class="callout">
+          <div class="callout-title">Algorithm Verified</div>
+          <p>Every answer on this site is computed using the exact same deterministic algorithm that powers the original games. No guessing, no scraping, no user submissions — just mathematically verified solutions you can trust.</p>
+        </div>
 
-        <h3>Tips for Solving Colordle and Colorfle</h3>
+        <h2>Browse the Full Archive</h2>
+        <p>Need to look up a past answer? Our interactive archive lets you navigate to any date in the history of both games. The <a href="/colordle-archive">Colordle archive</a> contains every answer since March 26, 2022, and the <a href="/colorfle-archive">Colorfle archive</a> goes back to April 25, 2022. Each archive entry includes the full answer details — color name, hex code, and for Colorfle, the complete color combination breakdown with individual component weights. The calendar interface makes it easy to jump to any specific date you are interested in. Whether you want to revisit a memorable puzzle or check an answer from weeks ago, our archive provides instant access to the complete history of both games.</p>
+
+        <h2>Tips for Solving Colordle and Colorfle</h2>
         <p>If you want to improve your gameplay before checking the answer, here are a few helpful tips. For Colordle, start by identifying whether the color is warm or cool, then narrow down to primary, secondary, or tertiary shades. The game uses 20 standard color names, so learning the full list gives you a significant advantage. For Colorfle, pay attention to the dominant hue in the blended result — the 50% weight color will be the most prominent. Look for subtle undertones that hint at the secondary and accent colors. With practice, you will develop an eye for decomposing blended shades into their component colors, making even hard mode puzzles manageable over time.</p>
+
+        <div class="key-takeaway">
+          <div class="key-takeaway-title">Key Takeaways</div>
+          <ul>
+            <li>Colordle uses 20 distinct colors — memorize the full palette for a major advantage</li>
+            <li>Colorfle's 50% weight color dominates the blend — identify it first</li>
+            <li>Use our daily answers to learn patterns and improve over time</li>
+            <li>The complete archive goes back to Day 1 of both games</li>
+          </ul>
+        </div>
+          </article>
+        </div>
       </div>
     </div>
   </section>
@@ -965,14 +1023,278 @@ const faqData = [
     line-height: 1.7;
   }
 
-  /* ═══ SEO CONTENT ═══ */
-  .seo-content {
+  /* ═══ SEO SECTION WITH SIDEBAR ═══ */
+  .seo-section {
+    padding: 48px 0 80px;
+  }
+
+  .seo-layout {
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+  }
+
+  /* ── Sticky TOC Sidebar ── */
+  .seo-sidebar {
+    position: sticky;
+    top: 88px;
+    width: 260px;
+    flex-shrink: 0;
+    background: #f0f4ff;
+    border: 1px solid #d4ddef;
+    border-radius: var(--radius-lg);
+    padding: 24px;
+  }
+
+  .seo-sidebar-title {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--brand-700);
+    margin-bottom: 16px;
+  }
+
+  .seo-sidebar ol {
+    list-style: decimal;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .seo-sidebar li {
+    font-size: 0.86rem;
+    line-height: 1.5;
+  }
+
+  .seo-sidebar a {
+    color: var(--brand-700);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color var(--duration-fast) ease, text-decoration var(--duration-fast) ease;
+  }
+
+  .seo-sidebar a:hover {
+    color: var(--brand-900);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 1024px) {
+    .seo-sidebar { display: none; }
+  }
+
+  /* ── Main Content ── */
+  .seo-main {
+    flex: 1;
+    min-width: 0;
     max-width: 800px;
-    margin: 0 auto;
-    padding: 40px;
-    background: var(--bg-secondary);
-    border-radius: var(--radius-2xl);
+  }
+
+  /* ── Article Card ── */
+  .seo-article {
+    background: #ffffff;
     border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+    padding: 48px;
+  }
+
+  .seo-article h2 {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 3rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+    scroll-margin-top: 80px;
+  }
+
+  .seo-article h2:first-child { margin-top: 0; }
+
+  .seo-article p {
+    font-size: 1.08rem;
+    line-height: 1.9;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+  }
+
+  .seo-article strong { color: var(--text-primary); font-weight: 600; }
+
+  .seo-article a {
+    color: var(--accent-color);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 500;
+  }
+
+  .seo-article a:hover { color: var(--accent-dark); }
+
+  /* ── Info Cards ── */
+  .seo-article .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 1.5rem 0;
+  }
+
+  .seo-article .info-card {
+    background: #f8fafc;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .seo-article .info-card h4 {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+
+  .seo-article .info-card p {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    margin-bottom: 0;
+    color: var(--text-secondary);
+  }
+
+  /* ── Stat Row ── */
+  .seo-article .stat-row {
+    display: flex;
+    gap: 20px;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+  }
+
+  .seo-article .stat-item {
+    flex: 1;
+    min-width: 120px;
+    background: var(--accent-gradient-subtle);
+    border: 1px solid rgba(37, 99, 235, 0.1);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    text-align: center;
+  }
+
+  .seo-article .stat-number {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--brand-700);
+    display: block;
+    line-height: 1.2;
+  }
+
+  .seo-article .stat-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  /* ── Callout ── */
+  .seo-article .callout {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: var(--radius-md);
+    padding: 20px 24px;
+    margin: 2rem 0;
+  }
+
+  .seo-article .callout-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #92400e;
+    margin-bottom: 6px;
+  }
+
+  .seo-article .callout p {
+    font-size: 0.95rem;
+    color: #78350f;
+    margin-bottom: 0;
+  }
+
+  /* ── Key Takeaway ── */
+  .seo-article .key-takeaway {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: var(--radius-md);
+    padding: 20px 24px;
+    margin: 2rem 0;
+  }
+
+  .seo-article .key-takeaway-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #166534;
+    margin-bottom: 8px;
+  }
+
+  .seo-article .key-takeaway ul {
+    margin-bottom: 0;
+    padding-left: 1.2rem;
+  }
+
+  .seo-article .key-takeaway li {
+    color: #15803d;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 4px;
+  }
+
+  /* ── Mobile TOC ── */
+  .seo-mobile-toc {
+    display: none;
+    background: #f0f4ff;
+    border: 1px solid #d4ddef;
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    margin-bottom: 24px;
+  }
+
+  .seo-mobile-toc-title {
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--brand-700);
+    margin-bottom: 10px;
+  }
+
+  .seo-mobile-toc ol {
+    list-style: decimal;
+    padding-left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .seo-mobile-toc li { font-size: 0.88rem; line-height: 1.5; }
+
+  .seo-mobile-toc a {
+    color: var(--brand-700);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .seo-mobile-toc a:hover { text-decoration: underline; }
+
+  @media (max-width: 1024px) {
+    .seo-mobile-toc { display: block; }
+    .seo-layout { flex-direction: column; }
+    .seo-main { max-width: 100%; }
+  }
+
+  @media (max-width: 640px) {
+    .seo-article { padding: 20px; }
+    .seo-article h2 { font-size: 1.3rem; }
+    .seo-article .info-grid { grid-template-columns: 1fr; }
   }
 
   /* ═══ UTILITY ═══ */
@@ -997,10 +1319,6 @@ const faqData = [
       min-width: 52px;
       padding: 8px 12px;
     }
-
-    .seo-content {
-      padding: 24px;
-    }
   }
 
   @media (max-width: 640px) {
@@ -1019,13 +1337,11 @@ const faqData = [
 
     const now = new Date();
     // Next midnight (daily reset)
-    const istOffset = 5.5 * 60 * 60 * 1000;
-    const istNow = new Date(now.getTime() + istOffset + now.getTimezoneOffset() * 60000);
-    const tomorrowIST = new Date(istNow);
-    tomorrowIST.setDate(tomorrowIST.getDate() + 1);
-    tomorrowIST.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
 
-    const diff = tomorrowIST.getTime() - istNow.getTime();
+    const diff = tomorrow.getTime() - now.getTime();
     if (diff <= 0) {
       hoursEl.textContent = '00';
       minutesEl.textContent = '00';
@@ -1060,4 +1376,39 @@ const faqData = [
       }
     });
   });
+
+  // ── SEO Article TOC ──
+  function buildSeoTOC() {
+    const article = document.querySelector('.seo-article');
+    const tocList = document.getElementById('seo-toc-list');
+    const mobileTocList = document.getElementById('seo-mobile-toc-list');
+    if (!article || !tocList || !mobileTocList) return;
+
+    const headings = article.querySelectorAll('h2');
+    if (headings.length === 0) {
+      const sidebar = document.getElementById('seo-toc-sidebar');
+      const mobileToc = document.getElementById('seo-mobile-toc');
+      if (sidebar) sidebar.style.display = 'none';
+      if (mobileToc) mobileToc.style.display = 'none';
+      return;
+    }
+
+    headings.forEach((heading, index) => {
+      const id = heading.id || `seo-section-${index + 1}`;
+      heading.id = id;
+      heading.style.scrollMarginTop = '80px';
+
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = `#${id}`;
+      a.textContent = heading.textContent;
+      li.appendChild(a);
+
+      tocList.appendChild(li.cloneNode(true));
+      mobileTocList.appendChild(li);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', buildSeoTOC);
+  document.addEventListener('astro:page-load', buildSeoTOC);
 </script>
