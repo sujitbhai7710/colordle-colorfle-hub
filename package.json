@@ -10,10 +10,8 @@
     "deploy:pages": "npx wrangler pages deploy dist --project-name=color-answers"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.5.4",
     "@astrojs/svelte": "^8.1.1",
     "astro": "^6.3.7",
-    "seedrandom": "^3.0.5",
     "svelte": "^5.33.14"
   }
 }

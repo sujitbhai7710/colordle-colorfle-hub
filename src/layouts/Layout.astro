@@ -5,12 +5,11 @@ export interface Props {
   title: string;
   description?: string;
   canonicalUrl?: string;
-  ogImage?: string;
   keywords?: string;
-  faqSchema?: Array<{ question: string; answer: string }>;
+  breadcrumbs?: Array<{ name: string; url: string }>;
 }
 
-const { title, description = 'Get daily answers for Colordle and Colorfle color guessing games. Updated every day at midnight IST with verified solutions.', canonicalUrl, ogImage, keywords, faqSchema } = Astro.props;
+const { title, description = 'Get daily answers for Colordle and Colorfle color guessing games. Updated every day with verified solutions.', canonicalUrl, keywords, breadcrumbs } = Astro.props;
 
 const siteUrl = 'https://color-answers.pages.dev';
 const fullCanonical = canonicalUrl ? `${siteUrl}${canonicalUrl}` : siteUrl;
@@ -23,7 +22,7 @@ const formattedTitle = `${title} | Color Answers Hub`;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <meta name="keywords" content={keywords || 'colordle answer today, colorfle answer today, colordle daily answer, colorfle daily answer, color guessing game answers, colordle archive, colorfle archive'} />
+    <meta name="keywords" content={keywords || 'colordle answer today, colorfle answer today, daily color game answers'} />
     <meta name="theme-color" content="#2563eb" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href={fullCanonical} />
@@ -34,10 +33,9 @@ const formattedTitle = `${title} | Color Answers Hub`;
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Color Answers Hub" />
     <meta property="og:url" content={fullCanonical} />
-    {ogImage && <meta property="og:image" content={ogImage} />}
 
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={formattedTitle} />
     <meta name="twitter:description" content={description} />
 
@@ -59,7 +57,7 @@ const formattedTitle = `${title} | Color Answers Hub`;
       "description": "Daily answers for Colordle and Colorfle color guessing games.",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": `${siteUrl}/colordle-archive`,
+        "target": `${siteUrl}/colordle-archive?q={search_term_string}`,
         "query-input": "required name=search_term_string"
       }
     })} />
@@ -75,21 +73,36 @@ const formattedTitle = `${title} | Color Answers Hub`;
       "sameAs": []
     })} />
 
-    <!-- Structured Data: FAQPage (if provided) -->
-    {faqSchema && faqSchema.length > 0 && (
+    <!-- Structured Data: BreadcrumbList -->
+    {breadcrumbs && breadcrumbs.length > 0 && (
       <script type="application/ld+json" set:html={JSON.stringify({
         "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": faqSchema.map(item => ({
-          "@type": "Question",
-          "name": item.question,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": item.answer
-          }
-        }))
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": siteUrl },
+          ...breadcrumbs.map((item, i) => ({
+            "@type": "ListItem",
+            "position": i + 2,
+            "name": item.name,
+            ...(item.url ? { "item": `${siteUrl}${item.url}` } : {})
+          }))
+        ]
       })} />
     )}
+
+    <!-- Structured Data: WebPage -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": title,
+      "description": description,
+      "url": fullCanonical,
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Color Answers Hub",
+        "url": siteUrl
+      }
+    })} />
   </head>
   <body>
     <!-- ═══ HEADER ═══ -->

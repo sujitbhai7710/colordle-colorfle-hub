@@ -6,8 +6,6 @@ interface Env {
   DB: D1Database;
   SCRAPE_SECRET: string;
   CRON_SECRET: string;
-  CLOUDFLARE_API_TOKEN: string;
-  CLOUDFLARE_ACCOUNT_ID: string;
   GITHUB_TOKEN: string;
 }
 
@@ -38,6 +36,25 @@ CREATE TABLE IF NOT EXISTS scrape_log (
 CREATE INDEX IF NOT EXISTS idx_colordle_day ON colordle_answers(day_number);
 CREATE INDEX IF NOT EXISTS idx_colorfle_day ON colorfle_answers(day_number);
 `;
+
+// ── Module-level cache for fetchColordleData ──
+let colordleDataCache: { allColors: string[]; poolColors: string[]; blocklist: Set<string> } | null = null;
+let colordleDataCacheExpiry = 0;
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
+async function getCachedColordleData(): Promise<{ allColors: string[]; poolColors: string[]; blocklist: Set<string> }> {
+  const now = Date.now();
+  if (colordleDataCache && now < colordleDataCacheExpiry) {
+    return colordleDataCache;
+  }
+  const data = await fetchColordleData();
+  colordleDataCache = data;
+  colordleDataCacheExpiry = now + CACHE_TTL_MS;
+  return data;
+}
+
+// ── Schema migration flag ──
+let migrationRun = false;
 
 // ── TIMEZONE: Use JST (UTC+9) for date string determination ──
 // Primary update runs at 1:30 AM JST, so we determine "today" based on
@@ -70,13 +87,17 @@ async function initDB(db: D1Database): Promise<void> {
   } catch {
     await db.exec(SCHEMA_SQL);
   }
-  try { await db.exec(`ALTER TABLE colorfle_answers ADD COLUMN normal_names TEXT`); } catch {}
-  try { await db.exec(`ALTER TABLE colorfle_answers ADD COLUMN hard_names TEXT`); } catch {}
+  // Run ALTER TABLE migration only once per worker instance
+  if (!migrationRun) {
+    try { await db.exec(`ALTER TABLE colorfle_answers ADD COLUMN normal_names TEXT`); } catch {}
+    try { await db.exec(`ALTER TABLE colorfle_answers ADD COLUMN hard_names TEXT`); } catch {}
+    migrationRun = true;
+  }
 }
 
 async function scrapeColordle(db: D1Database, dateStr: string): Promise<{ success: boolean; message: string }> {
   try {
-    const { allColors, poolColors, blocklist } = await fetchColordleData();
+    const { allColors, poolColors, blocklist } = await getCachedColordleData();
     // Create a UTC date from the date string for algorithm computation
     const utcDate = new Date(dateStr + 'T00:00:00Z');
     const dayNumber = getColordleDayNumber(utcDate);
@@ -116,60 +137,6 @@ async function scrapeColorfle(db: D1Database, dateStr: string): Promise<{ succes
     return { success: true, message: `Day ${answer.dayNumber}: Normal=${answer.normalNames.join(',')} | Hard=${answer.hardNames.join(',')}` };
   } catch (err: any) {
     return { success: false, message: err.message };
-  }
-}
-
-async function triggerPagesBuild(env: Env): Promise<{ success: boolean; message: string }> {
-  // This project uses direct-upload (not Git-connected), so we cannot use the
-  // Cloudflare Pages deployment API (it requires a manifest for direct uploads).
-  // Instead, we trigger a GitHub Actions workflow that builds and deploys.
-  // This is handled by triggerGitHubActionsBuild().
-  // This function is kept as a fallback / secondary trigger using retry on latest deployment.
-
-  const accountId = env.CLOUDFLARE_ACCOUNT_ID;
-  const apiToken = env.CLOUDFLARE_API_TOKEN;
-  const projectName = 'color-answers';
-
-  if (!accountId || !apiToken) {
-    return { success: false, message: 'Missing CLOUDFLARE_ACCOUNT_ID or CLOUDFLARE_API_TOKEN' };
-  }
-
-  try {
-    // Get the latest deployment to retry
-    const listResponse = await fetch(
-      `https://api.cloudflare.com/client/v4/accounts/${accountId}/pages/projects/${projectName}/deployments?per_page=1`,
-      {
-        headers: {
-          'Authorization': `Bearer ${apiToken}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    const listResult = await listResponse.json() as any;
-    if (!listResult.success || !listResult.result?.length) {
-      return { success: false, message: 'Could not list deployments' };
-    }
-    const latestDeploymentId = listResult.result[0].id;
-
-    // Try to retry the latest deployment
-    const retryResponse = await fetch(
-      `https://api.cloudflare.com/client/v4/accounts/${accountId}/pages/projects/${projectName}/deployments/${latestDeploymentId}/retry`,
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${apiToken}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    const retryResult = await retryResponse.json() as any;
-    if (retryResult.success) {
-      return { success: true, message: `Retry triggered for deployment ${latestDeploymentId}` };
-    } else {
-      return { success: false, message: `Retry failed: ${JSON.stringify(retryResult.errors)}` };
-    }
-  } catch (err: any) {
-    return { success: false, message: `Error: ${err.message}` };
   }
 }
 
@@ -327,7 +294,7 @@ export default {
         const results: any[] = [];
         const todayIST = formatDateJST(new Date());
 
-        const { allColors, poolColors, blocklist } = await fetchColordleData();
+        const { allColors, poolColors, blocklist } = await getCachedColordleData();
         for (let i = 0; i < 7; i++) {
           const dateStr = addDaysToDateStr(todayIST, -i);
           const utcDate = new Date(dateStr + 'T00:00:00Z');
@@ -371,12 +338,10 @@ export default {
       }
 
       // ── Manual cron trigger (scrape + build) ──
-      // Protected with the CRON_SECRET key "BloggingIo@7"
-      // Usage: POST /api/trigger-cron with header "Authorization: Bearer BloggingIo@7"
       if (path === '/api/trigger-cron' && request.method === 'POST') {
         const auth = request.headers.get('Authorization');
-        const cronSecret = env.CRON_SECRET || 'BloggingIo@7';
-        if (auth !== `Bearer ${cronSecret}`) {
+        const cronSecret = env.CRON_SECRET;
+        if (!cronSecret || auth !== `Bearer ${cronSecret}`) {
           return jsonResponse({ error: 'Unauthorized', hint: 'Use Authorization: Bearer <secret>' }, 401);
         }
 
@@ -401,9 +366,6 @@ export default {
             scrapeResults.push(`colorfle-${dateStr}: ${colorfleResult.message}`);
           }
 
-          // Trigger Pages build (retry latest deployment)
-          const pagesBuildResult = await triggerPagesBuild(env);
-
           // Trigger GitHub Actions build (primary mechanism)
           const githubBuildResult = await triggerGitHubActionsBuild(env);
 
@@ -414,7 +376,6 @@ export default {
             elapsed_ms: elapsed,
             today_jst: todayJST,
             scrape_results: scrapeResults,
-            pages_build: pagesBuildResult,
             github_actions: githubBuildResult,
             timestamp: new Date().toISOString(),
           });
@@ -438,7 +399,7 @@ export default {
         let colordleCount = 0;
         let colorfleCount = 0;
 
-        const { allColors, poolColors, blocklist } = await fetchColordleData();
+        const { allColors, poolColors, blocklist } = await getCachedColordleData();
         for (let dateStr = colordleStartStr; dateStr <= endStr; dateStr = addDaysToDateStr(dateStr, 1)) {
           const existing = await env.DB.prepare('SELECT date FROM colordle_answers WHERE date = ?').bind(dateStr).first();
           if (!existing) {
@@ -476,7 +437,7 @@ export default {
         let colordleFixed = 0;
         let colorfleFixed = 0;
 
-        const { allColors, poolColors, blocklist } = await fetchColordleData();
+        const { allColors, poolColors, blocklist } = await getCachedColordleData();
         const colordleRows = await env.DB.prepare('SELECT date, day_number, color_name, color_hex FROM colordle_answers ORDER BY date').all();
         for (const row of colordleRows.results as any[]) {
           const utcDate = new Date(row.date + 'T00:00:00Z');
@@ -491,14 +452,21 @@ export default {
           }
         }
 
-        const colorfleRows = await env.DB.prepare('SELECT date FROM colorfle_answers ORDER BY date').all();
+        const colorfleRows = await env.DB.prepare('SELECT date, normal_answer, hard_answer, normal_names, hard_names FROM colorfle_answers ORDER BY date').all();
         for (const row of colorfleRows.results as any[]) {
           const utcDate = new Date(row.date + 'T12:00:00Z');
           const answer = getColorfleAnswer(utcDate);
-          await env.DB.prepare('UPDATE colorfle_answers SET day_number = ?, normal_answer = ?, hard_answer = ?, normal_names = ?, hard_names = ? WHERE date = ?').bind(
-            answer.dayNumber, JSON.stringify(answer.normal), JSON.stringify(answer.hard), JSON.stringify(answer.normalNames), JSON.stringify(answer.hardNames), row.date
-          ).run();
-          colorfleFixed++;
+          const newNormal = JSON.stringify(answer.normal);
+          const newHard = JSON.stringify(answer.hard);
+          const newNormalNames = JSON.stringify(answer.normalNames);
+          const newHardNames = JSON.stringify(answer.hardNames);
+          // Only update if values actually changed
+          if (row.normal_answer !== newNormal || row.hard_answer !== newHard || row.normal_names !== newNormalNames || row.hard_names !== newHardNames) {
+            await env.DB.prepare('UPDATE colorfle_answers SET day_number = ?, normal_answer = ?, hard_answer = ?, normal_names = ?, hard_names = ? WHERE date = ?').bind(
+              answer.dayNumber, newNormal, newHard, newNormalNames, newHardNames, row.date
+            ).run();
+            colorfleFixed++;
+          }
         }
 
         return jsonResponse({ success: true, message: `Fixed ${colordleFixed} colordle + ${colorfleFixed} colorfle answers`, colordleFixed, colorfleFixed });
@@ -509,7 +477,7 @@ export default {
 
     return jsonResponse({
       name: 'Colordle & Colorfle Answers API',
-      version: '3.1.0',
+      version: '3.2.0',
       timezone: 'JST (UTC+9)',
       endpoints: [
         'GET /api/colordle/today', 'GET /api/colordle/date/:date', 'GET /api/colordle/range?from=&to=',
@@ -522,11 +490,8 @@ export default {
   async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext): Promise<void> {
     await initDB(env.DB);
     await runDailyScrape(env.DB);
-    // Trigger rebuilds after scraping - ALL 3 cron runs should trigger a build
-    // GitHub Actions is the primary build mechanism (it builds + deploys to Pages)
+    // Trigger rebuild via GitHub Actions only
     ctx.waitUntil((async () => {
-      const pagesResult = await triggerPagesBuild(env);
-      console.log('Pages build trigger:', JSON.stringify(pagesResult));
       const ghResult = await triggerGitHubActionsBuild(env);
       console.log('GitHub Actions trigger:', JSON.stringify(ghResult));
     })());

@@ -34,7 +34,7 @@ const colorName = colordleData?.color_name || '';
 const colorHex = colordleData?.color_hex || '';
 ---
 
-<Layout title="Colordle Answer Today - Daily Solutions & Color Archive | Color Answers Hub" canonicalUrl="/colordle-answer-today" description="Get today's Colordle answer instantly! See the actual color swatch, hex code, and color name. Updated daily at midnight IST with verified solutions and full archive.">
+<Layout title={`Colordle Answer Today (${formattedDate})`} canonicalUrl="/colordle-answer-today" description={`Today's Colordle answer for ${formattedDate}. See the exact color swatch, hex code, and color name. Updated daily with verified algorithm-accurate solutions.`} keywords="colordle answer today, colordle daily answer, colordle color today, colordle solution, colordle answer may 2026" breadcrumbs={[{ name: "Home", url: "/" }, { name: "Colordle Answer Today", url: "/colordle-answer-today" }]}>
   <section class="answer-page">
     <div class="container">
 

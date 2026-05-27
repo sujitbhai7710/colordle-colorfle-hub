@@ -1,20 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Color Answers Hub",
-  "url": "https://color-answers.pages.dev",
-  "description": "Daily answers for Colordle and Colorfle color guessing games. Updated every day at midnight IST with verified solutions.",
-  "sameAs": []
-};
 ---
 
 <Layout
-  title="About - Why We Built Color Answers Hub | Color Answers Hub"
-  description="Learn about Color Answers Hub — how we compute daily Colordle and Colorfle answers using deterministic algorithms, our commitment to accuracy, the history of color guessing games, and the technology behind the site."
+  title="About Color Answers Hub"
+  description="Learn about Color Answers Hub — how we compute daily Colordle and Colorfle answers using verified algorithms matching the original game logic."
   canonicalUrl="/about"
+  keywords="about color answers hub, colordle answer source, colorfle answer source, how colordle answers work"
+  breadcrumbs={[{ name: "Home", url: "/" }, { name: "About", url: "/about" }]}
 >
   <section class="about-page">
 
@@ -313,9 +306,6 @@ const structuredData = {
     </div>
 
   </section>
-
-  <!-- Structured Data: Organization -->
-  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 </Layout>
 
 <style>

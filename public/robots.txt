@@ -1,10 +1,23 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://color-answers.pages.dev/sitemap.xml
-
+# Allow search and AI crawlers for visibility
 User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
 Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+Sitemap: https://color-answers.pages.dev/sitemap.xml

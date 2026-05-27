@@ -34,31 +34,22 @@ if (apiDate) {
 }
 
 const faqData = [
-  {
-    question: "What is Colordle and how do you get the answers?",
-    answer: "Colordle is a daily color guessing game where players try to identify a mystery color name from a visual swatch. The game generates a new color each day at midnight. We compute the answers using the same deterministic algorithm as the original game, matching the daily seed to produce the exact color name and hex code. Our answers are verified against the official game and third-party sources to ensure 100% accuracy every single day."
-  },
-  {
-    question: "What is Colorfle and how is it different from Colordle?",
-    answer: "Colorfle is another popular daily color guessing game, but instead of a single color, you need to guess a combination of three colors that blend together to form a target shade. In normal mode, the three colors are mixed at 50%, 34%, and 16% weights. Hard mode uses different, more challenging weight distributions. Our Colorfle answers include both the normal and hard mode solutions, complete with the exact color names, hex codes, and weight percentages so you can verify the blend yourself."
-  },
-  {
-    question: "Are these answers always accurate and updated daily?",
-    answer: "Yes, absolutely. Our answers are computed using verified algorithms that match the original game logic exactly. We run automated checks at midnight IST (when the new puzzle drops), plus additional verification runs at 8AM and 12PM IST to catch any edge cases. Every answer goes through our algorithm-verified pipeline, and we store the full historical archive going back to Day 1 of both games. If you ever spot a discrepancy, please contact us and we will investigate immediately."
-  },
-  {
-    question: "Can I look up past Colordle and Colorfle answers?",
-    answer: "Yes! We maintain a complete archive of every Colordle answer since March 26, 2022 (Day 1) and every Colorfle answer since April 25, 2022 (Day 1). You can browse the archive pages using our interactive calendar, which lets you navigate to any date and see the full answer including the color swatch, hex code, and for Colorfle, the individual color components and their blend weights. The archive is completely free to access and requires no sign-up."
-  }
+  { question: "What is Colordle?", answer: "Colordle is a daily color guessing game where you try to identify a mystery color from a palette of 20 options. Each day brings a new color challenge, and you get six attempts to guess correctly. Think of it as Wordle, but for colors instead of words." },
+  { question: "What is Colorfle?", answer: "Colorfle is a daily color mixing puzzle where you identify which three colors blend together to create a target shade. Normal mode uses 3 colors with specific weights, while hard mode adds a fourth color, making it significantly more challenging to decompose the blend." },
+  { question: "How are the answers computed?", answer: "We use deterministic algorithms that exactly replicate the original game logic. This means our answers are mathematically verified solutions, not guesses or user submissions. We run automated verification multiple times per day to ensure accuracy." },
+  { question: "When do the answers update?", answer: "Answers update daily based on Japan Standard Time (JST, UTC+9). Our system runs automated scrapes at 1:30 AM JST, 8 AM IST, and 11 AM IST, then triggers a site rebuild so the latest answers are always available." },
+  { question: "Can I look up past answers?", answer: "Yes! Our interactive archive covers every day since each game launched — March 2022 for Colordle and April 2022 for Colorfle. Use the calendar to navigate to any date and see the full answer details." },
+  { question: "Is this site affiliated with Colordle or Colorfle?", answer: "No, we are an independent answer site. We are not affiliated with or endorsed by the creators of Colordle or Colorfle. We simply compute and display the daily answers using publicly available game algorithms." },
 ];
 ---
 
+
 <Layout
-  title="Colordle Answer Today - Daily Solutions & Color Archive"
+  title="Colordle & Colorfle Answers Today"
   canonicalUrl="/"
-  description="Get today's Colordle and Colorfle answers instantly. Updated daily at midnight IST with verified solutions, full archives, and real color swatches. 100% accurate and free."
-  keywords="colordle answer today, colorfle answer today, colordle daily answer, colorfle daily solution, colordle color game, colorfle color blend, colordle archive, colorfle archive, daily color puzzle answers"
-  faqSchema={faqData}
+  description="Get today's Colordle and Colorfle answers instantly. Verified daily solutions with color swatches, hex codes, and complete historical archive."
+  keywords="colordle answer today, colorfle answer today, colordle daily answer, colorfle daily answer, daily color game answers"
+  breadcrumbs={[{ name: "Home", url: "/" }]}
 >
   <!-- ═══ HERO SECTION ═══ -->
   <section class="hero">
@@ -70,7 +61,7 @@ const faqData = [
           Color Game Answers
         </div>
         <h1 class="hero-title animate-fade-in-up delay-1">
-          Today's Color<br/><span class="gradient-text">Game Answers</span>
+          Colordle & Colorfle<br/><span class="gradient-text">Daily Answers</span>
         </h1>
         <p class="hero-subtitle animate-fade-in-up delay-2">
           Get instant, verified answers for Colordle and Colorfle. Updated every day at midnight IST with 100% accurate solutions and full color swatches.

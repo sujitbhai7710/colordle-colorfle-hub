@@ -3,9 +3,11 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout
-  title="Colordle Answer Archive - Complete Historical Solutions"
+  title="Colordle Archive - Past Answers"
   canonicalUrl="/colordle-archive"
-  description="Browse the complete Colordle answer archive with our interactive calendar. Look up any past Colordle answer since March 26, 2022 — view color names, hex codes, and daily solutions. Updated daily with verified results."
+  description="Browse the complete Colordle answer archive with color swatches, hex codes, and day numbers. Search any date from March 2022 to today."
+  keywords="colordle archive, colordle past answers, colordle history, colordle all answers, colordle previous answers"
+  breadcrumbs={[{ name: "Home", url: "/" }, { name: "Colordle Archive", url: "/colordle-archive" }]}
 >
   <section class="archive-page">
     <div class="container">
@@ -22,7 +24,7 @@ import Layout from '../layouts/Layout.astro';
       <!-- Page Header -->
       <div class="page-header animate-fade-in-up delay-1">
         <h1 class="page-title">
-          Colordle Answer Archive - Complete Historical Solutions | Color Answers Hub
+          Colordle Answer Archive
         </h1>
         <p class="page-subtitle">Look up any past Colordle answer — select a date on the calendar to reveal the color, name, and hex code</p>
         <div class="page-stats">
