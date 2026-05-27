@@ -5,6 +5,9 @@ import { getColorHex } from './color-names';
 interface Env {
   DB: D1Database;
   SCRAPE_SECRET: string;
+  CLOUDFLARE_API_TOKEN: string;
+  CLOUDFLARE_ACCOUNT_ID: string;
+  GITHUB_TOKEN: string;
 }
 
 const SCHEMA_SQL = `
@@ -112,6 +115,73 @@ async function scrapeColorfle(db: D1Database, dateStr: string): Promise<{ succes
     return { success: true, message: `Day ${answer.dayNumber}: Normal=${answer.normalNames.join(',')} | Hard=${answer.hardNames.join(',')}` };
   } catch (err: any) {
     return { success: false, message: err.message };
+  }
+}
+
+async function triggerPagesBuild(env: Env): Promise<void> {
+  const accountId = env.CLOUDFLARE_ACCOUNT_ID;
+  const apiToken = env.CLOUDFLARE_API_TOKEN;
+  const projectName = 'color-answers';
+
+  if (!accountId || !apiToken) {
+    console.log('Missing CLOUDFLARE_ACCOUNT_ID or CLOUDFLARE_API_TOKEN, skipping build trigger');
+    return;
+  }
+
+  try {
+    // Use the Cloudflare API to create a new deployment
+    // This triggers a rebuild for the Pages project
+    const response = await fetch(
+      `https://api.cloudflare.com/client/v4/accounts/${accountId}/pages/projects/${projectName}/deployments`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
+      }
+    );
+    const result = await response.json() as any;
+    if (result.success) {
+      console.log('Successfully triggered Pages build:', result.result?.id);
+    } else {
+      console.error('Failed to trigger Pages build:', JSON.stringify(result.errors));
+    }
+  } catch (err: any) {
+    console.error('Error triggering Pages build:', err.message);
+  }
+}
+
+async function triggerGitHubActionsBuild(env: Env): Promise<void> {
+  const githubToken = env.GITHUB_TOKEN;
+  if (!githubToken) {
+    console.log('Missing GITHUB_TOKEN, skipping GitHub Actions trigger');
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      'https://api.github.com/repos/sujitbhai7710/colordle-colorfle-hub/actions/workflows/deploy.yml/dispatches',
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${githubToken}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json',
+          'User-Agent': 'color-answers-worker',
+        },
+        body: JSON.stringify({ ref: 'main' }),
+      }
+    );
+    if (response.ok) {
+      console.log('Successfully triggered GitHub Actions build');
+    } else {
+      const text = await response.text();
+      console.error('Failed to trigger GitHub Actions build:', response.status, text);
+    }
+  } catch (err: any) {
+    console.error('Error triggering GitHub Actions build:', err.message);
   }
 }
 
@@ -374,6 +444,11 @@ export default {
 
   async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext): Promise<void> {
     await initDB(env.DB);
-    ctx.waitUntil(runDailyScrape(env.DB));
+    await runDailyScrape(env.DB);
+    // Trigger rebuilds after scraping - ALL 3 cron runs should trigger a build
+    ctx.waitUntil(Promise.all([
+      triggerPagesBuild(env),
+      triggerGitHubActionsBuild(env),
+    ]));
   },
 };

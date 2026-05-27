@@ -1,8 +1,37 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const today = new Date().toISOString().split('T')[0];
 const apiUrl = import.meta.env.PUBLIC_API_URL || '';
+
+// Fetch data at build time
+let colordleData: any = null;
+let formattedDate = '';
+let isLight = false;
+let fetchError = false;
+
+try {
+  const colordleRes = await fetch(`${apiUrl}/api/colordle/today`);
+  if (colordleRes.ok) {
+    colordleData = await colordleRes.json();
+    // Format date from API response
+    const dateObj = new Date(colordleData.date + 'T00:00:00Z');
+    formattedDate = dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+    // Determine if color is light for text contrast
+    const hex = (colordleData.color_hex || '#888').replace('#', '');
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    isLight = (r * 299 + g * 587 + b * 114) / 1000 > 160;
+  } else {
+    fetchError = true;
+  }
+} catch (e) {
+  fetchError = true;
+}
+
+const dayNumber = colordleData?.day_number || '---';
+const colorName = colordleData?.color_name || '';
+const colorHex = colordleData?.color_hex || '';
 ---
 
 <Layout title="Colordle Answer Today - Daily Solutions & Color Archive | Color Answers Hub" canonicalUrl="/colordle-answer-today" description="Get today's Colordle answer instantly! See the actual color swatch, hex code, and color name. Updated daily at midnight IST with verified solutions and full archive.">
@@ -16,74 +45,69 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
         <span class="breadcrumb-current">Colordle Today</span>
       </nav>
 
-      <h1 class="page-h1 animate-fade-in-up" id="pageTitle">Colordle Answer Today</h1>
+      <h1 class="page-h1 animate-fade-in-up">Colordle Answer Today <span class="h1-date">({formattedDate})</span></h1>
 
       <!-- Hero Card with Gradient -->
-      <div class="hero-card animate-fade-in-up delay-1" id="heroCard">
-        <!-- Loading State -->
-        <div class="loading-state" id="loadingState">
-          <div class="spinner"></div>
-          <p>Loading today's answer...</p>
-        </div>
-
-        <!-- Answer State -->
-        <div class="answer-state hidden" id="answerState">
-          <div class="hero-gradient"></div>
-
-          <div class="hero-content">
-            <!-- Day Badge -->
-            <div class="day-badge" id="dayNumber">Day #---</div>
-
-            <!-- Spoiler-protected swatch -->
-            <div class="swatch-container" id="swatchContainer">
-              <div class="spoiler-overlay" id="spoilerOverlay">
-                <div class="spoiler-icon">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                    <circle cx="12" cy="12" r="3"/>
-                  </svg>
-                </div>
-                <span class="spoiler-text">Click to Reveal Today's Answer</span>
-              </div>
-              <div class="swatch-content blurred" id="swatchContent">
-                <div class="color-swatch" id="colorSwatch">
-                  <div class="color-reflection"></div>
-                  <div class="swatch-label" id="swatchLabel"></div>
-                </div>
-              </div>
+      <div class="hero-card animate-fade-in-up delay-1">
+        {fetchError ? (
+          <!-- Error State -->
+          <div class="error-state">
+            <div class="error-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
             </div>
+            <p>Could not load today's answer. Please try again later.</p>
+          </div>
+        ) : (
+          <div class="answer-state">
+            <div class="hero-gradient"></div>
 
-            <!-- Color Info -->
-            <div class="answer-info blurred" id="answerInfo">
-              <h2 class="color-name" id="colorName"></h2>
-              <p class="color-hex" id="colorHex" title="Click to copy"></p>
-              <span class="copy-hint">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                Click hex to copy
-              </span>
-            </div>
+            <div class="hero-content">
+              <!-- Day Badge -->
+              <div class="day-badge">Day #{dayNumber}</div>
 
-            <!-- Actions -->
-            <div class="answer-actions">
-              <a href="https://colordle.ryantanen.com/" target="_blank" rel="noopener" class="btn-primary btn-colordle">
-                Play Colordle
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
-              </a>
-              <a href="/colordle-archive" class="btn-secondary">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                View Archive
-              </a>
+              <!-- Spoiler-protected swatch -->
+              <div class="swatch-container" id="swatchContainer">
+                <div class="spoiler-overlay" id="spoilerOverlay">
+                  <div class="spoiler-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                      <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                  </div>
+                  <span class="spoiler-text">Click to Reveal Today's Answer</span>
+                </div>
+                <div class="swatch-content blurred" id="swatchContent">
+                  <div class="color-swatch" style={`background: ${colorHex || '#888'};`}>
+                    <div class="color-reflection"></div>
+                    <div class="swatch-label" style={`color: ${isLight ? 'var(--text-primary)' : '#FFFFFF'}; text-shadow: ${isLight ? '0 1px 3px rgba(0,0,0,0.06)' : '0 2px 8px rgba(0,0,0,0.2)'};`}>{colorName}</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Color Info -->
+              <div class="answer-info blurred" id="answerInfo">
+                <h2 class="color-name">{colorName}</h2>
+                <p class="color-hex" id="colorHex" title="Click to copy">{colorHex}</p>
+                <span class="copy-hint">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  Click hex to copy
+                </span>
+              </div>
+
+              <!-- Actions -->
+              <div class="answer-actions">
+                <a href="https://colordle.ryantanen.com/" target="_blank" rel="noopener" class="btn-primary btn-colordle">
+                  Play Colordle
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+                </a>
+                <a href="/colordle-archive" class="btn-secondary">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  View Archive
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-
-        <!-- Error State -->
-        <div class="error-state hidden" id="errorState">
-          <div class="error-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-          </div>
-          <p>Could not load today's answer. Please try again later.</p>
-        </div>
+        )}
       </div>
 
       <!-- Archive Link -->
@@ -292,27 +316,6 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   }
 
   .hidden { display: none !important; }
-
-  /* ── Loading ── */
-  .loading-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-    color: var(--text-secondary);
-    padding: 80px 40px;
-  }
-
-  .spinner {
-    width: 36px;
-    height: 36px;
-    border: 3px solid var(--border-color);
-    border-top-color: var(--colordle-accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
 
   /* ── Day Badge ── */
   .day-badge {
@@ -674,35 +677,12 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   }
 </style>
 
-<script define:vars={{ apiUrl, today }}>
-  // Set date in H1
-  const pageTitle = document.getElementById('pageTitle');
-  if (pageTitle) {
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-    pageTitle.innerHTML = `Colordle Answer Today <span class="h1-date">(${dateStr})</span>`;
-  }
-  const loadingState = document.getElementById('loadingState');
-  const answerState = document.getElementById('answerState');
-  const errorState = document.getElementById('errorState');
-  const dayNumber = document.getElementById('dayNumber');
-  const colorSwatch = document.getElementById('colorSwatch');
-  const swatchLabel = document.getElementById('swatchLabel');
-  const colorName = document.getElementById('colorName');
-  const colorHex = document.getElementById('colorHex');
+<script>
+  // Spoiler reveal
   const spoilerOverlay = document.getElementById('spoilerOverlay');
   const swatchContent = document.getElementById('swatchContent');
   const answerInfo = document.getElementById('answerInfo');
 
-  function isLightColor(hex) {
-    const c = hex.replace('#', '');
-    const r = parseInt(c.substring(0, 2), 16);
-    const g = parseInt(c.substring(2, 4), 16);
-    const b = parseInt(c.substring(4, 6), 16);
-    return (r * 299 + g * 587 + b * 114) / 1000 > 160;
-  }
-
-  // Spoiler reveal
   spoilerOverlay?.addEventListener('click', () => {
     spoilerOverlay.style.display = 'none';
     swatchContent.classList.remove('blurred');
@@ -712,6 +692,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   });
 
   // Copy hex code
+  const colorHex = document.getElementById('colorHex');
   colorHex?.addEventListener('click', () => {
     const hex = colorHex.textContent;
     if (hex && navigator.clipboard) {
@@ -722,31 +703,6 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     }
   });
 
-  async function loadAnswer() {
-    try {
-      const res = await fetch(`${apiUrl}/api/colordle/today`);
-      if (!res.ok) throw new Error('Failed to fetch');
-      const data = await res.json();
-
-      loadingState.classList.add('hidden');
-      answerState.classList.remove('hidden');
-
-      dayNumber.textContent = `Day #${data.day_number}`;
-      colorSwatch.style.background = data.color_hex || '#888';
-
-      const light = isLightColor(data.color_hex || '#888');
-      swatchLabel.textContent = data.color_name;
-      swatchLabel.style.color = light ? 'var(--text-primary)' : '#FFFFFF';
-      swatchLabel.style.textShadow = light ? '0 1px 3px rgba(0,0,0,0.06)' : '0 2px 8px rgba(0,0,0,0.2)';
-
-      colorName.textContent = data.color_name;
-      colorHex.textContent = data.color_hex || '';
-    } catch (e) {
-      loadingState.classList.add('hidden');
-      errorState.classList.remove('hidden');
-    }
-  }
-
   // FAQ toggle
   document.querySelectorAll('.faq-question').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -756,6 +712,4 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
       answer.classList.toggle('open');
     });
   });
-
-  loadAnswer();
 </script>

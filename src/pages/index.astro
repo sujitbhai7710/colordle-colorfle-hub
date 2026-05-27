@@ -1,6 +1,38 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
+const apiUrl = import.meta.env.PUBLIC_API_URL || '';
+
+// Fetch data at build time for the preview card
+let colordleData: any = null;
+let colorfleData: any = null;
+let formattedDate = '';
+
+try {
+  const colordleRes = await fetch(`${apiUrl}/api/colordle/today`);
+  if (colordleRes.ok) {
+    colordleData = await colordleRes.json();
+  }
+} catch (e) {}
+
+try {
+  const colorfleRes = await fetch(`${apiUrl}/api/colorfle/today`);
+  if (colorfleRes.ok) {
+    colorfleData = await colorfleRes.json();
+  }
+} catch (e) {}
+
+// Use the date from the API response (JST-based), not browser local time
+const apiDate = colordleData?.date || colorfleData?.date;
+if (apiDate) {
+  const dateObj = new Date(apiDate + 'T00:00:00Z');
+  formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+} else {
+  // Fallback (shouldn't happen in production)
+  const now = new Date();
+  formattedDate = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
 const faqData = [
   {
     question: "What is Colordle and how do you get the answers?",
@@ -89,7 +121,7 @@ const faqData = [
         <div class="preview-card">
           <div class="preview-card-header">
             <span class="preview-card-badge">Today's Answers</span>
-            <span class="preview-card-time" id="previewDate"></span>
+            <span class="preview-card-time">{formattedDate}</span>
           </div>
           <div class="preview-card-body">
             <!-- Colordle Teaser -->
@@ -987,13 +1019,6 @@ const faqData = [
 </style>
 
 <script>
-  // ── Set today's date ──
-  const dateEl = document.getElementById('previewDate');
-  if (dateEl) {
-    const now = new Date();
-    dateEl.textContent = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  }
-
   // ── Countdown Timer ──
   function updateCountdown() {
     const hoursEl = document.getElementById('countHours');

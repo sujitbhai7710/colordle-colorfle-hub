@@ -73,15 +73,20 @@
     return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
   }
 
+  function getJSTDate(): Date {
+    // Get current date in JST (UTC+9)
+    return new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Tokyo' }));
+  }
+
   function isToday(y: number, m: number, d: number): boolean {
-    const t = new Date();
-    return t.getFullYear() === y && t.getMonth() === m && t.getDate() === d;
+    const jst = getJSTDate();
+    return jst.getFullYear() === y && jst.getMonth() === m && jst.getDate() === d;
   }
 
   function isFuture(y: number, m: number, d: number): boolean {
-    const t = new Date();
-    t.setHours(0, 0, 0, 0);
-    return new Date(y, m, d) > t;
+    const jst = getJSTDate();
+    jst.setHours(0, 0, 0, 0);
+    return new Date(y, m, d) > jst;
   }
 
   function isBeforeStart(y: number, m: number, d: number): boolean {

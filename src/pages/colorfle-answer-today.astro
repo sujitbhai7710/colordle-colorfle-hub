@@ -1,8 +1,87 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const today = new Date().toISOString().split('T')[0];
 const apiUrl = import.meta.env.PUBLIC_API_URL || '';
+
+// Fetch data at build time
+let colorfleData: any = null;
+let formattedDate = '';
+let fetchError = false;
+
+// Helper functions for server-side rendering
+function isLightColor(hex: string): boolean {
+  const c = hex.replace('#', '');
+  const r = parseInt(c.substring(0, 2), 16);
+  const g = parseInt(c.substring(2, 4), 16);
+  const b = parseInt(c.substring(4, 6), 16);
+  return (r * 299 + g * 587 + b * 114) / 1000 > 160;
+}
+
+function blendColors(colors: string[], weights: number[]): string {
+  if (!colors.length) return '#888';
+  const w = weights.length === colors.length ? weights : colors.map(() => 1 / colors.length);
+  const totalWeight = w.reduce((a, b) => a + b, 0);
+  let r = 0, g = 0, b = 0;
+  colors.forEach((c, i) => {
+    const hex = c.replace('#', '');
+    const cr = parseInt(hex.substring(0, 2), 16);
+    const cg = parseInt(hex.substring(2, 4), 16);
+    const cb = parseInt(hex.substring(4, 6), 16);
+    const wt = w[i] / totalWeight;
+    r += cr * wt;
+    g += cg * wt;
+    b += cb * wt;
+  });
+  return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
+}
+
+const NORMAL_WEIGHTS = [50, 34, 16];
+const HARD_WEIGHTS = [40, 30, 20, 10];
+
+let normalColors: string[] = [];
+let hardColors: string[] = [];
+let normalNames: string[] = [];
+let hardNames: string[] = [];
+let normalBlended = '';
+let hardBlended = '';
+let normalBlendedIsLight = false;
+let hardBlendedIsLight = false;
+
+try {
+  const colorfleRes = await fetch(`${apiUrl}/api/colorfle/today`);
+  if (colorfleRes.ok) {
+    colorfleData = await colorfleRes.json();
+    // Format date from API response
+    const dateObj = new Date(colorfleData.date + 'T00:00:00Z');
+    formattedDate = dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+
+    // Parse JSON arrays
+    normalColors = JSON.parse(colorfleData.normal_answer || '[]');
+    hardColors = JSON.parse(colorfleData.hard_answer || '[]');
+    normalNames = JSON.parse(colorfleData.normal_names || '[]');
+    hardNames = JSON.parse(colorfleData.hard_names || '[]');
+
+    // Compute blended colors
+    normalBlended = blendColors(normalColors, NORMAL_WEIGHTS);
+    hardBlended = blendColors(hardColors, HARD_WEIGHTS);
+
+    // Check if blended colors are light
+    const normalBlendedHex = normalBlended.replace(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/, (_, r, g, b) =>
+      '#' + [r, g, b].map(x => parseInt(x).toString(16).padStart(2, '0')).join('')
+    );
+    const hardBlendedHex = hardBlended.replace(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/, (_, r, g, b) =>
+      '#' + [r, g, b].map(x => parseInt(x).toString(16).padStart(2, '0')).join('')
+    );
+    normalBlendedIsLight = isLightColor(normalBlendedHex);
+    hardBlendedIsLight = isLightColor(hardBlendedHex);
+  } else {
+    fetchError = true;
+  }
+} catch (e) {
+  fetchError = true;
+}
+
+const dayNumber = colorfleData?.day_number || '---';
 ---
 
 <Layout title="Colorfle Answer Today - Daily Solutions & Color Mix Archive | Color Answers Hub" canonicalUrl="/colorfle-answer-today" description="Get today's Colorfle answer instantly! See the actual color blocks, blending weights, and mixed result for normal and hard mode. Updated daily with verified solutions.">
@@ -16,78 +95,135 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
         <span class="breadcrumb-current">Colorfle Today</span>
       </nav>
 
-      <h1 class="page-h1 animate-fade-in-up" id="pageTitle">Colorfle Answer Today</h1>
+      <h1 class="page-h1 animate-fade-in-up">Colorfle Answer Today <span class="h1-date">({formattedDate})</span></h1>
 
       <!-- Hero Card with Gradient -->
-      <div class="hero-card animate-fade-in-up delay-1" id="heroCard">
-        <!-- Loading State -->
-        <div class="loading-state" id="loadingState">
-          <div class="spinner"></div>
-          <p>Loading today's answer...</p>
-        </div>
-
-        <!-- Answer State -->
-        <div class="answer-state hidden" id="answerState">
-          <div class="hero-gradient"></div>
-
-          <div class="hero-content">
-            <!-- Day Badge -->
-            <div class="day-badge" id="dayNumber">Day #---</div>
-
-            <!-- Spoiler Overlay -->
-            <div class="spoiler-overlay" id="spoilerOverlay">
-              <div class="spoiler-icon">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                  <circle cx="12" cy="12" r="3"/>
-                </svg>
-              </div>
-              <span class="spoiler-text">Click to Reveal Today's Answer</span>
+      <div class="hero-card animate-fade-in-up delay-1">
+        {fetchError ? (
+          <!-- Error State -->
+          <div class="error-state">
+            <div class="error-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
             </div>
+            <p>Could not load today's answer. Please try again later.</p>
+          </div>
+        ) : (
+          <div class="answer-state">
+            <div class="hero-gradient"></div>
 
-            <div class="answer-content blurred" id="answerContent">
-              <!-- Mode Toggle -->
-              <div class="mode-toggle">
-                <button class="mode-btn active" id="normalBtn">Normal</button>
-                <button class="mode-btn" id="hardBtn">Hard</button>
+            <div class="hero-content">
+              <!-- Day Badge -->
+              <div class="day-badge">Day #{dayNumber}</div>
+
+              <!-- Spoiler Overlay -->
+              <div class="spoiler-overlay" id="spoilerOverlay">
+                <div class="spoiler-icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                </div>
+                <span class="spoiler-text">Click to Reveal Today's Answer</span>
               </div>
 
-              <!-- Normal Mode -->
-              <div class="mode-section" id="normalSection">
-                <div class="section-label">Normal Mode — 3 Colors</div>
-                <div class="blocks-visual" id="normalBlocks"></div>
-                <div class="blend-visual" id="normalBlend"></div>
+              <div class="answer-content blurred" id="answerContent">
+                <!-- Mode Toggle -->
+                <div class="mode-toggle">
+                  <button class="mode-btn active" id="normalBtn">Normal</button>
+                  <button class="mode-btn" id="hardBtn">Hard</button>
+                </div>
+
+                <!-- Normal Mode -->
+                <div class="mode-section" id="normalSection">
+                  <div class="section-label">Normal Mode — 3 Colors</div>
+                  <div class="blocks-visual">
+                    {normalColors.map((color, i) => (
+                      <div class="color-block-item" style={`animation-delay: ${i * 0.1}s;`}>
+                        <div class="color-block-swatch" style={`background: ${color};`}>
+                          <div class="block-reflection"></div>
+                          <span class="block-swatch-name" style={`color: ${isLightColor(color) ? 'var(--text-primary)' : '#FFFFFF'}; text-shadow: ${isLightColor(color) ? 'none' : '0 2px 6px rgba(0,0,0,0.2)'};`}>{normalNames[i] || color}</span>
+                        </div>
+                        <span class="color-block-weight">{NORMAL_WEIGHTS[i]}%</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div class="blend-visual">
+                    <div class="blend-formula">
+                      {normalColors.map((color, i) => (
+                        <>
+                          <div class="formula-part">
+                            <div class="formula-dot" style={`background: ${color};`}></div>
+                            <span class="formula-name">{normalNames[i] || color}</span>
+                            <span class="formula-pct">{NORMAL_WEIGHTS[i]}%</span>
+                          </div>
+                          {i < normalColors.length - 1 && <span class="formula-plus">+</span>}
+                        </>
+                      ))}
+                      <span class="formula-equals">=</span>
+                    </div>
+                    <div class="blend-result">
+                      <div class="blend-swatch" style={`background: ${normalBlended};`}>
+                        <div class="block-reflection"></div>
+                        <span class="blend-swatch-label" style={`color: ${normalBlendedIsLight ? 'var(--text-primary)' : '#FFFFFF'}; text-shadow: ${normalBlendedIsLight ? 'none' : '0 2px 6px rgba(0,0,0,0.2)'};`}>Mixed</span>
+                      </div>
+                      <span class="blend-label">Mixed Result</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Hard Mode -->
+                <div class="mode-section hidden" id="hardSection">
+                  <div class="section-label">Hard Mode — 4 Colors</div>
+                  <div class="blocks-visual">
+                    {hardColors.map((color, i) => (
+                      <div class="color-block-item" style={`animation-delay: ${i * 0.1}s;`}>
+                        <div class="color-block-swatch" style={`background: ${color};`}>
+                          <div class="block-reflection"></div>
+                          <span class="block-swatch-name" style={`color: ${isLightColor(color) ? 'var(--text-primary)' : '#FFFFFF'}; text-shadow: ${isLightColor(color) ? 'none' : '0 2px 6px rgba(0,0,0,0.2)'};`}>{hardNames[i] || color}</span>
+                        </div>
+                        <span class="color-block-weight">{HARD_WEIGHTS[i]}%</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div class="blend-visual">
+                    <div class="blend-formula">
+                      {hardColors.map((color, i) => (
+                        <>
+                          <div class="formula-part">
+                            <div class="formula-dot" style={`background: ${color};`}></div>
+                            <span class="formula-name">{hardNames[i] || color}</span>
+                            <span class="formula-pct">{HARD_WEIGHTS[i]}%</span>
+                          </div>
+                          {i < hardColors.length - 1 && <span class="formula-plus">+</span>}
+                        </>
+                      ))}
+                      <span class="formula-equals">=</span>
+                    </div>
+                    <div class="blend-result">
+                      <div class="blend-swatch" style={`background: ${hardBlended};`}>
+                        <div class="block-reflection"></div>
+                        <span class="blend-swatch-label" style={`color: ${hardBlendedIsLight ? 'var(--text-primary)' : '#FFFFFF'}; text-shadow: ${hardBlendedIsLight ? 'none' : '0 2px 6px rgba(0,0,0,0.2)'};`}>Mixed</span>
+                      </div>
+                      <span class="blend-label">Mixed Result</span>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <!-- Hard Mode -->
-              <div class="mode-section hidden" id="hardSection">
-                <div class="section-label">Hard Mode — 4 Colors</div>
-                <div class="blocks-visual" id="hardBlocks"></div>
-                <div class="blend-visual" id="hardBlend"></div>
+              <!-- Actions -->
+              <div class="answer-actions">
+                <a href="https://colorfle.com/" target="_blank" rel="noopener" class="btn-primary btn-colorfle">
+                  Play Colorfle
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+                </a>
+                <a href="/colorfle-archive" class="btn-secondary">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  View Archive
+                </a>
               </div>
-            </div>
-
-            <!-- Actions -->
-            <div class="answer-actions">
-              <a href="https://colorfle.com/" target="_blank" rel="noopener" class="btn-primary btn-colorfle">
-                Play Colorfle
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
-              </a>
-              <a href="/colorfle-archive" class="btn-secondary">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                View Archive
-              </a>
             </div>
           </div>
-        </div>
-
-        <!-- Error State -->
-        <div class="error-state hidden" id="errorState">
-          <div class="error-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-          </div>
-          <p>Could not load today's answer. Please try again later.</p>
-        </div>
+        )}
       </div>
 
       <!-- Archive Link -->
@@ -298,27 +434,6 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
 
   .hidden { display: none !important; }
 
-  /* ── Loading ── */
-  .loading-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-    color: var(--text-secondary);
-    padding: 80px 40px;
-  }
-
-  .spinner {
-    width: 36px;
-    height: 36px;
-    border: 3px solid var(--border-color);
-    border-top-color: var(--colorfle-accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
   /* ── Day Badge ── */
   .day-badge {
     display: inline-flex;
@@ -487,6 +602,15 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     border-radius: inherit;
   }
 
+  .block-swatch-name {
+    position: relative;
+    z-index: 2;
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.92rem;
+    text-transform: capitalize;
+  }
+
   .color-block-name {
     font-family: 'Outfit', 'DM Sans', sans-serif;
     font-weight: 700;
@@ -595,6 +719,16 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
     position: absolute;
     inset: 0;
     background: linear-gradient(170deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.06) 35%, transparent 50%);
+  }
+
+  .blend-swatch-label {
+    position: relative;
+    z-index: 2;
+    font-family: 'Outfit', 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   .blend-label {
@@ -797,56 +931,11 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   }
 </style>
 
-<script define:vars={{ apiUrl, today }}>
-  // Set date in H1
-  const pageTitle = document.getElementById('pageTitle');
-  if (pageTitle) {
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-    pageTitle.innerHTML = `Colorfle Answer Today <span class="h1-date">(${dateStr})</span>`;
-  }
-
-  const COLOR_NAMES = {
-    '#FFFFFF': 'White', '#FFFAC8': 'Lemon', '#FABEBE': 'Pink',
-    '#AAFFC3': 'Mint', '#E6BEFF': 'Lavender', '#46F0F0': 'Cyan',
-    '#FFE119': 'Yellow', '#BCF60C': 'Lime', '#F58231': 'Orange',
-    '#3CB44B': 'Green', '#F032E6': 'Magenta', '#808000': 'Olive',
-    '#008080': 'Teal', '#9A6324': 'Brown', '#E6194B': 'Red',
-    '#4363D8': 'Blue', '#911EB4': 'Purple', '#800000': 'Maroon',
-    '#000075': 'Navy', '#000000': 'Black',
-  };
-
-  const NORMAL_WEIGHTS = [50, 34, 16];
-  const HARD_WEIGHTS = [40, 30, 20, 10];
-
-  let currentMode = 'normal';
-  let normalColors = [];
-  let hardColors = [];
-  let normalNames = [];
-  let hardNames = [];
-
-  const loadingState = document.getElementById('loadingState');
-  const answerState = document.getElementById('answerState');
-  const errorState = document.getElementById('errorState');
-  const dayNumber = document.getElementById('dayNumber');
-  const normalBlocks = document.getElementById('normalBlocks');
-  const hardBlocks = document.getElementById('hardBlocks');
-  const normalBlend = document.getElementById('normalBlend');
-  const hardBlend = document.getElementById('hardBlend');
+<script>
+  // Spoiler reveal
   const spoilerOverlay = document.getElementById('spoilerOverlay');
   const answerContent = document.getElementById('answerContent');
-  const normalBtn = document.getElementById('normalBtn');
-  const hardBtn = document.getElementById('hardBtn');
 
-  function isLightColor(hex) {
-    const c = hex.replace('#', '');
-    const r = parseInt(c.substring(0, 2), 16);
-    const g = parseInt(c.substring(2, 4), 16);
-    const b = parseInt(c.substring(4, 6), 16);
-    return (r * 299 + g * 587 + b * 114) / 1000 > 160;
-  }
-
-  // Spoiler reveal
   spoilerOverlay?.addEventListener('click', () => {
     spoilerOverlay.style.display = 'none';
     answerContent.classList.remove('blurred');
@@ -854,118 +943,24 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
   });
 
   // Mode toggle
-  normalBtn?.addEventListener('click', () => switchMode('normal'));
-  hardBtn?.addEventListener('click', () => switchMode('hard'));
+  const normalBtn = document.getElementById('normalBtn');
+  const hardBtn = document.getElementById('hardBtn');
+  const normalSection = document.getElementById('normalSection');
+  const hardSection = document.getElementById('hardSection');
 
-  function switchMode(mode) {
-    currentMode = mode;
-    const normalSection = document.getElementById('normalSection');
-    const hardSection = document.getElementById('hardSection');
-    if (mode === 'normal') {
-      normalBtn.classList.add('active');
-      hardBtn.classList.remove('active');
-      normalSection.classList.remove('hidden');
-      hardSection.classList.add('hidden');
-    } else {
-      hardBtn.classList.add('active');
-      normalBtn.classList.remove('active');
-      hardSection.classList.remove('hidden');
-      normalSection.classList.add('hidden');
-    }
-  }
+  normalBtn?.addEventListener('click', () => {
+    normalBtn.classList.add('active');
+    hardBtn.classList.remove('active');
+    normalSection.classList.remove('hidden');
+    hardSection.classList.add('hidden');
+  });
 
-  function blendColors(colors, weights) {
-    if (!colors.length) return '#888';
-    const w = weights || colors.map(() => 1 / colors.length);
-    const totalWeight = w.reduce((a, b) => a + b, 0);
-    let r = 0, g = 0, b = 0;
-    colors.forEach((c, i) => {
-      const hex = c.replace('#', '');
-      const cr = parseInt(hex.substring(0, 2), 16);
-      const cg = parseInt(hex.substring(2, 4), 16);
-      const cb = parseInt(hex.substring(4, 6), 16);
-      const wt = w[i] / totalWeight;
-      r += cr * wt;
-      g += cg * wt;
-      b += cb * wt;
-    });
-    return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
-  }
-
-  function rgbToHex(rgbStr) {
-    const m = rgbStr.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-    if (!m) return rgbStr;
-    return '#' + [m[1], m[2], m[3]].map(x => parseInt(x).toString(16).padStart(2, '0')).join('');
-  }
-
-  function renderBlocks(colors, names, weights) {
-    return colors.map((c, i) => {
-      const light = isLightColor(c);
-      return `
-        <div class="color-block-item" style="animation-delay: ${i * 0.1}s;">
-          <div class="color-block-swatch" style="background: ${c};">
-            <div class="block-reflection"></div>
-            <span style="position:relative;z-index:2;font-family:'Outfit','DM Sans',sans-serif;font-weight:700;font-size:0.92rem;text-transform:capitalize;color:${light ? 'var(--text-primary)' : '#FFFFFF'};text-shadow:${light ? 'none' : '0 2px 6px rgba(0,0,0,0.2)'};">${names[i] || COLOR_NAMES[c] || c}</span>
-          </div>
-          <span class="color-block-weight">${weights[i]}%</span>
-        </div>
-      `;
-    }).join('');
-  }
-
-  function renderBlend(colors, names, weights) {
-    const blended = blendColors(colors, weights);
-    const blendedHex = rgbToHex(blended);
-    const lightBlend = isLightColor(blendedHex);
-
-    const formulaParts = colors.map((c, i) => `
-      <div class="formula-part">
-        <div class="formula-dot" style="background: ${c};"></div>
-        <span class="formula-name">${names[i] || COLOR_NAMES[c] || c}</span>
-        <span class="formula-pct">${weights[i]}%</span>
-      </div>
-      ${i < colors.length - 1 ? '<span class="formula-plus">+</span>' : ''}
-    `).join('');
-
-    return `
-      <div class="blend-formula">
-        ${formulaParts}
-        <span class="formula-equals">=</span>
-      </div>
-      <div class="blend-result">
-        <div class="blend-swatch" style="background: ${blended};">
-          <div class="block-reflection"></div>
-          <span style="position:relative;z-index:2;font-family:'Outfit','DM Sans',sans-serif;font-weight:700;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;color:${lightBlend ? 'var(--text-primary)' : '#FFFFFF'};text-shadow:${lightBlend ? 'none' : '0 2px 6px rgba(0,0,0,0.2)'};">Mixed</span>
-        </div>
-        <span class="blend-label">Mixed Result</span>
-      </div>
-    `;
-  }
-
-  async function loadAnswer() {
-    try {
-      const res = await fetch(`${apiUrl}/api/colorfle/today`);
-      if (!res.ok) throw new Error('Failed');
-      const data = await res.json();
-
-      loadingState.classList.add('hidden');
-      answerState.classList.remove('hidden');
-
-      dayNumber.textContent = `Day #${data.day_number}`;
-      normalColors = JSON.parse(data.normal_answer || '[]');
-      hardColors = JSON.parse(data.hard_answer || '[]');
-      normalNames = JSON.parse(data.normal_names || '[]');
-      hardNames = JSON.parse(data.hard_names || '[]');
-
-      normalBlocks.innerHTML = renderBlocks(normalColors, normalNames, NORMAL_WEIGHTS);
-      hardBlocks.innerHTML = renderBlocks(hardColors, hardNames, HARD_WEIGHTS);
-      normalBlend.innerHTML = renderBlend(normalColors, normalNames, NORMAL_WEIGHTS);
-      hardBlend.innerHTML = renderBlend(hardColors, hardNames, HARD_WEIGHTS);
-    } catch (e) {
-      loadingState.classList.add('hidden');
-      errorState.classList.remove('hidden');
-    }
-  }
+  hardBtn?.addEventListener('click', () => {
+    hardBtn.classList.add('active');
+    normalBtn.classList.remove('active');
+    hardSection.classList.remove('hidden');
+    normalSection.classList.add('hidden');
+  });
 
   // FAQ toggle
   document.querySelectorAll('.faq-question').forEach(btn => {
@@ -976,6 +971,4 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || '';
       answer.classList.toggle('open');
     });
   });
-
-  loadAnswer();
 </script>
