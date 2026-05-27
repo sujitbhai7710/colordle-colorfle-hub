@@ -5,6 +5,7 @@ import { getColorHex } from './color-names';
 interface Env {
   DB: D1Database;
   SCRAPE_SECRET: string;
+  CRON_SECRET: string;
   CLOUDFLARE_API_TOKEN: string;
   CLOUDFLARE_ACCOUNT_ID: string;
   GITHUB_TOKEN: string;
@@ -118,46 +119,64 @@ async function scrapeColorfle(db: D1Database, dateStr: string): Promise<{ succes
   }
 }
 
-async function triggerPagesBuild(env: Env): Promise<void> {
+async function triggerPagesBuild(env: Env): Promise<{ success: boolean; message: string }> {
+  // This project uses direct-upload (not Git-connected), so we cannot use the
+  // Cloudflare Pages deployment API (it requires a manifest for direct uploads).
+  // Instead, we trigger a GitHub Actions workflow that builds and deploys.
+  // This is handled by triggerGitHubActionsBuild().
+  // This function is kept as a fallback / secondary trigger using retry on latest deployment.
+
   const accountId = env.CLOUDFLARE_ACCOUNT_ID;
   const apiToken = env.CLOUDFLARE_API_TOKEN;
   const projectName = 'color-answers';
 
   if (!accountId || !apiToken) {
-    console.log('Missing CLOUDFLARE_ACCOUNT_ID or CLOUDFLARE_API_TOKEN, skipping build trigger');
-    return;
+    return { success: false, message: 'Missing CLOUDFLARE_ACCOUNT_ID or CLOUDFLARE_API_TOKEN' };
   }
 
   try {
-    // Use the Cloudflare API to create a new deployment
-    // This triggers a rebuild for the Pages project
-    const response = await fetch(
-      `https://api.cloudflare.com/client/v4/accounts/${accountId}/pages/projects/${projectName}/deployments`,
+    // Get the latest deployment to retry
+    const listResponse = await fetch(
+      `https://api.cloudflare.com/client/v4/accounts/${accountId}/pages/projects/${projectName}/deployments?per_page=1`,
+      {
+        headers: {
+          'Authorization': `Bearer ${apiToken}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const listResult = await listResponse.json() as any;
+    if (!listResult.success || !listResult.result?.length) {
+      return { success: false, message: 'Could not list deployments' };
+    }
+    const latestDeploymentId = listResult.result[0].id;
+
+    // Try to retry the latest deployment
+    const retryResponse = await fetch(
+      `https://api.cloudflare.com/client/v4/accounts/${accountId}/pages/projects/${projectName}/deployments/${latestDeploymentId}/retry`,
       {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${apiToken}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({}),
       }
     );
-    const result = await response.json() as any;
-    if (result.success) {
-      console.log('Successfully triggered Pages build:', result.result?.id);
+    const retryResult = await retryResponse.json() as any;
+    if (retryResult.success) {
+      return { success: true, message: `Retry triggered for deployment ${latestDeploymentId}` };
     } else {
-      console.error('Failed to trigger Pages build:', JSON.stringify(result.errors));
+      return { success: false, message: `Retry failed: ${JSON.stringify(retryResult.errors)}` };
     }
   } catch (err: any) {
-    console.error('Error triggering Pages build:', err.message);
+    return { success: false, message: `Error: ${err.message}` };
   }
 }
 
-async function triggerGitHubActionsBuild(env: Env): Promise<void> {
+async function triggerGitHubActionsBuild(env: Env): Promise<{ success: boolean; message: string }> {
   const githubToken = env.GITHUB_TOKEN;
   if (!githubToken) {
-    console.log('Missing GITHUB_TOKEN, skipping GitHub Actions trigger');
-    return;
+    return { success: false, message: 'Missing GITHUB_TOKEN' };
   }
 
   try {
@@ -175,13 +194,13 @@ async function triggerGitHubActionsBuild(env: Env): Promise<void> {
       }
     );
     if (response.ok) {
-      console.log('Successfully triggered GitHub Actions build');
+      return { success: true, message: 'GitHub Actions workflow dispatch accepted' };
     } else {
       const text = await response.text();
-      console.error('Failed to trigger GitHub Actions build:', response.status, text);
+      return { success: false, message: `Failed (${response.status}): ${text}` };
     }
   } catch (err: any) {
-    console.error('Error triggering GitHub Actions build:', err.message);
+    return { success: false, message: `Error: ${err.message}` };
   }
 }
 
@@ -351,6 +370,64 @@ export default {
         return jsonResponse({ success: true, message: 'Scrape completed' });
       }
 
+      // ── Manual cron trigger (scrape + build) ──
+      // Protected with the CRON_SECRET key "BloggingIo@7"
+      // Usage: POST /api/trigger-cron with header "Authorization: Bearer BloggingIo@7"
+      if (path === '/api/trigger-cron' && request.method === 'POST') {
+        const auth = request.headers.get('Authorization');
+        const cronSecret = env.CRON_SECRET || 'BloggingIo@7';
+        if (auth !== `Bearer ${cronSecret}`) {
+          return jsonResponse({ error: 'Unauthorized', hint: 'Use Authorization: Bearer <secret>' }, 401);
+        }
+
+        const startTime = Date.now();
+        const scrapeResults: string[] = [];
+
+        try {
+          // Run the daily scrape
+          const todayJST = formatDateJST(new Date());
+          for (let i = 0; i < 3; i++) {
+            const dateStr = addDaysToDateStr(todayJST, i);
+            const colordleResult = await scrapeColordle(env.DB, dateStr);
+            await env.DB.prepare(
+              'INSERT INTO scrape_log (source, status, message) VALUES (?, ?, ?)'
+            ).bind(`colordle-${dateStr}`, colordleResult.success ? 'success' : 'error', colordleResult.message).run();
+            scrapeResults.push(`colordle-${dateStr}: ${colordleResult.message}`);
+
+            const colorfleResult = await scrapeColorfle(env.DB, dateStr);
+            await env.DB.prepare(
+              'INSERT INTO scrape_log (source, status, message) VALUES (?, ?, ?)'
+            ).bind(`colorfle-${dateStr}`, colorfleResult.success ? 'success' : 'error', colorfleResult.message).run();
+            scrapeResults.push(`colorfle-${dateStr}: ${colorfleResult.message}`);
+          }
+
+          // Trigger Pages build (retry latest deployment)
+          const pagesBuildResult = await triggerPagesBuild(env);
+
+          // Trigger GitHub Actions build (primary mechanism)
+          const githubBuildResult = await triggerGitHubActionsBuild(env);
+
+          const elapsed = Date.now() - startTime;
+          return jsonResponse({
+            success: true,
+            message: 'Cron job triggered manually',
+            elapsed_ms: elapsed,
+            today_jst: todayJST,
+            scrape_results: scrapeResults,
+            pages_build: pagesBuildResult,
+            github_actions: githubBuildResult,
+            timestamp: new Date().toISOString(),
+          });
+        } catch (err: any) {
+          return jsonResponse({
+            success: false,
+            error: err.message,
+            partial_results: scrapeResults,
+            elapsed_ms: Date.now() - startTime,
+          }, 500);
+        }
+      }
+
       // ── Backfill from game start ──
       if (path === '/api/backfill' && request.method === 'POST') {
         const auth = request.headers.get('Authorization');
@@ -437,7 +514,7 @@ export default {
       endpoints: [
         'GET /api/colordle/today', 'GET /api/colordle/date/:date', 'GET /api/colordle/range?from=&to=',
         'GET /api/colorfle/today', 'GET /api/colorfle/date/:date', 'GET /api/colorfle/range?from=&to=',
-        'GET /api/verify', 'POST /api/scrape (auth)', 'POST /api/backfill (auth)', 'POST /api/recompute (auth)',
+        'GET /api/verify', 'POST /api/scrape (auth)', 'POST /api/trigger-cron (auth)', 'POST /api/backfill (auth)', 'POST /api/recompute (auth)',
       ],
     });
   },
@@ -446,9 +523,12 @@ export default {
     await initDB(env.DB);
     await runDailyScrape(env.DB);
     // Trigger rebuilds after scraping - ALL 3 cron runs should trigger a build
-    ctx.waitUntil(Promise.all([
-      triggerPagesBuild(env),
-      triggerGitHubActionsBuild(env),
-    ]));
+    // GitHub Actions is the primary build mechanism (it builds + deploys to Pages)
+    ctx.waitUntil((async () => {
+      const pagesResult = await triggerPagesBuild(env);
+      console.log('Pages build trigger:', JSON.stringify(pagesResult));
+      const ghResult = await triggerGitHubActionsBuild(env);
+      console.log('GitHub Actions trigger:', JSON.stringify(ghResult));
+    })());
   },
 };
