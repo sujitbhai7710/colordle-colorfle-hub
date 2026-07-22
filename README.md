@@ -2,7 +2,7 @@
 
 Daily answers for [Colordle](https://colordle.ryantanen.com/) and [Colorfle](https://colorfle.com/) color guessing games. Updated every day with verified, algorithm-accurate solutions.
 
-**Live site:** [color-answers.pages.dev](https://color-answers.pages.dev) | [colordleanswer.me](https://colordleanswer.me)
+**Live site:** [colordleanswer.me](https://colordleanswer.me)
 
 ## Architecture
 

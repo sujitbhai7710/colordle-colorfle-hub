@@ -20,4 +20,4 @@ Allow: /
 User-agent: PerplexityBot
 Allow: /
 
-Sitemap: https://color-answers.pages.dev/sitemap.xml
+Sitemap: https://colordleanswer.me/sitemap.xml

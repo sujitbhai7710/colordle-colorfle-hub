@@ -4,7 +4,7 @@ import svelte from '@astrojs/svelte';
 export default defineConfig({
   output: 'static',
   integrations: [svelte()],
-  site: 'https://color-answers.pages.dev',
+  site: 'https://colordleanswer.me',
   build: {
     inlineStylesheets: 'always',
   },
